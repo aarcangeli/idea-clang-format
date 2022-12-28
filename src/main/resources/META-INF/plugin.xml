@@ -1,13 +1,14 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.aarcangeli.ideaclangformat</id>
-    <name>IntelliJ Platform Plugin idea-clang-format</name>
+    <name>Clang-Format &amp; Language</name>
     <vendor>aarcangeli</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.aarcangeli.ideaclangformat.services.MyApplicationService"/>
+        <applicationService
+                serviceImplementation="com.github.aarcangeli.ideaclangformat.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.aarcangeli.ideaclangformat.services.MyProjectService"/>
     </extensions>
 
