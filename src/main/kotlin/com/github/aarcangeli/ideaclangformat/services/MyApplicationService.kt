@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.aarcangeli.ideaclangformat.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.aarcangeli.ideaclangformat.MyBundle
 
 class MyApplicationService {
 
