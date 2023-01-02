@@ -25,17 +25,15 @@ class ClangFormatSchemaProviderFactory : JsonSchemaProviderFactory, DumbAware {
   private class ClangFormatSchemaProvider : JsonSchemaFileProvider {
     override fun isAvailable(file: VirtualFile): Boolean {
       val fileType = file.fileType
-      return if (fileType is LanguageFileType) {
+      return fileType is LanguageFileType &&
         fileType.language.isKindOf(ClangFormatLanguage.INSTANCE)
-      }
-      else false
     }
 
     override fun getName(): @Nls String {
       return "Clang Format Schema Provider"
     }
 
-    override fun getSchemaFile(): VirtualFile? {
+    override fun getSchemaFile(): VirtualFile {
       return clangFormatSchemaFile
     }
 
@@ -52,22 +50,19 @@ class ClangFormatSchemaProviderFactory : JsonSchemaProviderFactory, DumbAware {
     fun readSchema(): String {
       val resourceAsStream =
         ClangFormatSchemaProviderFactory::class.java.getResourceAsStream("/schemas/clangFormat-options.json")
-      if (resourceAsStream != null) {
-        try {
-          resourceAsStream.use {
-            return StreamUtil.readText(
-              InputStreamReader(
-                resourceAsStream,
-                StandardCharsets.UTF_8
-              )
+      try {
+        resourceAsStream.use {
+          return StreamUtil.readText(
+            InputStreamReader(
+              resourceAsStream!!,
+              StandardCharsets.UTF_8
             )
-          }
-        }
-        catch (e: IOException) {
-          throw RuntimeException("Cannot read schema", e)
+          )
         }
       }
-      return ""
+      catch (e: IOException) {
+        throw RuntimeException("Cannot read schema", e)
+      }
     }
   }
 }

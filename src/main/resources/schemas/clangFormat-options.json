@@ -1,0 +1,1632 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Clang Format Style Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "BasedOnStyle": {
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BasedOnStyle%20('>Documentation</a>\nThe style used for all options not specifically set in the configuration.",
+      "type": "string",
+      "enum": [
+        "LLVM",
+        "Google",
+        "Chromium",
+        "Mozilla",
+        "WebKit",
+        "Microsoft",
+        "GNU",
+        "InheritParentConfig"
+      ],
+      "x-intellij-enum-metadata": {
+        "LLVM": {
+          "description": "A style complying with the LLVM coding standards"
+        },
+        "Google": {
+          "description": "A style complying with Google's C++ style guide"
+        },
+        "Chromium": {
+          "description": "A style complying with Chromium's style guide"
+        },
+        "Mozilla": {
+          "description": "A style complying with Mozilla's style guide"
+        },
+        "WebKit": {
+          "description": "A style complying with WebKit's style guide"
+        },
+        "Microsoft": {
+          "description": "A style complying with Microsoft's style guide"
+        },
+        "GNU": {
+          "description": "A style complying with the GNU coding standards"
+        }
+      },
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BasedOnStyle%20("
+    },
+    "AccessModifierOffset": {
+      "type": "number",
+      "title": "The extra indent or outdent of access modifiers, e.g. public:.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AccessModifierOffset%20('>Documentation</a>\n<p>The extra indent or outdent of access modifiers, e.g. <code style='background:#e2e2e2'>public:</code>.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AccessModifierOffset%20("
+    },
+    "AlignAfterOpenBracket": {
+      "type": "string",
+      "enum": [
+        "Align",
+        "DontAlign",
+        "AlwaysBreak"
+      ],
+      "x-intellij-enum-metadata": {
+        "Align": {
+          "description": "Align parameters on the open bracket, e.g.:"
+        },
+        "DontAlign": {
+          "description": "Don't align, instead use ContinuationIndentWidth, e.g.:"
+        },
+        "AlwaysBreak": {
+          "description": "Always break after an open bracket, if the parameters don't fit"
+        }
+      },
+      "title": "If true, horizontally aligns arguments after an open bracket.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignAfterOpenBracket%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, horizontally aligns arguments after an open bracket.\n<p>This applies to round brackets (parentheses), angle brackets and square\nbrackets.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignAfterOpenBracket%20("
+    },
+    "AlignConsecutiveAssignments": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Consecutive",
+        "AcrossEmptyLines",
+        "AcrossComments"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": ""
+        },
+        "Consecutive": {
+          "description": ""
+        },
+        "AcrossEmptyLines": {
+          "description": ""
+        },
+        "AcrossComments": {
+          "description": ""
+        }
+      },
+      "title": "Style of aligning consecutive assignments.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveAssignments%20('>Documentation</a>\n<p>Style of aligning consecutive assignments.\n<p><code style='background:#e2e2e2'>Consecutive</code> will result in formattings like:\n<pre>\n  int a            = 1;\n  int somelongname = 2;\n  double c         = 3;\n</pre>\n<p>Possible values:\n<p><li><code style='background:#e2e2e2'>ACS_None</code> (in configuration: <code style='background:#e2e2e2'>None</code>)   Do not align assignments on consecutive lines.\n<p><li><code style='background:#e2e2e2'>ACS_Consecutive</code> (in configuration: <code style='background:#e2e2e2'>Consecutive</code>)   Align assignments on consecutive lines. This will result in\n   formattings like:\n<pre>\n     int a            = 1;\n     int somelongname = 2;\n     double c         = 3;\n<p>     int d = 3;\n     /* A comment. */\n     double e = 4;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLines</code> (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLines</code>)   Same as ACS_Consecutive, but also spans over empty lines, e.g.\n<pre>\n     int a            = 1;\n     int somelongname = 2;\n     double c         = 3;\n<p>     int d            = 3;\n     /* A comment. */\n     double e = 4;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossComments</code> (in configuration: <code style='background:#e2e2e2'>AcrossComments</code>)   Same as ACS_Consecutive, but also spans over lines only containing\n   comments, e.g.\n<pre>\n     int a            = 1;\n     int somelongname = 2;\n     double c         = 3;\n<p>     int d    = 3;\n     /* A comment. */\n     double e = 4;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLinesAndComments</code>  (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLinesAndComments</code>)\n<p>   Same as ACS_Consecutive, but also spans over lines only containing\n   comments and empty lines, e.g.\n<pre>\n     int a            = 1;\n     int somelongname = 2;\n     double c         = 3;\n<p>     int d            = 3;\n     /* A comment. */\n     double e         = 4;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveAssignments%20("
+    },
+    "AlignConsecutiveBitFields": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Consecutive",
+        "AcrossEmptyLines",
+        "AcrossComments"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": ""
+        },
+        "Consecutive": {
+          "description": ""
+        },
+        "AcrossEmptyLines": {
+          "description": ""
+        },
+        "AcrossComments": {
+          "description": ""
+        }
+      },
+      "title": "Style of aligning consecutive bit field.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveBitFields%20('>Documentation</a>\n<p>Style of aligning consecutive bit field.\n<p><code style='background:#e2e2e2'>Consecutive</code> will align the bitfield separators of consecutive lines.\nThis will result in formattings like:\n<pre>\n  int aaaa : 1;\n  int b    : 12;\n  int ccc  : 8;\n</pre>\n<p>Possible values:\n<p><li><code style='background:#e2e2e2'>ACS_None</code> (in configuration: <code style='background:#e2e2e2'>None</code>)   Do not align bit fields on consecutive lines.\n<p><li><code style='background:#e2e2e2'>ACS_Consecutive</code> (in configuration: <code style='background:#e2e2e2'>Consecutive</code>)   Align bit fields on consecutive lines. This will result in\n   formattings like:\n<pre>\n     int aaaa : 1;\n     int b    : 12;\n     int ccc  : 8;\n<p>     int d : 2;\n     /* A comment. */\n     int ee : 3;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLines</code> (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLines</code>)   Same as ACS_Consecutive, but also spans over empty lines, e.g.\n<pre>\n     int aaaa : 1;\n     int b    : 12;\n     int ccc  : 8;\n<p>     int d    : 2;\n     /* A comment. */\n     int ee : 3;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossComments</code> (in configuration: <code style='background:#e2e2e2'>AcrossComments</code>)   Same as ACS_Consecutive, but also spans over lines only containing\n   comments, e.g.\n<pre>\n     int aaaa : 1;\n     int b    : 12;\n     int ccc  : 8;\n<p>     int d  : 2;\n     /* A comment. */\n     int ee : 3;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLinesAndComments</code>  (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLinesAndComments</code>)\n<p>   Same as ACS_Consecutive, but also spans over lines only containing\n   comments and empty lines, e.g.\n<pre>\n     int aaaa : 1;\n     int b    : 12;\n     int ccc  : 8;\n<p>     int d    : 2;\n     /* A comment. */\n     int ee   : 3;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveBitFields%20("
+    },
+    "AlignConsecutiveDeclarations": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Consecutive",
+        "AcrossEmptyLines",
+        "AcrossComments"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": ""
+        },
+        "Consecutive": {
+          "description": ""
+        },
+        "AcrossEmptyLines": {
+          "description": ""
+        },
+        "AcrossComments": {
+          "description": ""
+        }
+      },
+      "title": "Style of aligning consecutive declarations.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveDeclarations%20('>Documentation</a>\n<p>Style of aligning consecutive declarations.\n<p><code style='background:#e2e2e2'>Consecutive</code> will align the declaration names of consecutive lines.\nThis will result in formattings like:\n<pre>\n  int         aaaa = 12;\n  float       b = 23;\n  std::string ccc;\n</pre>\n<p>Possible values:\n<p><li><code style='background:#e2e2e2'>ACS_None</code> (in configuration: <code style='background:#e2e2e2'>None</code>)   Do not align bit declarations on consecutive lines.\n<p><li><code style='background:#e2e2e2'>ACS_Consecutive</code> (in configuration: <code style='background:#e2e2e2'>Consecutive</code>)   Align declarations on consecutive lines. This will result in\n   formattings like:\n<pre>\n     int         aaaa = 12;\n     float       b = 23;\n     std::string ccc;\n<p>     int a = 42;\n     /* A comment. */\n     bool c = false;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLines</code> (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLines</code>)   Same as ACS_Consecutive, but also spans over empty lines, e.g.\n<pre>\n     int         aaaa = 12;\n     float       b = 23;\n     std::string ccc;\n<p>     int         a = 42;\n     /* A comment. */\n     bool c = false;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossComments</code> (in configuration: <code style='background:#e2e2e2'>AcrossComments</code>)   Same as ACS_Consecutive, but also spans over lines only containing\n   comments, e.g.\n<pre>\n     int         aaaa = 12;\n     float       b = 23;\n     std::string ccc;\n<p>     int  a = 42;\n     /* A comment. */\n     bool c = false;\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLinesAndComments</code>  (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLinesAndComments</code>)\n<p>   Same as ACS_Consecutive, but also spans over lines only containing\n   comments and empty lines, e.g.\n<pre>\n     int         aaaa = 12;\n     float       b = 23;\n     std::string ccc;\n<p>     int         a = 42;\n     /* A comment. */\n     bool        c = false;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveDeclarations%20("
+    },
+    "AlignConsecutiveMacros": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Consecutive",
+        "AcrossEmptyLines",
+        "AcrossComments"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": ""
+        },
+        "Consecutive": {
+          "description": ""
+        },
+        "AcrossEmptyLines": {
+          "description": ""
+        },
+        "AcrossComments": {
+          "description": ""
+        }
+      },
+      "title": "Style of aligning consecutive macro definitions.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveMacros%20('>Documentation</a>\n<p>Style of aligning consecutive macro definitions.\n<p><code style='background:#e2e2e2'>Consecutive</code> will result in formattings like:\n<pre>\n  #define SHORT_NAME       42\n  #define LONGER_NAME      0x007f\n  #define EVEN_LONGER_NAME (2)\n  #define foo(x)           (x * x)\n  #define bar(y, z)        (y + z)\n</pre>\n<p>Possible values:\n<p><li><code style='background:#e2e2e2'>ACS_None</code> (in configuration: <code style='background:#e2e2e2'>None</code>)   Do not align macro definitions on consecutive lines.\n<p><li><code style='background:#e2e2e2'>ACS_Consecutive</code> (in configuration: <code style='background:#e2e2e2'>Consecutive</code>)   Align macro definitions on consecutive lines. This will result in\n   formattings like:\n<pre>\n     #define SHORT_NAME       42\n     #define LONGER_NAME      0x007f\n     #define EVEN_LONGER_NAME (2)\n<p>     #define foo(x) (x * x)\n     /* some comment */\n     #define bar(y, z) (y + z)\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLines</code> (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLines</code>)   Same as ACS_Consecutive, but also spans over empty lines, e.g.\n<pre>\n     #define SHORT_NAME       42\n     #define LONGER_NAME      0x007f\n     #define EVEN_LONGER_NAME (2)\n<p>     #define foo(x)           (x * x)\n     /* some comment */\n     #define bar(y, z) (y + z)\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossComments</code> (in configuration: <code style='background:#e2e2e2'>AcrossComments</code>)   Same as ACS_Consecutive, but also spans over lines only containing\n   comments, e.g.\n<pre>\n     #define SHORT_NAME       42\n     #define LONGER_NAME      0x007f\n     #define EVEN_LONGER_NAME (2)\n<p>     #define foo(x)    (x * x)\n     /* some comment */\n     #define bar(y, z) (y + z)\n</pre>\n<p><li><code style='background:#e2e2e2'>ACS_AcrossEmptyLinesAndComments</code>  (in configuration: <code style='background:#e2e2e2'>AcrossEmptyLinesAndComments</code>)\n<p>   Same as ACS_Consecutive, but also spans over lines only containing\n   comments and empty lines, e.g.\n<pre>\n     #define SHORT_NAME       42\n     #define LONGER_NAME      0x007f\n     #define EVEN_LONGER_NAME (2)\n<p>     #define foo(x)           (x * x)\n     /* some comment */\n     #define bar(y, z)        (y + z)\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignConsecutiveMacros%20("
+    },
+    "AlignEscapedNewlines": {
+      "type": "string",
+      "enum": [
+        "DontAlign",
+        "Left",
+        "Right"
+      ],
+      "x-intellij-enum-metadata": {
+        "DontAlign": {
+          "description": "Don't align escaped newlines."
+        },
+        "Left": {
+          "description": "Align escaped newlines as far left as possible."
+        },
+        "Right": {
+          "description": "Align escaped newlines in the right-most column."
+        }
+      },
+      "title": "Options for aligning backslashes in escaped newlines.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignEscapedNewlines%20('>Documentation</a>\n<p>Options for aligning backslashes in escaped newlines.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignEscapedNewlines%20("
+    },
+    "AlignOperands": {
+      "type": "string",
+      "enum": [
+        "DontAlign",
+        "Align",
+        "AlignAfterOperator"
+      ],
+      "x-intellij-enum-metadata": {
+        "DontAlign": {
+          "description": "Do not align operands of binary and ternary expressions."
+        },
+        "Align": {
+          "description": "Horizontally align operands of binary and ternary expressions."
+        },
+        "AlignAfterOperator": {
+          "description": "Horizontally align operands of binary and ternary expressions."
+        }
+      },
+      "title": "If true, horizontally align operands of binary and ternary",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignOperands%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, horizontally align operands of binary and ternary\nexpressions.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignOperands%20("
+    },
+    "AlignTrailingComments": {
+      "type": "boolean",
+      "title": "If true, aligns trailing comments.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignTrailingComments%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, aligns trailing comments.\n<pre>\n  true:                                   false:\n  int a;     // My comment a      vs.     int a; // My comment a\n  int b = 2; // comment  b                int b = 2; // comment about b\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlignTrailingComments%20("
+    },
+    "AllowAllArgumentsOnNextLine": {
+      "type": "boolean",
+      "title": "If a function call or braced initializer list doesn't fit on a",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllArgumentsOnNextLine%20('>Documentation</a>\n<p>If a function call or braced initializer list doesn't fit on a\nline, allow putting all arguments onto the next line, even if\n<code style='background:#e2e2e2'>BinPackArguments</code> is <code style='background:#e2e2e2'>false</code>.\n<pre>\n  true:\n  callFunction(\n      a, b, c, d);\n<p>  false:\n  callFunction(a,\n               b,\n               c,\n               d);\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllArgumentsOnNextLine%20("
+    },
+    "AllowAllConstructorInitializersOnNextLine": {
+      "type": "boolean",
+      "title": "If a constructor definition with a member initializer list doesn't",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllConstructorInitializersOnNextLine%20('>Documentation</a>\n<p>If a constructor definition with a member initializer list doesn't\nfit on a single line, allow putting all member initializers onto the next\nline, if <code style='background:#e2e2e2'>`ConstructorInitializerAllOnOneLineOrOnePerLine</code>` is true.\nNote that this parameter has no effect if\n<code style='background:#e2e2e2'>`ConstructorInitializerAllOnOneLineOrOnePerLine</code>` is false.\n<pre>\n  true:\n  MyClass::MyClass() :\n      member0(0), member1(2) {}\n<p>  false:\n  MyClass::MyClass() :\n      member0(0),\n      member1(2) {}",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllConstructorInitializersOnNextLine%20("
+    },
+    "AllowAllParametersOfDeclarationOnNextLine": {
+      "type": "boolean",
+      "title": "If the function declaration doesn't fit on a line,",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllParametersOfDeclarationOnNextLine%20('>Documentation</a>\n<p>If the function declaration doesn't fit on a line,\nallow putting all parameters of a function declaration onto\nthe next line even if <code style='background:#e2e2e2'>BinPackParameters</code> is <code style='background:#e2e2e2'>false</code>.\n<pre>\n  true:\n  void myFunction(\n      int a, int b, int c, int d, int e);\n<p>  false:\n  void myFunction(int a,\n                  int b,\n                  int c,\n                  int d,\n                  int e);\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowAllParametersOfDeclarationOnNextLine%20("
+    },
+    "AllowShortBlocksOnASingleLine": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "Empty",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Never merge blocks into a single line."
+        },
+        "Empty": {
+          "description": "Only merge empty blocks."
+        },
+        "Always": {
+          "description": "Always merge short blocks into a single line."
+        }
+      },
+      "title": "Dependent on the value, while (true) { continue; } can be put on a",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortBlocksOnASingleLine%20('>Documentation</a>\n<p>Dependent on the value, <code style='background:#e2e2e2'>while (true) { continue; }</code> can be put on a\nsingle line.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortBlocksOnASingleLine%20("
+    },
+    "AllowShortCaseLabelsOnASingleLine": {
+      "type": "boolean",
+      "title": "If true, short case labels will be contracted to a single line.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortCaseLabelsOnASingleLine%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, short case labels will be contracted to a single line.\n<pre>\n  true:                                   false:\n  switch (a) {                    vs.     switch (a) {\n  case 1: x = 1; break;                   case 1:\n  case 2: return;                           x = 1;\n  }                                         break;\n                                          case 2:\n                                            return;\n                                          }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortCaseLabelsOnASingleLine%20("
+    },
+    "AllowShortEnumsOnASingleLine": {
+      "type": "boolean",
+      "title": "Allow short enums on a single line.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortEnumsOnASingleLine%20('>Documentation</a>\n<p>Allow short enums on a single line.\n<pre>\n  true:\n  enum { A, B } myEnum;\n<p>  false:\n  enum\n  {\n    A,\n    B\n  } myEnum;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortEnumsOnASingleLine%20("
+    },
+    "AllowShortFunctionsOnASingleLine": {
+      "type": "string",
+      "enum": [
+        "None",
+        "InlineOnly",
+        "Empty",
+        "Inline",
+        "All"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Never merge functions into a single line."
+        },
+        "InlineOnly": {
+          "description": "Only merge functions defined inside a class. Same as \"inline\","
+        },
+        "Empty": {
+          "description": "Only merge empty functions."
+        },
+        "Inline": {
+          "description": "Only merge functions defined inside a class. Implies \"empty\"."
+        },
+        "All": {
+          "description": "Merge all functions fitting on a single line."
+        }
+      },
+      "title": "Dependent on the value, int f() { return 0; } can be put on a",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortFunctionsOnASingleLine%20('>Documentation</a>\n<p>Dependent on the value, <code style='background:#e2e2e2'>int f() { return 0; }</code> can be put on a\nsingle line.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortFunctionsOnASingleLine%20("
+    },
+    "AllowShortIfStatementsOnASingleLine": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "WithoutElse",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Never put short ifs on the same line."
+        },
+        "WithoutElse": {
+          "description": "Without else put short ifs on the same line only if"
+        },
+        "Always": {
+          "description": "Always put short ifs on the same line if"
+        }
+      },
+      "title": "If true, if (a) return; can be put on a single line.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortIfStatementsOnASingleLine%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, <code style='background:#e2e2e2'>if (a) return;</code> can be put on a single line.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortIfStatementsOnASingleLine%20("
+    },
+    "AllowShortLambdasOnASingleLine": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Empty",
+        "Inline",
+        "All"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Never merge lambdas into a single line."
+        },
+        "Empty": {
+          "description": "Only merge empty lambdas."
+        },
+        "Inline": {
+          "description": "Merge lambda into a single line if argument of a function."
+        },
+        "All": {
+          "description": "Merge all lambdas fitting on a single line."
+        }
+      },
+      "title": "Dependent on the value, auto lambda []() { return 0; } can be put on a",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortLambdasOnASingleLine%20('>Documentation</a>\n<p>Dependent on the value, <code style='background:#e2e2e2'>auto lambda []() { return 0; }</code> can be put on a\nsingle line.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortLambdasOnASingleLine%20("
+    },
+    "AllowShortLoopsOnASingleLine": {
+      "type": "boolean",
+      "title": "If true, while (true) continue; can be put on a single",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortLoopsOnASingleLine%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, <code style='background:#e2e2e2'>while (true) continue;</code> can be put on a single\nline.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AllowShortLoopsOnASingleLine%20("
+    },
+    "AlwaysBreakAfterDefinitionReturnType": {
+      "type": "string",
+      "enum": [
+        "None",
+        "All",
+        "TopLevel"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Break after return type automatically."
+        },
+        "All": {
+          "description": "Always break after the return type."
+        },
+        "TopLevel": {
+          "description": "Always break after the return types of top-level functions."
+        }
+      },
+      "title": "The function definition return type breaking style to use.  This",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakAfterDefinitionReturnType%20('>Documentation</a>\n<p>The function definition return type breaking style to use.  This\noption is **deprecated** and is retained for backwards compatibility.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakAfterDefinitionReturnType%20("
+    },
+    "AlwaysBreakAfterReturnType": {
+      "type": "string",
+      "enum": [
+        "None",
+        "All",
+        "TopLevel",
+        "AllDefinitions",
+        "TopLevelDefinitions"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Break after return type automatically."
+        },
+        "All": {
+          "description": "Always break after the return type."
+        },
+        "TopLevel": {
+          "description": "Always break after the return types of top-level functions."
+        },
+        "AllDefinitions": {
+          "description": "Always break after the return type of function definitions."
+        },
+        "TopLevelDefinitions": {
+          "description": "Always break after the return type of top-level definitions."
+        }
+      },
+      "title": "The function declaration return type breaking style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakAfterReturnType%20('>Documentation</a>\n<p>The function declaration return type breaking style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakAfterReturnType%20("
+    },
+    "AlwaysBreakBeforeMultilineStrings": {
+      "type": "boolean",
+      "title": "If true, always break before multiline string literals.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakBeforeMultilineStrings%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, always break before multiline string literals.\n<p>This flag is mean to make cases where there are multiple multiline strings\nin a file look more consistent. Thus, it will only take effect if wrapping\nthe string at that point leads to it being indented\n<code style='background:#e2e2e2'>ContinuationIndentWidth</code> spaces from the start of the line.\n<pre>\n   true:                                  false:\n   aaaa =                         vs.     aaaa = \"bbbb\"\n       \"bbbb\"                                    \"cccc\";\n       \"cccc\";\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakBeforeMultilineStrings%20("
+    },
+    "AlwaysBreakTemplateDeclarations": {
+      "type": "string",
+      "enum": [
+        "No",
+        "MultiLine",
+        "Yes"
+      ],
+      "x-intellij-enum-metadata": {
+        "No": {
+          "description": "Do not force break before declaration."
+        },
+        "MultiLine": {
+          "description": "Force break after template declaration only when the following"
+        },
+        "Yes": {
+          "description": "Always break after template declaration."
+        }
+      },
+      "title": "The template declaration breaking style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakTemplateDeclarations%20('>Documentation</a>\n<p>The template declaration breaking style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AlwaysBreakTemplateDeclarations%20("
+    },
+    "AttributeMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of strings that should be interpreted as attributes/qualifiers",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AttributeMacros%20('>Documentation</a>\n<p>A vector of strings that should be interpreted as attributes/qualifiers\ninstead of identifiers. This can be useful for language extensions or\nstatic analyzer annotations.\n<p>For example:\n<pre>\n  x = (char *__capability)&y;\n  int function(void) __ununsed;\n  void only_writes_to_buffer(char *__output buffer);\n</pre>\n<p>In the .clang-format configuration file, this can be configured like:\n<pre>\n  AttributeMacros: ['__capability', '__output', '__ununsed']\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=AttributeMacros%20("
+    },
+    "BinPackArguments": {
+      "type": "boolean",
+      "title": "If false, a function call's arguments will either be all on the",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BinPackArguments%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, a function call's arguments will either be all on the\nsame line or will have one line each.\n<pre>\n  true:\n  void f() {\n    f(aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);\n  }\n<p>  false:\n  void f() {\n    f(aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);\n  }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BinPackArguments%20("
+    },
+    "BinPackParameters": {
+      "type": "boolean",
+      "title": "If false, a function declaration's or function definition's",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BinPackParameters%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, a function declaration's or function definition's\nparameters will either all be on the same line or will have one line each.\n<pre>\n  true:\n  void f(int aaaaaaaaaaaaaaaaaaaa, int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa) {}\n<p>  false:\n  void f(int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa) {}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BinPackParameters%20("
+    },
+    "BitFieldColonSpacing": {
+      "type": "string",
+      "enum": [
+        "Both",
+        "None",
+        "Before",
+        "After"
+      ],
+      "x-intellij-enum-metadata": {
+        "Both": {
+          "description": "Add one space on each side of the :"
+        },
+        "None": {
+          "description": "Add no space around the : (except when needed for"
+        },
+        "Before": {
+          "description": "Add space before the : only"
+        },
+        "After": {
+          "description": "Add space after the : only (space may be added before if"
+        }
+      },
+      "title": "The BitFieldColonSpacingStyle to use for bitfields.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BitFieldColonSpacing%20('>Documentation</a>\n<p>The BitFieldColonSpacingStyle to use for bitfields.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BitFieldColonSpacing%20("
+    },
+    "BraceWrapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "AfterCaseLabel": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap case labels.\n<pre>\n  false:                                true:\n  switch (foo) {                vs.     switch (foo) {\n    case 1: {                             case 1:\n      bar();                              {\n      break;                                bar();\n    }                                       break;\n    default: {                            }\n      plop();                             default:\n    }                                     {\n  }                                         plop();\n                                          }\n                                        }\n</pre>"
+        },
+        "AfterClass": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap class definitions.\n<pre>\n  true:\n  class foo {};\n<p>  false:\n  class foo\n  {};\n</pre>"
+        },
+        "AfterControlStatement": {
+          "x-intellij-html-description": "<p>Wrap control statements (<code style='background:#e2e2e2'>if</code>/<code style='background:#e2e2e2'>for</code>/<code style='background:#e2e2e2'>while</code>/<code style='background:#e2e2e2'>switch</code>/..).\n"
+        },
+        "AfterEnum": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap enum definitions.\n<pre>\n  true:\n  enum X : int\n  {\n    B\n  };\n<p>  false:\n  enum X : int { B };\n</pre>"
+        },
+        "AfterFunction": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap function definitions.\n<pre>\n  true:\n  void foo()\n  {\n    bar();\n    bar2();\n  }\n<p>  false:\n  void foo() {\n    bar();\n    bar2();\n  }\n</pre>"
+        },
+        "AfterNamespace": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap namespace definitions.\n<pre>\n  true:\n  namespace\n  {\n  int foo();\n  int bar();\n  }\n<p>  false:\n  namespace {\n  int foo();\n  int bar();\n  }\n</pre>"
+        },
+        "AfterObjCDeclaration": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap ObjC definitions (interfaces, implementations...).\n@autoreleasepool and @synchronized blocks are wrapped\naccording to `AfterControlStatement` flag."
+        },
+        "AfterStruct": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap struct definitions.\n<pre>\n  true:\n  struct foo\n  {\n    int x;\n  };\n<p>  false:\n  struct foo {\n    int x;\n  };\n</pre>"
+        },
+        "AfterUnion": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap union definitions.\n<pre>\n  true:\n  union foo\n  {\n    int x;\n  }\n<p>  false:\n  union foo {\n    int x;\n  }\n</pre>"
+        },
+        "AfterExternBlock": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap extern blocks.\n<pre>\n  true:\n  extern \"C\"\n  {\n    int foo();\n  }\n<p>  false:\n  extern \"C\" {\n  int foo();\n  }\n</pre>"
+        },
+        "BeforeCatch": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap before <code style='background:#e2e2e2'>catch</code>.\n<pre>\n  true:\n  try {\n    foo();\n  }\n  catch () {\n  }\n<p>  false:\n  try {\n    foo();\n  } catch () {\n  }\n</pre>"
+        },
+        "BeforeElse": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap before <code style='background:#e2e2e2'>else</code>.\n<pre>\n  true:\n  if (foo()) {\n  }\n  else {\n  }\n<p>  false:\n  if (foo()) {\n  } else {\n  }\n</pre>"
+        },
+        "BeforeLambdaBody": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap lambda block.\n<pre>\n  true:\n  connect(\n    []()\n    {\n      foo();\n      bar();\n    });\n<p>  false:\n  connect([]() {\n    foo();\n    bar();\n  });\n</pre>"
+        },
+        "BeforeWhile": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Wrap before <code style='background:#e2e2e2'>while</code>.\n<pre>\n  true:\n  do {\n    foo();\n  }\n  while (1);\n<p>  false:\n  do {\n    foo();\n  } while (1);\n</pre>"
+        },
+        "IndentBraces": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>Indent the wrapped braces themselves."
+        },
+        "SplitEmptyFunction": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>If <code style='background:#e2e2e2'>false</code>, empty function body can be put on a single line.\nThis option is used only if the opening brace of the function has\nalready been wrapped, i.e. the `AfterFunction` brace wrapping mode is\nset, and the function could/should not be put on a single line (as per\n`AllowShortFunctionsOnASingleLine` and constructor formatting options).\n<pre>\n  int f()   vs.   int f()\n  {}              {\n                  }\n</pre>"
+        },
+        "SplitEmptyRecord": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>If <code style='background:#e2e2e2'>false</code>, empty record (e.g. class, struct or union) body\ncan be put on a single line. This option is used only if the opening\nbrace of the record has already been wrapped, i.e. the `AfterClass`\n(for classes) brace wrapping mode is set.\n<pre>\n  class Foo   vs.  class Foo\n  {}               {\n                   }\n</pre>"
+        },
+        "SplitEmptyNamespace": {
+          "type": "boolean",
+          "x-intellij-html-description": "<p>If <code style='background:#e2e2e2'>false</code>, empty namespace body can be put on a single line.\nThis option is used only if the opening brace of the namespace has\nalready been wrapped, i.e. the `AfterNamespace` brace wrapping mode is\nset.\n<pre>\n  namespace Foo   vs.  namespace Foo\n  {}                   {\n                       }\n</pre>"
+        }
+      },
+      "title": "Control of individual brace wrapping cases.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BraceWrapping%20('>Documentation</a>\n<p>Control of individual brace wrapping cases.\n<p>If <code style='background:#e2e2e2'>BreakBeforeBraces</code> is set to <code style='background:#e2e2e2'>BS_Custom</code>, use this to specify how\neach individual brace case should be handled. Otherwise, this is ignored.\n<pre>\n  # Example of usage:\n  BreakBeforeBraces: Custom\n  BraceWrapping:\n    AfterEnum: true\n    AfterStruct: false\n    SplitEmptyFunction: false\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BraceWrapping%20("
+    },
+    "BreakAfterJavaFieldAnnotations": {
+      "type": "boolean",
+      "title": "Break after each annotation on a field in Java files.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakAfterJavaFieldAnnotations%20('>Documentation</a>\n<p>Break after each annotation on a field in Java files.\n<pre>\n   true:                                  false:\n   @Partial                       vs.     @Partial @Mock DataLoad loader;\n   @Mock\n   DataLoad loader;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakAfterJavaFieldAnnotations%20("
+    },
+    "BreakBeforeBinaryOperators": {
+      "type": "string",
+      "enum": [
+        "None",
+        "NonAssignment",
+        "All"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Break after operators."
+        },
+        "NonAssignment": {
+          "description": "Break before operators that aren't assignments."
+        },
+        "All": {
+          "description": "Break before operators."
+        }
+      },
+      "title": "The way to wrap binary operators.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeBinaryOperators%20('>Documentation</a>\n<p>The way to wrap binary operators.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeBinaryOperators%20("
+    },
+    "BreakBeforeBraces": {
+      "type": "string",
+      "enum": [
+        "Attach",
+        "Linux",
+        "Mozilla",
+        "Stroustrup",
+        "Allman",
+        "Whitesmiths",
+        "GNU",
+        "WebKit",
+        "Custom"
+      ],
+      "x-intellij-enum-metadata": {
+        "Attach": {
+          "description": "Always attach braces to surrounding context."
+        },
+        "Linux": {
+          "description": "Like Attach, but break before braces on function, namespace and"
+        },
+        "Mozilla": {
+          "description": "Like Attach, but break before braces on enum, function, and record"
+        },
+        "Stroustrup": {
+          "description": "Like Attach, but break before function definitions, catch, and"
+        },
+        "Allman": {
+          "description": "Always break before braces."
+        },
+        "Whitesmiths": {
+          "description": "Like Allman but always indent braces and line up code with braces."
+        },
+        "GNU": {
+          "description": "Always break before braces and add an extra level of indentation to"
+        },
+        "WebKit": {
+          "description": "Like Attach, but break before functions."
+        },
+        "Custom": {
+          "description": "Configure each individual brace in `BraceWrapping`."
+        }
+      },
+      "title": "The brace breaking style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeBraces%20('>Documentation</a>\n<p>The brace breaking style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeBraces%20("
+    },
+    "BreakBeforeConceptDeclarations": {
+      "type": "boolean",
+      "title": "If true, concept will be placed on a new line.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeConceptDeclarations%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, concept will be placed on a new line.\n<pre>\n  true:\n   template<typename T>\n   concept ...\n<p>  false:\n   template<typename T> concept ...\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeConceptDeclarations%20("
+    },
+    "BreakBeforeTernaryOperators": {
+      "type": "boolean",
+      "title": "If true, ternary operators will be placed after line breaks.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeTernaryOperators%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, ternary operators will be placed after line breaks.\n<pre>\n   true:\n   veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongDescription\n       ? firstValue\n       : SecondValueVeryVeryVeryVeryLong;\n<p>   false:\n   veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongDescription ?\n       firstValue :\n       SecondValueVeryVeryVeryVeryLong;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakBeforeTernaryOperators%20("
+    },
+    "BreakConstructorInitializers": {
+      "type": "string",
+      "enum": [
+        "BeforeColon",
+        "BeforeComma",
+        "AfterColon"
+      ],
+      "x-intellij-enum-metadata": {
+        "BeforeColon": {
+          "description": "Break constructor initializers before the colon and after the commas."
+        },
+        "BeforeComma": {
+          "description": "Break constructor initializers before the colon and commas, and align"
+        },
+        "AfterColon": {
+          "description": "Break constructor initializers after the colon and commas."
+        }
+      },
+      "title": "The constructor initializers style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakConstructorInitializers%20('>Documentation</a>\n<p>The constructor initializers style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakConstructorInitializers%20("
+    },
+    "BreakInheritanceList": {
+      "type": "string",
+      "enum": [
+        "BeforeColon",
+        "BeforeComma",
+        "AfterColon"
+      ],
+      "x-intellij-enum-metadata": {
+        "BeforeColon": {
+          "description": "Break inheritance list before the colon and after the commas."
+        },
+        "BeforeComma": {
+          "description": "Break inheritance list before the colon and commas, and align"
+        },
+        "AfterColon": {
+          "description": "Break inheritance list after the colon and commas."
+        }
+      },
+      "title": "The inheritance list style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakInheritanceList%20('>Documentation</a>\n<p>The inheritance list style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakInheritanceList%20("
+    },
+    "BreakStringLiterals": {
+      "type": "boolean",
+      "title": "Allow breaking string literals when formatting.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakStringLiterals%20('>Documentation</a>\n<p>Allow breaking string literals when formatting.\n<pre>\n   true:\n   const char* x = \"veryVeryVeryVeryVeryVe\"\n                   \"ryVeryVeryVeryVeryVery\"\n                   \"VeryLongString\";\n<p>   false:\n   const char* x =\n     \"veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongString\";\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=BreakStringLiterals%20("
+    },
+    "ColumnLimit": {
+      "type": "number",
+      "title": "The column limit.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ColumnLimit%20('>Documentation</a>\n<p>The column limit.\n<p>A column limit of <code style='background:#e2e2e2'>0</code> means that there is no column limit. In this case,\nclang-format will respect the input's line breaking decisions within\nstatements unless they contradict other rules.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ColumnLimit%20("
+    },
+    "CommentPragmas": {
+      "type": "string",
+      "title": "A regular expression that describes comments with special meaning,",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=CommentPragmas%20('>Documentation</a>\n<p>A regular expression that describes comments with special meaning,\nwhich should not be split into lines or otherwise changed.\n<pre>\n   // CommentPragmas: '^ FOOBAR pragma:'\n   // Will leave the following line unaffected\n   #include <vector> // FOOBAR pragma: keep\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=CommentPragmas%20("
+    },
+    "CompactNamespaces": {
+      "type": "boolean",
+      "title": "If true, consecutive namespace declarations will be on the same",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=CompactNamespaces%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, consecutive namespace declarations will be on the same\nline. If <code style='background:#e2e2e2'>false</code>, each namespace is declared on a new line.\n<pre>\n  true:\n  namespace Foo { namespace Bar {\n  }}\n<p>  false:\n  namespace Foo {\n  namespace Bar {\n  }\n  }\n</pre>\n<p>If it does not fit on a single line, the overflowing namespaces get\nwrapped:\n<pre>\n  namespace Foo { namespace Bar {\n  namespace Extra {\n  }}}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=CompactNamespaces%20("
+    },
+    "ConstructorInitializerAllOnOneLineOrOnePerLine": {
+      "type": "boolean",
+      "title": "If the constructor initializers don't fit on a line, put each",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ConstructorInitializerAllOnOneLineOrOnePerLine%20('>Documentation</a>\n<p>If the constructor initializers don't fit on a line, put each\ninitializer on its own line.\n<pre>\n  true:\n  SomeClass::Constructor()\n      : aaaaaaaa(aaaaaaaa), aaaaaaaa(aaaaaaaa), aaaaaaaa(aaaaaaaaaaaaaaaaaaaaaaaaa) {\n    return 0;\n  }\n<p>  false:\n  SomeClass::Constructor()\n      : aaaaaaaa(aaaaaaaa), aaaaaaaa(aaaaaaaa),\n        aaaaaaaa(aaaaaaaaaaaaaaaaaaaaaaaaa) {\n    return 0;\n  }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ConstructorInitializerAllOnOneLineOrOnePerLine%20("
+    },
+    "ConstructorInitializerIndentWidth": {
+      "type": "number",
+      "title": "The number of characters to use for indentation of constructor",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ConstructorInitializerIndentWidth%20('>Documentation</a>\n<p>The number of characters to use for indentation of constructor\ninitializer lists as well as inheritance lists.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ConstructorInitializerIndentWidth%20("
+    },
+    "ContinuationIndentWidth": {
+      "type": "number",
+      "title": "Indent width for line continuations.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ContinuationIndentWidth%20('>Documentation</a>\n<p>Indent width for line continuations.\n<pre>\n   ContinuationIndentWidth: 2\n<p>   int i =         //  VeryVeryVeryVeryVeryLongComment\n     longFunction( // Again a long comment\n       arg);\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ContinuationIndentWidth%20("
+    },
+    "Cpp11BracedListStyle": {
+      "type": "boolean",
+      "title": "If true, format braced lists as best suited for C++11 braced",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Cpp11BracedListStyle%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, format braced lists as best suited for C++11 braced\nlists.\n<p>Important differences:\n- No spaces inside the braced list.\n- No line break before the closing brace.\n- Indentation with the continuation indent, not with the block indent.\n<p>Fundamentally, C++11 braced lists are formatted exactly like function\ncalls would be formatted in their place. If the braced list follows a name\n(e.g. a type or variable name), clang-format formats as if the <code style='background:#e2e2e2'>{}</code> were\nthe parentheses of a function call with that name. If there is no name,\na zero-length name is assumed.\n<pre>\n   true:                                  false:\n   vector<int> x{1, 2, 3, 4};     vs.     vector<int> x{ 1, 2, 3, 4 };\n   vector<T> x{{}, {}, {}, {}};           vector<T> x{ {}, {}, {}, {} };\n   f(MyMap[{composite, key}]);            f(MyMap[{ composite, key }]);\n   new int[3]{1, 2, 3};                   new int[3]{ 1, 2, 3 };\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Cpp11BracedListStyle%20("
+    },
+    "DeriveLineEnding": {
+      "type": "boolean",
+      "title": "Analyze the formatted file for the most used line ending (\\r\\n",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DeriveLineEnding%20('>Documentation</a>\n<p>Analyze the formatted file for the most used line ending (<code style='background:#e2e2e2'>\\r\\n</code>\nor <code style='background:#e2e2e2'>\\n</code>). <code style='background:#e2e2e2'>UseCRLF</code> is only used as a fallback if none can be derived.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DeriveLineEnding%20("
+    },
+    "DerivePointerAlignment": {
+      "type": "boolean",
+      "title": "If true, analyze the formatted file for the most common",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DerivePointerAlignment%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, analyze the formatted file for the most common\nalignment of <code style='background:#e2e2e2'>&</code> and <code style='background:#e2e2e2'>*</code>.\nPointer and reference alignment styles are going to be updated according\nto the preferences found in the file.\n<code style='background:#e2e2e2'>PointerAlignment</code> is then used only as fallback.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DerivePointerAlignment%20("
+    },
+    "DisableFormat": {
+      "type": "boolean",
+      "title": "Disables formatting completely.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DisableFormat%20('>Documentation</a>\n<p>Disables formatting completely.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=DisableFormat%20("
+    },
+    "EmptyLineBeforeAccessModifier": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "Leave",
+        "LogicalBlock",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Remove all empty lines before access modifiers."
+        },
+        "Leave": {
+          "description": "Keep existing empty lines before access modifiers."
+        },
+        "LogicalBlock": {
+          "description": "Add empty line only when access modifier starts a new logical block."
+        },
+        "Always": {
+          "description": "Always add empty line before access modifiers unless access modifier"
+        }
+      },
+      "title": "Defines in which cases to put empty line before access modifiers.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=EmptyLineBeforeAccessModifier%20('>Documentation</a>\n<p>Defines in which cases to put empty line before access modifiers.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=EmptyLineBeforeAccessModifier%20("
+    },
+    "ExperimentalAutoDetectBinPacking": {
+      "type": "boolean",
+      "title": "If true, clang-format detects whether function calls and",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ExperimentalAutoDetectBinPacking%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, clang-format detects whether function calls and\ndefinitions are formatted with one parameter per line.\n<p>Each call can be bin-packed, one-per-line or inconclusive. If it is\ninconclusive, e.g. completely on one line, but a decision needs to be\nmade, clang-format analyzes whether there are other bin-packed cases in\nthe input file and act accordingly.\n<p>NOTE: This is an experimental flag, that might go away or be renamed. Do\nnot use this in config files, etc. Use at your own risk.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ExperimentalAutoDetectBinPacking%20("
+    },
+    "FixNamespaceComments": {
+      "type": "boolean",
+      "title": "If true, clang-format adds missing namespace end comments and",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=FixNamespaceComments%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, clang-format adds missing namespace end comments and\nfixes invalid existing ones.\n<pre>\n   true:                                  false:\n   namespace a {                  vs.     namespace a {\n   foo();                                 foo();\n   } // namespace a                       }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=FixNamespaceComments%20("
+    },
+    "ForEachMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of macros that should be interpreted as foreach loops",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ForEachMacros%20('>Documentation</a>\n<p>A vector of macros that should be interpreted as foreach loops\ninstead of as function calls.\n<p>These are expected to be macros of the form:\n<pre>\n  FOREACH(<variable-declaration>, ...)\n    <loop-body>\n</pre>\n<p>In the .clang-format configuration file, this can be configured like:\n<pre>\n  ForEachMacros: ['RANGES_FOR', 'FOREACH']\n</pre>\n<p>For example: BOOST_FOREACH.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ForEachMacros%20("
+    },
+    "IncludeBlocks": {
+      "type": "string",
+      "enum": [
+        "Preserve",
+        "Merge",
+        "Regroup"
+      ],
+      "x-intellij-enum-metadata": {
+        "Preserve": {
+          "description": "Sort each #include block separately."
+        },
+        "Merge": {
+          "description": "Merge multiple #include blocks together and sort as one."
+        },
+        "Regroup": {
+          "description": "Merge multiple #include blocks together and sort as one."
+        }
+      },
+      "title": "Dependent on the value, multiple #include blocks can be sorted",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeBlocks%20('>Documentation</a>\n<p>Dependent on the value, multiple <code style='background:#e2e2e2'>#include</code> blocks can be sorted\nas one and divided based on category.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeBlocks%20("
+    },
+    "IncludeCategories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Regex": {
+            "type": "string"
+          },
+          "Priority": {
+            "type": "integer"
+          },
+          "SortPriority": {
+            "type": "integer"
+          },
+          "CaseSensitive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "title": "Regular expressions denoting the different #include categories",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeCategories%20('>Documentation</a>\n<p>Regular expressions denoting the different <code style='background:#e2e2e2'>#include</code> categories\nused for ordering <code style='background:#e2e2e2'>#includes</code>.\n<p>`POSIX extended\n<https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html>`_\nregular expressions are supported.\n<p>These regular expressions are matched against the filename of an include\n(including the <> or \"\") in order. The value belonging to the first\nmatching regular expression is assigned and <code style='background:#e2e2e2'>#includes</code> are sorted first\naccording to increasing category number and then alphabetically within\neach category.\n<p>If none of the regular expressions match, INT_MAX is assigned as\ncategory. The main header for a source file automatically gets category 0.\nso that it is generally kept at the beginning of the <code style='background:#e2e2e2'>#includes</code>\n(https://llvm.org/docs/CodingStandards.html#include-style). However, you\ncan also assign negative priorities if you have certain headers that\nalways need to be first.\n<p>There is a third and optional field <code style='background:#e2e2e2'>SortPriority</code> which can used while\n<code style='background:#e2e2e2'>IncludeBlocks = IBS_Regroup</code> to define the priority in which\n<code style='background:#e2e2e2'>#includes</code> should be ordered. The value of <code style='background:#e2e2e2'>Priority</code> defines the\norder of <code style='background:#e2e2e2'>#include blocks</code> and also allows the grouping of <code style='background:#e2e2e2'>#includes</code>\nof different priority. <code style='background:#e2e2e2'>SortPriority</code> is set to the value of\n<code style='background:#e2e2e2'>Priority</code> as default if it is not assigned.\n<p>Each regular expression can be marked as case sensitive with the field\n<code style='background:#e2e2e2'>CaseSensitive</code>, per default it is not.\n<p>To configure this in the .clang-format file, use:\n<pre>\n  IncludeCategories:\n    - Regex:           '^\"(llvm|llvm-c|clang|clang-c)/'\n      Priority:        2\n      SortPriority:    2\n      CaseSensitive:   true\n    - Regex:           '^(<|\"(gtest|gmock|isl|json)/)'\n      Priority:        3\n    - Regex:           '<[[:alnum:].]+>'\n      Priority:        4\n    - Regex:           '.*'\n      Priority:        1\n      SortPriority:    0\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeCategories%20("
+    },
+    "IncludeIsMainRegex": {
+      "type": "string",
+      "title": "Specify a regular expression of suffixes that are allowed in the",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeIsMainRegex%20('>Documentation</a>\n<p>Specify a regular expression of suffixes that are allowed in the\nfile-to-main-include mapping.\n<p>When guessing whether a #include is the \"main\" include (to assign\ncategory 0, see above), use this regex of allowed suffixes to the header\nstem. A partial match is done, so that:\n- \"\" means \"arbitrary suffix\"\n- \"$\" means \"no suffix\"\n<p>For example, if configured to \"(_test)?$\", then a header a.h would be seen\nas the \"main\" include in both a.cc and a_test.cc.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeIsMainRegex%20("
+    },
+    "IncludeIsMainSourceRegex": {
+      "type": "string",
+      "title": "Specify a regular expression for files being formatted",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeIsMainSourceRegex%20('>Documentation</a>\n<p>Specify a regular expression for files being formatted\nthat are allowed to be considered \"main\" in the\nfile-to-main-include mapping.\n<p>By default, clang-format considers files as \"main\" only when they end\nwith: <code style='background:#e2e2e2'>.c</code>, <code style='background:#e2e2e2'>.cc</code>, <code style='background:#e2e2e2'>.cpp</code>, <code style='background:#e2e2e2'>.c++</code>, <code style='background:#e2e2e2'>.cxx</code>, <code style='background:#e2e2e2'>.m</code> or <code style='background:#e2e2e2'>.mm</code>\nextensions.\nFor these files a guessing of \"main\" include takes place\n(to assign category 0, see above). This config option allows for\nadditional suffixes and extensions for files to be considered as \"main\".\n<p>For example, if this option is configured to <code style='background:#e2e2e2'>(Impl\\.hpp)$</code>,\nthen a file <code style='background:#e2e2e2'>ClassImpl.hpp</code> is considered \"main\" (in addition to\n<code style='background:#e2e2e2'>Class.c</code>, <code style='background:#e2e2e2'>Class.cc</code>, <code style='background:#e2e2e2'>Class.cpp</code> and so on) and \"main\ninclude file\" logic will be executed (with *IncludeIsMainRegex* setting\nalso being respected in later phase). Without this option set,\n<code style='background:#e2e2e2'>ClassImpl.hpp</code> would not have the main include file put on top\nbefore any other include.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IncludeIsMainSourceRegex%20("
+    },
+    "IndentCaseBlocks": {
+      "type": "boolean",
+      "title": "Indent case label blocks one level from the case label.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentCaseBlocks%20('>Documentation</a>\n<p>Indent case label blocks one level from the case label.\n<p>When <code style='background:#e2e2e2'>false</code>, the block following the case label uses the same\nindentation level as for the case label, treating the case label the same\nas an if-statement.\nWhen <code style='background:#e2e2e2'>true</code>, the block gets indented as a scope block.\n<pre>\n   false:                                 true:\n   switch (fool) {                vs.     switch (fool) {\n   case 1: {                              case 1:\n     bar();                                 {\n   } break;                                   bar();\n   default: {                               }\n     plop();                                break;\n   }                                      default:\n   }                                        {\n                                              plop();\n                                            }\n                                          }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentCaseBlocks%20("
+    },
+    "IndentCaseLabels": {
+      "type": "boolean",
+      "title": "Indent case labels one level from the switch statement.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentCaseLabels%20('>Documentation</a>\n<p>Indent case labels one level from the switch statement.\n<p>When <code style='background:#e2e2e2'>false</code>, use the same indentation level as for the switch\nstatement. Switch statement body is always indented one level more than\ncase labels (except the first block following the case label, which\nitself indents the code - unless IndentCaseBlocks is enabled).\n<pre>\n   false:                                 true:\n   switch (fool) {                vs.     switch (fool) {\n   case 1:                                  case 1:\n     bar();                                   bar();\n     break;                                   break;\n   default:                                 default:\n     plop();                                  plop();\n   }                                      }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentCaseLabels%20("
+    },
+    "IndentExternBlock": {
+      "type": "string",
+      "enum": [
+        "AfterExternBlock",
+        "NoIndent",
+        "Indent"
+      ],
+      "x-intellij-enum-metadata": {
+        "AfterExternBlock": {
+          "description": "Backwards compatible with AfterExternBlock's indenting."
+        },
+        "NoIndent": {
+          "description": "Does not indent extern blocks."
+        },
+        "Indent": {
+          "description": "Indents extern blocks."
+        }
+      },
+      "title": "IndentExternBlockStyle is the type of indenting of extern blocks.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentExternBlock%20('>Documentation</a>\n<p>IndentExternBlockStyle is the type of indenting of extern blocks.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentExternBlock%20("
+    },
+    "IndentGotoLabels": {
+      "type": "boolean",
+      "title": "Indent goto labels.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentGotoLabels%20('>Documentation</a>\n<p>Indent goto labels.\n<p>When <code style='background:#e2e2e2'>false</code>, goto labels are flushed left.\n<pre>\n   true:                                  false:\n   int f() {                      vs.     int f() {\n     if (foo()) {                           if (foo()) {\n     label1:                              label1:\n       bar();                                 bar();\n     }                                      }\n   label2:                                label2:\n     return 1;                              return 1;\n   }                                      }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentGotoLabels%20("
+    },
+    "IndentPPDirectives": {
+      "type": "string",
+      "enum": [
+        "None",
+        "AfterHash",
+        "BeforeHash"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Does not indent any directives."
+        },
+        "AfterHash": {
+          "description": "Indents directives after the hash."
+        },
+        "BeforeHash": {
+          "description": "Indents directives before the hash."
+        }
+      },
+      "title": "The preprocessor directive indenting style to use.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentPPDirectives%20('>Documentation</a>\n<p>The preprocessor directive indenting style to use.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentPPDirectives%20("
+    },
+    "IndentRequires": {
+      "type": "boolean",
+      "title": "Indent the requires clause in a template",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentRequires%20('>Documentation</a>\n<p>Indent the requires clause in a template\n<pre>\n   true:\n   template <typename It>\n     requires Iterator<It>\n   void sort(It begin, It end) {\n     //....\n   }\n<p>   false:\n   template <typename It>\n   requires Iterator<It>\n   void sort(It begin, It end) {\n     //....\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentRequires%20("
+    },
+    "IndentWidth": {
+      "type": "number",
+      "title": "The number of columns to use for indentation.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentWidth%20('>Documentation</a>\n<p>The number of columns to use for indentation.\n<pre>\n   IndentWidth: 3\n<p>   void f() {\n      someFunction();\n      if (true, false) {\n         f();\n      }\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentWidth%20("
+    },
+    "IndentWrappedFunctionNames": {
+      "type": "boolean",
+      "title": "Indent if a function definition or declaration is wrapped after the",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentWrappedFunctionNames%20('>Documentation</a>\n<p>Indent if a function definition or declaration is wrapped after the\ntype.\n<pre>\n   true:\n   LoooooooooooooooooooooooooooooooooooooooongReturnType\n       LoooooooooooooooooooooooooooooooongFunctionDeclaration();\n<p>   false:\n   LoooooooooooooooooooooooooooooooooooooooongReturnType\n   LoooooooooooooooooooooooooooooooongFunctionDeclaration();\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=IndentWrappedFunctionNames%20("
+    },
+    "InsertTrailingCommas": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Wrapped"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Do not insert trailing commas."
+        },
+        "Wrapped": {
+          "description": "Insert trailing commas in container literals that were wrapped over"
+        }
+      },
+      "title": "If set to TCS_Wrapped will insert trailing commas in container",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=InsertTrailingCommas%20('>Documentation</a>\n<p>If set to <code style='background:#e2e2e2'>TCS_Wrapped</code> will insert trailing commas in container\nliterals (arrays and objects) that wrap across multiple lines.\nIt is currently only available for JavaScript\nand disabled by default <code style='background:#e2e2e2'>TCS_None</code>.\n<code style='background:#e2e2e2'>InsertTrailingCommas</code> cannot be used together with <code style='background:#e2e2e2'>BinPackArguments</code>\nas inserting the comma disables bin-packing.\n<pre>\n  TSC_Wrapped:\n  const someArray = [\n  aaaaaaaaaaaaaaaaaaaaaaaaaa,\n  aaaaaaaaaaaaaaaaaaaaaaaaaa,\n  aaaaaaaaaaaaaaaaaaaaaaaaaa,\n  //                        ^ inserted\n  ]\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=InsertTrailingCommas%20("
+    },
+    "JavaImportGroups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of prefixes ordered by the desired groups for Java imports.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaImportGroups%20('>Documentation</a>\n<p>A vector of prefixes ordered by the desired groups for Java imports.\n<p>One group's prefix can be a subset of another - the longest prefix is\nalways matched. Within a group, the imports are ordered lexicographically.\nStatic imports are grouped separately and follow the same group rules.\nBy default, static imports are placed before non-static imports,\nbut this behavior is changed by another option,\n<code style='background:#e2e2e2'>SortJavaStaticImport</code>.\n<p>In the .clang-format configuration file, this can be configured like\nin the following yaml example. This will result in imports being\nformatted as in the Java example below.\n<pre>\n  JavaImportGroups: ['com.example', 'com', 'org']\n</pre>\n<p><pre>\n   import static com.example.function1;\n<p>   import static com.test.function2;\n<p>   import static org.example.function3;\n<p>   import com.example.ClassA;\n   import com.example.Test;\n   import com.example.a.ClassB;\n<p>   import com.test.ClassC;\n<p>   import org.example.ClassD;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaImportGroups%20("
+    },
+    "JavaScriptQuotes": {
+      "type": "string",
+      "enum": [
+        "Leave",
+        "Single",
+        "Double"
+      ],
+      "x-intellij-enum-metadata": {
+        "Leave": {
+          "description": "Leave string quotes as they are."
+        },
+        "Single": {
+          "description": "Always use single quotes."
+        },
+        "Double": {
+          "description": "Always use double quotes."
+        }
+      },
+      "title": "The JavaScriptQuoteStyle to use for JavaScript strings.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaScriptQuotes%20('>Documentation</a>\n<p>The JavaScriptQuoteStyle to use for JavaScript strings.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaScriptQuotes%20("
+    },
+    "JavaScriptWrapImports": {
+      "type": "boolean",
+      "title": "Whether to wrap JavaScript import/export statements.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaScriptWrapImports%20('>Documentation</a>\n<p>Whether to wrap JavaScript import/export statements.\n<pre>\n   true:\n   import {\n       VeryLongImportsAreAnnoying,\n       VeryLongImportsAreAnnoying,\n       VeryLongImportsAreAnnoying,\n   } from 'some/module.js'\n<p>   false:\n   import {VeryLongImportsAreAnnoying, VeryLongImportsAreAnnoying, VeryLongImportsAreAnnoying,} from \"some/module.js\"\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=JavaScriptWrapImports%20("
+    },
+    "KeepEmptyLinesAtTheStartOfBlocks": {
+      "type": "boolean",
+      "title": "If true, the empty line at the start of blocks is kept.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=KeepEmptyLinesAtTheStartOfBlocks%20('>Documentation</a>\n<p>If true, the empty line at the start of blocks is kept.\n<pre>\n   true:                                  false:\n   if (foo) {                     vs.     if (foo) {\n                                            bar();\n     bar();                               }\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=KeepEmptyLinesAtTheStartOfBlocks%20("
+    },
+    "Language": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Cpp",
+        "CSharp",
+        "Java",
+        "JavaScript",
+        "ObjC",
+        "Proto",
+        "TableGen",
+        "TextProto"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Do not use."
+        },
+        "Cpp": {
+          "description": "Should be used for C, C++."
+        },
+        "CSharp": {
+          "description": "Should be used for C#."
+        },
+        "Java": {
+          "description": "Should be used for Java."
+        },
+        "JavaScript": {
+          "description": "Should be used for JavaScript."
+        },
+        "ObjC": {
+          "description": "Should be used for Objective-C, Objective-C++."
+        },
+        "Proto": {
+          "description": "Should be used for Protocol Buffers"
+        },
+        "TableGen": {
+          "description": "Should be used for TableGen code."
+        },
+        "TextProto": {
+          "description": "Should be used for Protocol Buffer messages in text format"
+        }
+      },
+      "title": "Language, this format style is targeted at.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Language%20('>Documentation</a>\n<p>Language, this format style is targeted at.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Language%20("
+    },
+    "MacroBlockBegin": {
+      "type": "string",
+      "title": "A regular expression matching macros that start a block.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MacroBlockBegin%20('>Documentation</a>\n<p>A regular expression matching macros that start a block.\n<pre>\n   # With:\n   MacroBlockBegin: \"^NS_MAP_BEGIN|\\\n   NS_TABLE_HEAD$\"\n   MacroBlockEnd: \"^\\\n   NS_MAP_END|\\\n   NS_TABLE_.*_END$\"\n<p>   NS_MAP_BEGIN\n     foo();\n   NS_MAP_END\n<p>   NS_TABLE_HEAD\n     bar();\n   NS_TABLE_FOO_END\n<p>   # Without:\n   NS_MAP_BEGIN\n   foo();\n   NS_MAP_END\n<p>   NS_TABLE_HEAD\n   bar();\n   NS_TABLE_FOO_END\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MacroBlockBegin%20("
+    },
+    "MacroBlockEnd": {
+      "type": "string",
+      "title": "A regular expression matching macros that end a block.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MacroBlockEnd%20('>Documentation</a>\n<p>A regular expression matching macros that end a block.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MacroBlockEnd%20("
+    },
+    "MaxEmptyLinesToKeep": {
+      "type": "number",
+      "title": "The maximum number of consecutive empty lines to keep.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MaxEmptyLinesToKeep%20('>Documentation</a>\n<p>The maximum number of consecutive empty lines to keep.\n<pre>\n   MaxEmptyLinesToKeep: 1         vs.     MaxEmptyLinesToKeep: 0\n   int f() {                              int f() {\n     int = 1;                                 int i = 1;\n                                              i = foo();\n     i = foo();                               return i;\n                                          }\n     return i;\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=MaxEmptyLinesToKeep%20("
+    },
+    "NamespaceIndentation": {
+      "type": "string",
+      "enum": [
+        "None",
+        "Inner",
+        "All"
+      ],
+      "x-intellij-enum-metadata": {
+        "None": {
+          "description": "Don't indent in namespaces."
+        },
+        "Inner": {
+          "description": "Indent only in inner namespaces (nested in other namespaces)."
+        },
+        "All": {
+          "description": "Indent in all namespaces."
+        }
+      },
+      "title": "The indentation used for namespaces.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=NamespaceIndentation%20('>Documentation</a>\n<p>The indentation used for namespaces.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=NamespaceIndentation%20("
+    },
+    "NamespaceMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of macros which are used to open namespace blocks.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=NamespaceMacros%20('>Documentation</a>\n<p>A vector of macros which are used to open namespace blocks.\n<p>These are expected to be macros of the form:\n<pre>\n  NAMESPACE(<namespace-name>, ...) {\n    <namespace-content>\n  }\n</pre>\n<p>For example: TESTSUITE",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=NamespaceMacros%20("
+    },
+    "ObjCBinPackProtocolList": {
+      "type": "string",
+      "enum": [
+        "Auto",
+        "Always",
+        "Never"
+      ],
+      "x-intellij-enum-metadata": {
+        "Auto": {
+          "description": "Automatically determine parameter bin-packing behavior."
+        },
+        "Always": {
+          "description": "Always bin-pack parameters."
+        },
+        "Never": {
+          "description": "Never bin-pack parameters."
+        }
+      },
+      "title": "Controls bin-packing Objective-C protocol conformance list",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBinPackProtocolList%20('>Documentation</a>\n<p>Controls bin-packing Objective-C protocol conformance list\nitems into as few lines as possible when they go over <code style='background:#e2e2e2'>ColumnLimit</code>.\n<p>If <code style='background:#e2e2e2'>Auto</code> (the default), delegates to the value in\n<code style='background:#e2e2e2'>BinPackParameters</code>. If that is <code style='background:#e2e2e2'>true</code>, bin-packs Objective-C\nprotocol conformance list items into as few lines as possible\nwhenever they go over <code style='background:#e2e2e2'>ColumnLimit</code>.\n<p>If <code style='background:#e2e2e2'>Always</code>, always bin-packs Objective-C protocol conformance\nlist items into as few lines as possible whenever they go over\n<code style='background:#e2e2e2'>ColumnLimit</code>.\n<p>If <code style='background:#e2e2e2'>Never</code>, lays out Objective-C protocol conformance list items\nonto individual lines whenever they go over <code style='background:#e2e2e2'>ColumnLimit</code>.\n<p><pre>\n   Always (or Auto, if BinPackParameters=true):\n   @interface ccccccccccccc () <\n       ccccccccccccc, ccccccccccccc,\n       ccccccccccccc, ccccccccccccc> {\n   }\n<p>   Never (or Auto, if BinPackParameters=false):\n   @interface ddddddddddddd () <\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd> {\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBinPackProtocolList%20("
+    },
+    "ObjCBlockIndentWidth": {
+      "type": "number",
+      "title": "The number of characters to use for indentation of ObjC blocks.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBlockIndentWidth%20('>Documentation</a>\n<p>The number of characters to use for indentation of ObjC blocks.\n<pre>\n   ObjCBlockIndentWidth: 4\n<p>   [operation setCompletionBlock:^{\n       [self onOperationDone];\n   }];\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBlockIndentWidth%20("
+    },
+    "ObjCBreakBeforeNestedBlockParam": {
+      "type": "boolean",
+      "title": "Break parameters list into lines when there is nested block",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBreakBeforeNestedBlockParam%20('>Documentation</a>\n<p>Break parameters list into lines when there is nested block\nparameters in a function call.\n<pre>\n  false:\n   - (void)_aMethod\n   {\n       [self.test1 t:self w:self callback:^(typeof(self) self, NSNumber\n       *u, NSNumber *v) {\n           u = c;\n       }]\n   }\n   true:\n   - (void)_aMethod\n   {\n      [self.test1 t:self\n                   w:self\n          callback:^(typeof(self) self, NSNumber *u, NSNumber *v) {\n               u = c;\n           }]\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCBreakBeforeNestedBlockParam%20("
+    },
+    "ObjCSpaceAfterProperty": {
+      "type": "boolean",
+      "title": "Add a space after @property in Objective-C, i.e. use",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCSpaceAfterProperty%20('>Documentation</a>\n<p>Add a space after <code style='background:#e2e2e2'>@property</code> in Objective-C, i.e. use\n<code style='background:#e2e2e2'>@property (readonly)</code> instead of <code style='background:#e2e2e2'>@property(readonly)</code>.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCSpaceAfterProperty%20("
+    },
+    "ObjCSpaceBeforeProtocolList": {
+      "type": "boolean",
+      "title": "Add a space in front of an Objective-C protocol list, i.e. use",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCSpaceBeforeProtocolList%20('>Documentation</a>\n<p>Add a space in front of an Objective-C protocol list, i.e. use\n<code style='background:#e2e2e2'>Foo <Protocol></code> instead of <code style='background:#e2e2e2'>Foo<Protocol></code>.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ObjCSpaceBeforeProtocolList%20("
+    },
+    "PenaltyBreakAssignment": {
+      "type": "number",
+      "title": "The penalty for breaking around an assignment operator.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakAssignment%20('>Documentation</a>\n<p>The penalty for breaking around an assignment operator.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakAssignment%20("
+    },
+    "PenaltyBreakBeforeFirstCallParameter": {
+      "type": "number",
+      "title": "The penalty for breaking a function call after call(.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakBeforeFirstCallParameter%20('>Documentation</a>\n<p>The penalty for breaking a function call after <code style='background:#e2e2e2'>call(</code>.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakBeforeFirstCallParameter%20("
+    },
+    "PenaltyBreakComment": {
+      "type": "number",
+      "title": "The penalty for each line break introduced inside a comment.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakComment%20('>Documentation</a>\n<p>The penalty for each line break introduced inside a comment.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakComment%20("
+    },
+    "PenaltyBreakFirstLessLess": {
+      "type": "number",
+      "title": "The penalty for breaking before the first .",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakFirstLessLess%20('>Documentation</a>\n<p>The penalty for breaking before the first <code style='background:#e2e2e2'><<</code>.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakFirstLessLess%20("
+    },
+    "PenaltyBreakString": {
+      "type": "number",
+      "title": "The penalty for each line break introduced inside a string literal.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakString%20('>Documentation</a>\n<p>The penalty for each line break introduced inside a string literal.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakString%20("
+    },
+    "PenaltyBreakTemplateDeclaration": {
+      "type": "number",
+      "title": "The penalty for breaking after template declaration.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakTemplateDeclaration%20('>Documentation</a>\n<p>The penalty for breaking after template declaration.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyBreakTemplateDeclaration%20("
+    },
+    "PenaltyExcessCharacter": {
+      "type": "number",
+      "title": "The penalty for each character outside of the column limit.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyExcessCharacter%20('>Documentation</a>\n<p>The penalty for each character outside of the column limit.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyExcessCharacter%20("
+    },
+    "PenaltyIndentedWhitespace": {
+      "type": "number",
+      "title": "Penalty for each character of whitespace indentation",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyIndentedWhitespace%20('>Documentation</a>\n<p>Penalty for each character of whitespace indentation\n(counted relative to leading non-whitespace column).",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyIndentedWhitespace%20("
+    },
+    "PenaltyReturnTypeOnItsOwnLine": {
+      "type": "number",
+      "title": "Penalty for putting the return type of a function onto its own",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyReturnTypeOnItsOwnLine%20('>Documentation</a>\n<p>Penalty for putting the return type of a function onto its own\nline.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PenaltyReturnTypeOnItsOwnLine%20("
+    },
+    "PointerAlignment": {
+      "type": "string",
+      "enum": [
+        "Left",
+        "Right",
+        "Middle"
+      ],
+      "x-intellij-enum-metadata": {
+        "Left": {
+          "description": "Align pointer to the left."
+        },
+        "Right": {
+          "description": "Align pointer to the right."
+        },
+        "Middle": {
+          "description": "Align pointer in the middle."
+        }
+      },
+      "title": "Pointer and reference alignment style.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PointerAlignment%20('>Documentation</a>\n<p>Pointer and reference alignment style.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=PointerAlignment%20("
+    },
+    "RawStringFormats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Language": {
+            "x-intellij-html-description": "The language of this raw string.",
+            "type": "string",
+            "enum": [
+              "None",
+              "Cpp",
+              "CSharp",
+              "Java",
+              "JavaScript",
+              "ObjC",
+              "Proto",
+              "TableGen",
+              "TextProto"
+            ]
+          },
+          "Delimiters": {
+            "x-intellij-html-description": "A list of raw string delimiters that match this language.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "EnclosingFunctions": {
+            "x-intellij-html-description": "A list of enclosing function names that match this language.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "BasedOnStyle": {
+            "x-intellij-html-description": "The style name on which this raw string format is based on. If not specified, the raw string format is based on the style that this format is based on.",
+            "type": "string",
+            "enum": [
+              "LLVM",
+              "Google",
+              "Chromium",
+              "Mozilla",
+              "WebKit",
+              "Microsoft",
+              "GNU",
+              "InheritParentConfig"
+            ],
+            "x-intellij-enum-metadata": {
+              "LLVM": {
+                "description": "A style complying with the LLVM coding standards"
+              },
+              "Google": {
+                "description": "A style complying with Google's C++ style guide"
+              },
+              "Chromium": {
+                "description": "A style complying with Chromium's style guide"
+              },
+              "Mozilla": {
+                "description": "A style complying with Mozilla's style guide"
+              },
+              "WebKit": {
+                "description": "A style complying with WebKit's style guide"
+              },
+              "Microsoft": {
+                "description": "A style complying with Microsoft's style guide"
+              },
+              "GNU": {
+                "description": "A style complying with the GNU coding standards"
+              }
+            }
+          },
+          "CanonicalDelimiter": {
+            "x-intellij-html-description": "The canonical delimiter for this language.",
+            "type": "string"
+          }
+        }
+      },
+      "title": "Defines hints for detecting supported languages code blocks in raw",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=RawStringFormats%20('>Documentation</a>\n<p>Defines hints for detecting supported languages code blocks in raw\nstrings.\n<p>A raw string with a matching delimiter or a matching enclosing function\nname will be reformatted assuming the specified language based on the\nstyle for that language defined in the .clang-format file. If no style has\nbeen defined in the .clang-format file for the specific language, a\npredefined style given by 'BasedOnStyle' is used. If 'BasedOnStyle' is not\nfound, the formatting is based on llvm style. A matching delimiter takes\nprecedence over a matching enclosing function name for determining the\nlanguage of the raw string contents.\n<p>If a canonical delimiter is specified, occurrences of other delimiters for\nthe same language will be updated to the canonical if possible.\n<p>There should be at most one specification per language and each delimiter\nand enclosing function should not occur in multiple specifications.\n<p>To configure this in the .clang-format file, use:\n<pre>\n  RawStringFormats:\n    - Language: TextProto\n        Delimiters:\n          - 'pb'\n          - 'proto'\n        EnclosingFunctions:\n          - 'PARSE_TEXT_PROTO'\n        BasedOnStyle: google\n    - Language: Cpp\n        Delimiters:\n          - 'cc'\n          - 'cpp'\n        BasedOnStyle: llvm\n        CanonicalDelimiter: 'cc'\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=RawStringFormats%20("
+    },
+    "ReflowComments": {
+      "type": "boolean",
+      "title": "If true, clang-format will attempt to re-flow comments.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ReflowComments%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, clang-format will attempt to re-flow comments.\n<pre>\n   false:\n   // veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of information\n   /* second veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of information */\n<p>   true:\n   // veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of\n   // information\n   /* second veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of\n<li>information */</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=ReflowComments%20("
+    },
+    "SortIncludes": {
+      "type": "boolean",
+      "title": "If true, clang-format will sort #includes.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortIncludes%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, clang-format will sort <code style='background:#e2e2e2'>#includes</code>.\n<pre>\n   false:                                 true:\n   #include \"b.h\"                 vs.     #include \"a.h\"\n   #include \"a.h\"                         #include \"b.h\"\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortIncludes%20("
+    },
+    "SortJavaStaticImport": {
+      "type": "string",
+      "enum": [
+        "Before",
+        "After"
+      ],
+      "x-intellij-enum-metadata": {
+        "Before": {
+          "description": "Static imports are placed before non-static imports."
+        },
+        "After": {
+          "description": "Static imports are placed after non-static imports."
+        }
+      },
+      "title": "When sorting Java imports, by default static imports are placed before",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortJavaStaticImport%20('>Documentation</a>\n<p>When sorting Java imports, by default static imports are placed before\nnon-static imports. If <code style='background:#e2e2e2'>JavaStaticImportAfterImport</code> is <code style='background:#e2e2e2'>After</code>,\nstatic imports are placed after non-static imports.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortJavaStaticImport%20("
+    },
+    "SortUsingDeclarations": {
+      "type": "boolean",
+      "title": "If true, clang-format will sort using declarations.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortUsingDeclarations%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, clang-format will sort using declarations.\n<p>The order of using declarations is defined as follows:\nSplit the strings by \"::\" and discard any initial empty strings. The last\nelement of each list is a non-namespace name; all others are namespace\nnames. Sort the lists of names lexicographically, where the sort order of\nindividual names is that all non-namespace names come before all namespace\nnames, and within those groups, names are in case-insensitive\nlexicographic order.\n<pre>\n   false:                                 true:\n   using std::cout;               vs.     using std::cin;\n   using std::cin;                        using std::cout;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SortUsingDeclarations%20("
+    },
+    "SpaceAfterCStyleCast": {
+      "type": "boolean",
+      "title": "If true, a space is inserted after C style casts.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterCStyleCast%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, a space is inserted after C style casts.\n<pre>\n   true:                                  false:\n   (int) i;                       vs.     (int)i;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterCStyleCast%20("
+    },
+    "SpaceAfterLogicalNot": {
+      "type": "boolean",
+      "title": "If true, a space is inserted after the logical not operator (!).",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterLogicalNot%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, a space is inserted after the logical not operator (<code style='background:#e2e2e2'>!</code>).\n<pre>\n   true:                                  false:\n   ! someExpression();            vs.     !someExpression();\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterLogicalNot%20("
+    },
+    "SpaceAfterTemplateKeyword": {
+      "type": "boolean",
+      "title": "If true, a space will be inserted after the 'template' keyword.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterTemplateKeyword%20('>Documentation</a>\n<p>If ``true``, a space will be inserted after the 'template' keyword.\n<pre>\n   true:                                  false:\n   template <int> void foo();     vs.     template<int> void foo();\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAfterTemplateKeyword%20("
+    },
+    "SpaceAroundPointerQualifiers": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "Before",
+        "After",
+        "Both"
+      ],
+      "x-intellij-enum-metadata": {
+        "Default": {
+          "description": "Don't ensure spaces around pointer qualifiers and use PointerAlignment"
+        },
+        "Before": {
+          "description": "Ensure that there is a space before pointer qualifiers."
+        },
+        "After": {
+          "description": "Ensure that there is a space after pointer qualifiers."
+        },
+        "Both": {
+          "description": "Ensure that there is a space both before and after pointer qualifiers."
+        }
+      },
+      "title": "Defines in which cases to put a space before or after pointer qualifiers",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAroundPointerQualifiers%20('>Documentation</a>\n<p>Defines in which cases to put a space before or after pointer qualifiers",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceAroundPointerQualifiers%20("
+    },
+    "SpaceBeforeAssignmentOperators": {
+      "type": "boolean",
+      "title": "If false, spaces will be removed before assignment operators.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeAssignmentOperators%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, spaces will be removed before assignment operators.\n<pre>\n   true:                                  false:\n   int a = 5;                     vs.     int a= 5;\n   a += 42;                               a+= 42;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeAssignmentOperators%20("
+    },
+    "SpaceBeforeCaseColon": {
+      "type": "boolean",
+      "title": "If false, spaces will be removed before case colon.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCaseColon%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, spaces will be removed before case colon.\n<pre>\n  true:                                   false\n  switch (x) {                    vs.     switch (x) {\n    case 1 : break;                         case 1: break;\n  }                                       }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCaseColon%20("
+    },
+    "SpaceBeforeCpp11BracedList": {
+      "type": "boolean",
+      "title": "If true, a space will be inserted before a C++11 braced list",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCpp11BracedList%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, a space will be inserted before a C++11 braced list\nused to initialize an object (after the preceding identifier or type).\n<pre>\n   true:                                  false:\n   Foo foo { bar };               vs.     Foo foo{ bar };\n   Foo {};                                Foo{};\n   vector<int> { 1, 2, 3 };               vector<int>{ 1, 2, 3 };\n   new int[3] { 1, 2, 3 };                new int[3]{ 1, 2, 3 };\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCpp11BracedList%20("
+    },
+    "SpaceBeforeCtorInitializerColon": {
+      "type": "boolean",
+      "title": "If false, spaces will be removed before constructor initializer",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCtorInitializerColon%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, spaces will be removed before constructor initializer\ncolon.\n<pre>\n   true:                                  false:\n   Foo::Foo() : a(a) {}                   Foo::Foo(): a(a) {}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeCtorInitializerColon%20("
+    },
+    "SpaceBeforeInheritanceColon": {
+      "type": "boolean",
+      "title": "If false, spaces will be removed before inheritance colon.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeInheritanceColon%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, spaces will be removed before inheritance colon.\n<pre>\n   true:                                  false:\n   class Foo : Bar {}             vs.     class Foo: Bar {}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeInheritanceColon%20("
+    },
+    "SpaceBeforeParens": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "ControlStatements",
+        "ControlStatementsExceptForEachMacros",
+        "NonEmptyParentheses",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Never put a space before opening parentheses."
+        },
+        "ControlStatements": {
+          "description": "Put a space before opening parentheses only after control statement"
+        },
+        "ControlStatementsExceptForEachMacros": {
+          "description": "Same as SBPO_ControlStatements except this option doesn't apply to"
+        },
+        "NonEmptyParentheses": {
+          "description": "Put a space before opening parentheses only if the parentheses are not"
+        },
+        "Always": {
+          "description": "Always put a space before opening parentheses, except when it's"
+        }
+      },
+      "title": "Defines in which cases to put a space before opening parentheses.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeParens%20('>Documentation</a>\n<p>Defines in which cases to put a space before opening parentheses.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeParens%20("
+    },
+    "SpaceBeforeRangeBasedForLoopColon": {
+      "type": "boolean",
+      "title": "If false, spaces will be removed before range-based for loop",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeRangeBasedForLoopColon%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>false</code>, spaces will be removed before range-based for loop\ncolon.\n<pre>\n   true:                                  false:\n   for (auto v : values) {}       vs.     for(auto v: values) {}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeRangeBasedForLoopColon%20("
+    },
+    "SpaceBeforeSquareBrackets": {
+      "type": "boolean",
+      "title": "If true, spaces will be before  [.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeSquareBrackets%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be before  <code style='background:#e2e2e2'>[</code>.\nLambdas will not be affected. Only the first <code style='background:#e2e2e2'>[</code> will get a space added.\n<pre>\n   true:                                  false:\n   int a [5];                    vs.      int a[5];\n   int a [5][5];                 vs.      int a[5][5];\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceBeforeSquareBrackets%20("
+    },
+    "SpaceInEmptyBlock": {
+      "type": "boolean",
+      "title": "If true, spaces will be inserted into {}.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceInEmptyBlock%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be inserted into <code style='background:#e2e2e2'>{}</code>.\n<pre>\n   true:                                false:\n   void f() { }                   vs.   void f() {}\n   while (true) { }                     while (true) {}\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceInEmptyBlock%20("
+    },
+    "SpaceInEmptyParentheses": {
+      "type": "boolean",
+      "title": "If true, spaces may be inserted into ().",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceInEmptyParentheses%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces may be inserted into <code style='background:#e2e2e2'>()</code>.\n<pre>\n   true:                                false:\n   void f( ) {                    vs.   void f() {\n     int x[] = {foo( ), bar( )};          int x[] = {foo(), bar()};\n     if (true) {                          if (true) {\n       f( );                                f();\n     }                                    }\n   }                                    }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpaceInEmptyParentheses%20("
+    },
+    "SpacesBeforeTrailingComments": {
+      "type": "number",
+      "title": "The number of spaces before trailing line comments",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesBeforeTrailingComments%20('>Documentation</a>\n<p>The number of spaces before trailing line comments\n(<code style='background:#e2e2e2'>//</code> - comments).\n<p>This does not affect trailing block comments (<code style='background:#e2e2e2'>/*</code> - comments) as\nthose commonly have different usage patterns and a number of special\ncases.\n<pre>\n   SpacesBeforeTrailingComments: 3\n   void f() {\n     if (true) {   // foo1\n       f();        // bar\n     }             // foo\n   }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesBeforeTrailingComments%20("
+    },
+    "SpacesInAngles": {
+      "type": "boolean",
+      "title": "If true, spaces will be inserted after  and before >",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInAngles%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be inserted after <code style='background:#e2e2e2'><</code> and before <code style='background:#e2e2e2'>></code>\nin template argument lists.\n<pre>\n   true:                                  false:\n   static_cast< int >(arg);       vs.     static_cast<int>(arg);\n   std::function< void(int) > fct;        std::function<void(int)> fct;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInAngles%20("
+    },
+    "SpacesInCStyleCastParentheses": {
+      "type": "boolean",
+      "title": "If true, spaces may be inserted into C style casts.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInCStyleCastParentheses%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces may be inserted into C style casts.\n<pre>\n   true:                                  false:\n   x = ( int32 )y                 vs.     x = (int32)y\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInCStyleCastParentheses%20("
+    },
+    "SpacesInConditionalStatement": {
+      "type": "boolean",
+      "title": "If true, spaces will be inserted around if/for/switch/while",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInConditionalStatement%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be inserted around if/for/switch/while\nconditions.\n<pre>\n   true:                                  false:\n   if ( a )  { ... }              vs.     if (a) { ... }\n   while ( i < 5 )  { ... }               while (i < 5) { ... }\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInConditionalStatement%20("
+    },
+    "SpacesInContainerLiterals": {
+      "type": "boolean",
+      "title": "If true, spaces are inserted inside container literals (e.g.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInContainerLiterals%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces are inserted inside container literals (e.g.\nObjC and Javascript array and dict literals).\n<pre>\n   true:                                  false:\n   var arr = [ 1, 2, 3 ];         vs.     var arr = [1, 2, 3];\n   f({a : 1, b : 2, c : 3});              f({a: 1, b: 2, c: 3});\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInContainerLiterals%20("
+    },
+    "SpacesInParentheses": {
+      "type": "boolean",
+      "title": "If true, spaces will be inserted after ( and before ).",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInParentheses%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be inserted after <code style='background:#e2e2e2'>(</code> and before <code style='background:#e2e2e2'>)</code>.\n<pre>\n   true:                                  false:\n   t f( Deleted & ) & = delete;   vs.     t f(Deleted &) & = delete;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInParentheses%20("
+    },
+    "SpacesInSquareBrackets": {
+      "type": "boolean",
+      "title": "If true, spaces will be inserted after [ and before ].",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInSquareBrackets%20('>Documentation</a>\n<p>If <code style='background:#e2e2e2'>true</code>, spaces will be inserted after <code style='background:#e2e2e2'>[</code> and before <code style='background:#e2e2e2'>]</code>.\nLambdas without arguments or unspecified size array declarations will not\nbe affected.\n<pre>\n   true:                                  false:\n   int a[ 5 ];                    vs.     int a[5];\n   std::unique_ptr<int[]> foo() {} // Won't be affected\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=SpacesInSquareBrackets%20("
+    },
+    "Standard": {
+      "type": "string",
+      "enum": [
+        "Cpp03",
+        "Cpp11",
+        "Cpp14",
+        "Cpp17",
+        "Cpp20",
+        "Latest",
+        "Auto"
+      ],
+      "x-intellij-enum-metadata": {
+        "Cpp03": {
+          "description": "Parse and format as C++03."
+        },
+        "Cpp11": {
+          "description": "Parse and format as C++11."
+        },
+        "Cpp14": {
+          "description": "Parse and format as C++14."
+        },
+        "Cpp17": {
+          "description": "Parse and format as C++17."
+        },
+        "Cpp20": {
+          "description": "Parse and format as C++20."
+        },
+        "Latest": {
+          "description": "Parse and format using the latest supported language version."
+        },
+        "Auto": {
+          "description": "Automatic detection based on the input."
+        }
+      },
+      "title": "Parse and format C++ constructs compatible with this standard.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Standard%20('>Documentation</a>\n<p>Parse and format C++ constructs compatible with this standard.\n<pre>\n   c++03:                                 latest:\n   vector<set<int> > x;           vs.     vector<set<int>> x;\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=Standard%20("
+    },
+    "StatementAttributeLikeMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Macros which are ignored in front of a statement, as if they were an",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=StatementAttributeLikeMacros%20('>Documentation</a>\n<p>Macros which are ignored in front of a statement, as if they were an\nattribute. So that they are not parsed as identifier, for example for Qts\nemit.\n<pre>\n  AlignConsecutiveDeclarations: true\n  StatementAttributeLikeMacros: []\n  unsigned char data = 'x';\n  emit          signal(data); // This is parsed as variable declaration.\n<p>  AlignConsecutiveDeclarations: true\n  StatementAttributeLikeMacros: [emit]\n  unsigned char data = 'x';\n  emit signal(data); // Now it's fine again.\n</pre>",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=StatementAttributeLikeMacros%20("
+    },
+    "StatementMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of macros that should be interpreted as complete",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=StatementMacros%20('>Documentation</a>\n<p>A vector of macros that should be interpreted as complete\nstatements.\n<p>Typical macros are expressions, and require a semi-colon to be\nadded; sometimes this is not the case, and this allows to make\nclang-format aware of such cases.\n<p>For example: Q_UNUSED",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=StatementMacros%20("
+    },
+    "TabWidth": {
+      "type": "number",
+      "title": "The number of columns used for tab stops.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=TabWidth%20('>Documentation</a>\n<p>The number of columns used for tab stops.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=TabWidth%20("
+    },
+    "TypenameMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of macros that should be interpreted as type declarations",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=TypenameMacros%20('>Documentation</a>\n<p>A vector of macros that should be interpreted as type declarations\ninstead of as function calls.\n<p>These are expected to be macros of the form:\n<pre>\n  STACK_OF(...)\n</pre>\n<p>In the .clang-format configuration file, this can be configured like:\n<pre>\n  TypenameMacros: ['STACK_OF', 'LIST']\n</pre>\n<p>For example: OpenSSL STACK_OF, BSD LIST_ENTRY.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=TypenameMacros%20("
+    },
+    "UseCRLF": {
+      "type": "boolean",
+      "title": "Use \\r\\n instead of \\n for line breaks.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=UseCRLF%20('>Documentation</a>\n<p>Use <code style='background:#e2e2e2'>\\r\\n</code> instead of <code style='background:#e2e2e2'>\\n</code> for line breaks.\nAlso used as fallback if <code style='background:#e2e2e2'>DeriveLineEnding</code> is true.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=UseCRLF%20("
+    },
+    "UseTab": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "ForIndentation",
+        "ForContinuationAndIndentation",
+        "AlignWithSpaces",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Never use tab."
+        },
+        "ForIndentation": {
+          "description": "Use tabs only for indentation."
+        },
+        "ForContinuationAndIndentation": {
+          "description": "Fill all leading whitespace with tabs, and use spaces for alignment that"
+        },
+        "AlignWithSpaces": {
+          "description": "Use tabs for line continuation and indentation, and spaces for"
+        },
+        "Always": {
+          "description": "Use tabs whenever we need to fill whitespace that spans at least from"
+        }
+      },
+      "title": "The way to use tab characters in the resulting file.",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=UseTab%20('>Documentation</a>\n<p>The way to use tab characters in the resulting file.",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=UseTab%20("
+    },
+    "WhitespaceSensitiveMacros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "A vector of macros which are whitespace-sensitive and should not",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=WhitespaceSensitiveMacros%20('>Documentation</a>\n<p>A vector of macros which are whitespace-sensitive and should not\nbe touched.\n<p>These are expected to be macros of the form:\n<pre>\n  STRINGIZE(...)\n</pre>\n<p>In the .clang-format configuration file, this can be configured like:\n<pre>\n  WhitespaceSensitiveMacros: ['STRINGIZE', 'PP_STRINGIZE']\n</pre>\n<p>For example: BOOST_PP_STRINGIZE",
+      "x-romolo-link": "https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text=WhitespaceSensitiveMacros%20("
+    }
+  }
+}
