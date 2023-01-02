@@ -62,17 +62,18 @@ import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicReference
 import java.util.regex.Pattern
 import javax.swing.event.HyperlinkEvent
+import kotlin.Pair
 
 private val LOG = Logger.getInstance(ClangFormatServiceImpl::class.java)
 
 /**
  * See class ApplyChangesState
  */
-private val BULK_REPLACE_OPTIMIZATION_CRITERIA = 1000
+private const val BULK_REPLACE_OPTIMIZATION_CRITERIA = 1000
 
 class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private val errorNotification = AtomicReference<Notification?>()
-  private val WAS_CLANG_FORMAT_SUPPORTED = Key.create<Boolean>("WAS_CLANG_FORMAT_SUPPORTED")
+  private val wasClangFormatSupported = Key.create<Boolean>("WAS_CLANG_FORMAT_SUPPORTED")
   private val afterWriteActionFinished = ContainerUtil.createLockFreeCopyOnWriteList<Runnable>()
   private val cache: MutableMap<VirtualFile, List<VirtualFile>> = FixedHashMap(100)
 
@@ -81,9 +82,9 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     VirtualFileManager.getInstance().addAsyncFileListener(ClangFormatCacheManagment(), this)
   }
 
-  override fun reformatFileSync(project: Project, file: VirtualFile) {
-    val document = FileDocumentManager.getInstance().getDocument(file) ?: return
-    if (!ensureModifiable(project, file, document)) {
+  override fun reformatFileSync(project: Project, virtualFile: VirtualFile) {
+    val document = FileDocumentManager.getInstance().getDocument(virtualFile) ?: return
+    if (!ensureModifiable(project, virtualFile, document)) {
       return
     }
 
@@ -92,17 +93,15 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     val stamp = document.modificationStamp
     val content = ReadAction.compute<String, RuntimeException> { document.text }
       .toByteArray(StandardCharsets.UTF_8)
-    val replacements = computeReplacementsWithProgress(project, file, content)
+    val replacements = computeReplacementsWithProgress(project, virtualFile, content)
 
     // Apply replacements
-    if (replacements != null) {
-      if (replacements.replacements != null && stamp == document.modificationStamp) {
-        applyReplacementsWithCommand(project, content, document, replacements)
-      }
-
-      // remove last error notification
-      clearLastNotification()
+    if (replacements.replacements != null && stamp == document.modificationStamp) {
+      applyReplacementsWithCommand(project, content, document, replacements)
     }
+
+    // remove last error notification
+    clearLastNotification()
   }
 
   override fun reformatInBackground(project: Project, virtualFile: VirtualFile) {
@@ -175,7 +174,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private fun runTaskAsync(project: Project, fn: (indicator: ProgressIndicator) -> Unit) {
     val task = object : Task.Backgroundable(project, message("error.clang-format.formatting"), true) {
       override fun run(indicator: ProgressIndicator) {
-        fn(indicator);
+        fn(indicator)
       }
     }
     ProgressManager.getInstance().run(task)
@@ -199,7 +198,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
         project,
         e.description,
         fileSmallName
-      ) { notification: Notification?, event: HyperlinkEvent? ->
+      ) { _: Notification?, _: HyperlinkEvent? ->
         e.getFileNavigatable().navigate(true)
       }
       null
@@ -282,17 +281,17 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     return null
   }
 
-  override fun getRawFormatStyle(psiFile: PsiFile): Map<Any?, Any?> {
+  override fun getRawFormatStyle(psiFile: PsiFile): Map<String, Any> {
     // save changed documents
     saveUnchangedClangFormatFiles()
     val result = CachedValuesManager.getCachedValue(psiFile, CLANG_STYLE, FormatStyleProvider(this, psiFile))
-    if (result is ClangFormatError) {
-      throw result
+    if (result.second != null) {
+      throw result.second!!
     }
-    return result as Map<Any?, Any?>
+    return result.first!!
   }
 
-  override fun makeDependencyTracker(file: PsiFile): ModificationTracker? {
+  override fun makeDependencyTracker(file: PsiFile): ModificationTracker {
     val virtualFile = getVirtualFile(file)
       ?: return ModificationTracker.NEVER_CHANGED
     val oldFiles = getClangFormatFiles(virtualFile)
@@ -346,7 +345,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       // no ".clang-format" file found.
       // this is not a real issue for clang-format, but when no format is provided
       // the editor shouldn't modify the appearance with llvm's default settings
-      file.putUserData(WAS_CLANG_FORMAT_SUPPORTED, null)
+      file.putUserData(wasClangFormatSupported, null)
       return false
     }
     val formatStyle = try {
@@ -354,11 +353,11 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     }
     catch (e: ClangExitCodeError) {
       // the configuration is (maybe temporary) broken. We reuse the answer of last invocation until the configuration is fixed
-      return java.lang.Boolean.TRUE == file.getUserData(WAS_CLANG_FORMAT_SUPPORTED)
+      return java.lang.Boolean.TRUE == file.getUserData(wasClangFormatSupported)
     }
     catch (e: ClangFormatError) {
       // the configuration is broken or the file language is not supported in ".clang-format"
-      file.putUserData(WAS_CLANG_FORMAT_SUPPORTED, null)
+      file.putUserData(wasClangFormatSupported, null)
       return false
     }
     val language = formatStyle["Language"]
@@ -367,11 +366,11 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       // for clang, Cpp is a fallback for any file.
       // we must ensure that the file is really c++
       if (!ClangFormatCommons.isCppFile(file)) {
-        file.putUserData(WAS_CLANG_FORMAT_SUPPORTED, null)
+        file.putUserData(wasClangFormatSupported, null)
         return false
       }
     }
-    file.putUserData(WAS_CLANG_FORMAT_SUPPORTED, true)
+    file.putUserData(wasClangFormatSupported, true)
     return true
   }
 
@@ -523,14 +522,20 @@ $stderr"""
     }
   }
 
-  private class FormatStyleProvider(private val service: ClangFormatServiceImpl, private val psiFile: PsiFile) : CachedValueProvider<Any> {
-    override fun compute(): CachedValueProvider.Result<Any> {
+  private class FormatStyleProvider(private val service: ClangFormatServiceImpl, private val psiFile: PsiFile) :
+    CachedValueProvider<Pair<Map<String, Any>?, ClangFormatError?>> {
+    override fun compute(): CachedValueProvider.Result<Pair<Map<String, Any>?, ClangFormatError?>> {
       val dependencies: MutableList<Any?> = ArrayList()
-      val result = computeFormat(dependencies)
-      return CachedValueProvider.Result.create(result, *dependencies.toTypedArray())
+      return try {
+        val result = computeFormat(dependencies)
+        CachedValueProvider.Result.create(Pair(result, null), *dependencies.toTypedArray())
+      }
+      catch (e: ClangFormatError) {
+        CachedValueProvider.Result.create(Pair(null, e), *dependencies.toTypedArray())
+      }
     }
 
-    private fun computeFormat(dependencies: MutableList<Any?>): Any {
+    private fun computeFormat(dependencies: MutableList<Any?>): Map<String, Any> {
       dependencies.add(service.makeDependencyTracker(psiFile))
       val virtualFile = getVirtualFile(psiFile)
       if (virtualFile == null) {
@@ -538,29 +543,29 @@ $stderr"""
         throw ClangFormatError("Cannot get clang-format configuration")
       }
       val clangFormat = service.getClangFormatVirtualPath()
-        ?: return ClangFormatNotFound(message("error.clang-format.error.not-found"))
+        ?: throw ClangFormatNotFound(message("error.clang-format.error.not-found"))
       dependencies.add(clangFormat)
-      return try {
+      try {
         val commandLine = createCompileCommand(clangFormat.path)
         commandLine.addParameter("--dump-config")
         commandLine.addParameter("-assume-filename=" + getFileName(virtualFile))
         val programOutput = executeProgram(null, commandLine)
         if (programOutput.exitCode != 0) {
-          return service.getException(psiFile.project, commandLine, programOutput)
+          throw service.getException(psiFile.project, commandLine, programOutput)
         }
         try {
-          val result = Yaml().load<Any>(programOutput.stdout)
+          val result = Yaml().load<Map<String, Any>>(programOutput.stdout)
           if (result is Map<*, *>) {
             return result
           }
         }
         catch (ignored: YAMLException) {
         }
-        ClangFormatError(message("error.clang-format.error.dump.not.yaml", programOutput.stdout))
+        throw ClangFormatError(message("error.clang-format.error.dump.not.yaml", programOutput.stdout))
       }
       catch (e: ExecutionException) {
         LOG.warn("Cannot dump clang-format configuration", e)
-        ClangFormatError("Cannot get clang-format configuration", e)
+        throw ClangFormatError("Cannot get clang-format configuration", e)
       }
     }
   }
@@ -594,9 +599,8 @@ $stderr"""
           }
         }
         else if (event is VFileCopyEvent) {
-          val copyEvent = event
-          if (ClangFormatCommons.isClangFormatFile(copyEvent.file.name) ||
-            ClangFormatCommons.isClangFormatFile(copyEvent.newChildName)
+          if (ClangFormatCommons.isClangFormatFile(event.file.name) ||
+            ClangFormatCommons.isClangFormatFile(event.newChildName)
           ) {
             return true
           }
@@ -612,20 +616,19 @@ $stderr"""
           }
         }
         else if (event is VFilePropertyChangeEvent) {
-          val propertyChangeEvent = event
-          when (propertyChangeEvent.propertyName) {
-            VirtualFile.PROP_NAME -> if (ClangFormatCommons.isClangFormatFile(propertyChangeEvent.oldValue.toString()) ||
-              ClangFormatCommons.isClangFormatFile(propertyChangeEvent.newValue.toString())
-            ) {
-              return true
-            }
+          when (event.propertyName) {
+            VirtualFile.PROP_NAME ->
+              if (ClangFormatCommons.isClangFormatFile(event.oldValue.toString()) ||
+                ClangFormatCommons.isClangFormatFile(event.newValue.toString())
+              ) {
+                return true
+              }
 
-            VirtualFile.PROP_ENCODING, VirtualFile.PROP_SYMLINK_TARGET -> if (ClangFormatCommons.isClangFormatFile(
-                propertyChangeEvent.file.name
-              )
-            ) {
-              return true
-            }
+            VirtualFile.PROP_ENCODING,
+            VirtualFile.PROP_SYMLINK_TARGET ->
+              if (ClangFormatCommons.isClangFormatFile(event.file.name)) {
+                return true
+              }
           }
         }
       }
@@ -635,9 +638,9 @@ $stderr"""
 
   companion object {
     private const val TIMEOUT = 10000
-    private val CLANG_STYLE = Key.create<CachedValue<Any>>("CLANG_STYLE")
+    private val CLANG_STYLE = Key.create<CachedValue<Pair<Map<String, Any>?, ClangFormatError?>>>("CLANG_STYLE")
     private val CLANG_ERROR_PATTERN = Pattern.compile(
-      "(?<FileName>(?:[a-zA-Z]:|/)[^<>|?*:\\t]+):(?<LineNumber>[\\d]+):(?<Column>[\\d]+)\\s*:\\s*(?<Type>\\w+):\\s*(?<Message>.*)"
+      "(?<FileName>(?:[a-zA-Z]:|/)[^<>|?*:\\t]+):(?<LineNumber>\\d+):(?<Column>\\d+)\\s*:\\s*(?<Type>\\w+):\\s*(?<Message>.*)"
     )
 
     private fun getFileName(virtualFile: VirtualFile): String {

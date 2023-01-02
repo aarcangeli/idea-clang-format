@@ -17,7 +17,8 @@ class ClangFormatExternalFormatProcessor : ExternalFormatProcessor {
     range: TextRange,
     canChangeWhiteSpacesOnly: Boolean,
     keepLineBreaks: Boolean,
-    enableBulkUpdate: Boolean
+    enableBulkUpdate: Boolean,
+    cursorOffset: Int
   ): TextRange? {
     val virtualFile = source.originalFile.virtualFile
     if (virtualFile != null) {

@@ -15,7 +15,6 @@ object ClangFormatCommons {
     return filename.endsWith(".cpp") || filename.endsWith(".h") || filename.endsWith(".h")
   }
 
-  @JvmStatic
   fun isUnconditionallyNotSupported(file: PsiFile): Boolean {
     val virtualFile = file.originalFile.virtualFile
     return isUnconditionallyNotSupported(virtualFile)

@@ -26,7 +26,7 @@ interface ClangFormatService {
   fun reformatInBackground(project: Project, virtualFile: VirtualFile)
 
   @Throws(ClangFormatError::class)
-  fun getRawFormatStyle(psiFile: PsiFile): Map<Any?, Any?>
+  fun getRawFormatStyle(psiFile: PsiFile): Map<String, Any>
 
   @get:Throws(ClangFormatError::class)
   val clangFormatPath: String
@@ -35,7 +35,12 @@ interface ClangFormatService {
    * Returns a tracker that changes when configuration of a specific file changes
    */
   @RequiresReadLock
-  fun makeDependencyTracker(file: PsiFile): ModificationTracker?
+  fun makeDependencyTracker(file: PsiFile): ModificationTracker
+
+  /**
+   * Retrieve the .clang-format file for the specified file.
+   */
+  @RequiresReadLock
   fun getStyleFile(virtualFile: VirtualFile): VirtualFile?
 
   /**

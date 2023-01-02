@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nls
 import javax.swing.Icon
 
 class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
-  private val LAST_PROVIDED_SETTINGS = Key.create<ClangFormatStyle>("WAS_FILE_SUPPORTED")
   override fun modifySettings(settings: TransientCodeStyleSettings, file: PsiFile): Boolean {
     if (!settings.getCustomSettings(ClangFormatSettings::class.java).ENABLED) {
       return false
@@ -44,17 +43,21 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     if (isUnconditionallyNotSupported(file)) {
       return false
     }
+
     val formatService = service<ClangFormatService>()
-    settings.addDependency(formatService.makeDependencyTracker(file)!!)
-    return if (!formatService.mayBeFormatted(file)) {
+    settings.addDependency(formatService.makeDependencyTracker(file))
+
+    if (!formatService.mayBeFormatted(file)) {
       // clang format disabled for this file
-      false
+      file.putUserData(LAST_PROVIDED_SETTINGS, null)
+      return false
     }
-    else try {
+
+    try {
       val clangFormatStyle = ClangFormatStyle(formatService.getRawFormatStyle(file))
       file.putUserData(LAST_PROVIDED_SETTINGS, clangFormatStyle)
       clangFormatStyle.apply(settings)
-      true
+      return true
     }
     catch (e: ClangExitCodeError) {
       // configuration broken, re-use last provided settings
@@ -63,12 +66,12 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
         clangFormatStyle.apply(settings)
         return true
       }
-      false
     }
     catch (e: ClangFormatError) {
-      // other error
-      false
+      // ignore other error
     }
+
+    return false;
   }
 
   override fun getName(): @Nls(capitalization = Nls.Capitalization.Title) String {
@@ -79,6 +82,10 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     return object : IndentStatusBarUIContributor(settings.indentOptions) {
       override fun getTooltip(): String {
         val builder = HtmlBuilder()
+        builder.append(
+          HtmlChunk.span("color:" + ColorUtil.toHtmlColor(JBColor.GRAY))
+            .addText(message("error.clang-format.status.hint"))
+        )
         builder
           .append(CodeStyleBundle.message("indent.status.bar.indent.tooltip"))
           .append(" ")
@@ -100,10 +107,6 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
           .append(" ")
           .append(HtmlChunk.tag("b").addText(settings.defaultRightMargin.toString()))
           .br()
-        builder.append(
-          HtmlChunk.span("color:" + ColorUtil.toHtmlColor(JBColor.GRAY))
-            .addText(message("error.clang-format.status.hint"))
-        )
         return builder.wrapWith("html").toString()
       }
 
@@ -124,7 +127,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       }
 
       override fun createDisableAction(project: Project): AnAction {
-        return DumbAwareAction.create(message("clang-format.disable")) { e: AnActionEvent? ->
+        return DumbAwareAction.create(message("clang-format.disable")) {
           val currentSettings = CodeStyle.getSettings(project).getCustomSettings(ClangFormatSettings::class.java)
           currentSettings.ENABLED = false
           CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
@@ -201,9 +204,10 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
   }
 
   /**
-   * A small subset of clang-format style
+   * Contains a small subset of clang-format parameters.
+   * This is used to apply the settings to the IDE.
    */
-  private class ClangFormatStyle(formatStyle: Map<Any?, Any?>) {
+  private class ClangFormatStyle(formatStyle: Map<String, Any>) {
     private val columnLimit: Int
     private val indentWidth: Int
     private val tabWidth: Int
@@ -232,15 +236,14 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       }
       settings.indentOptions.USE_TAB_CHARACTER = useTab
     }
+  }
 
-    companion object {
-      private fun getInt(formatStyle: Map<Any?, Any?>, tag: String): Int {
-        val value = formatStyle[tag]
-        return if (value is Int) {
-          value
-        }
-        else -1
-      }
+  companion object {
+    private val LAST_PROVIDED_SETTINGS = Key.create<ClangFormatStyle>("WAS_FILE_SUPPORTED")
+
+    private fun getInt(formatStyle: Map<String, Any>, tag: String): Int {
+      val value = formatStyle[tag]
+      return if (value is Int) value else -1
     }
   }
 }
