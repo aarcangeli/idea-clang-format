@@ -9,6 +9,7 @@
 
   <resource-bundle>messages.ClangFormatBundle</resource-bundle>
   <extensions defaultExtensionNs="com.intellij">
+    <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
     <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatService"
                         serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatServiceImpl"/>
