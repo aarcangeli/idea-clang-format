@@ -135,7 +135,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
         if (replacements != null) {
           invokeAndWaitIfNeeded {
             runWriteAction {
-              if (stamp == document.modificationStamp) {
+              if (stamp == document.modificationStamp && replacements.replacements != null) {
                 applyReplacementsWithCommand(project, contentAsByteArray, document, replacements)
               }
             }
