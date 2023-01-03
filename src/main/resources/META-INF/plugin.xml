@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
   <id>com.github.aarcangeli.ideaclangformat</id>
-  <name>Clang-Format &amp; Language</name>
+  <name>Clang-Format Tools</name>
   <vendor email="alessandroarcangeli.rm@gmail.com" url="https://github.com/aarcangeli">Alessandro Arcangeli</vendor>
 
   <depends>com.intellij.modules.platform</depends>
