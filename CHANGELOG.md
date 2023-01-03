@@ -4,4 +4,6 @@
 
 ## [Unreleased]
 ### Added
-- Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- Initial formatter implementation (via ExternalFormatProcessor and action override)
+- Language support for `.clang-format` files
+- Detect indentation style and column limit from `.clang-format` file
