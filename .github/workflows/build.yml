@@ -20,6 +20,11 @@ on:
   # Trigger the workflow on any pull request
   pull_request:
 
+# Cancel outdated jobs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   # Run Gradle Wrapper Validation Action to verify the wrapper's checksum
