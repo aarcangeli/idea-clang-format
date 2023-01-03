@@ -29,6 +29,8 @@
     <lang.parserDefinition language="aarcangeli.ClangFormat"
                            implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatParserDefinition"/>
     <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
+    <completion.contributor language="yaml"
+                            implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatCompletionContributor"/>
   </extensions>
 
   <extensions defaultExtensionNs="JavaScript.JsonSchema">
