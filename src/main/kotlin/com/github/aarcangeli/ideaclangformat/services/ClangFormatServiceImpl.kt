@@ -1,6 +1,5 @@
 package com.github.aarcangeli.ideaclangformat.services
 
-import com.github.aarcangeli.ideaclangformat.ClangFormatResponse
 import com.github.aarcangeli.ideaclangformat.MyBundle.message
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
@@ -404,7 +403,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       // no replacements
       return ClangFormatResponse()
     }
-    return ClangFormatResponse.unmarshal(output.stdout)
+    return parseClangFormatResponse(output.stdout)
   }
 
   @Throws(ClangExitCodeError::class)
@@ -473,7 +472,7 @@ $stderr"""
     ApplicationManager.getApplication().assertWriteAccessAllowed()
     val converter = OffsetConverter(content)
     var accumulator = 0
-    for (replacement in replacements.replacements!!) {
+    for (replacement in replacements.replacements) {
       val startOffset = converter.toUtf16(replacement.offset)
       val endOffset = converter.toUtf16(replacement.offset + replacement.length)
       val oldStringLengthUtf16 = endOffset - startOffset

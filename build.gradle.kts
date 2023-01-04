@@ -31,6 +31,10 @@ kotlin {
   jvmToolchain(17)
 }
 
+dependencies {
+  implementation("org.simpleframework:simple-xml:2.7.1")
+}
+
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
   pluginName.set(properties("pluginName"))
