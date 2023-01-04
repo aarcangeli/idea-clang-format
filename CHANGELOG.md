@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixes
 - Replace xml parser from JAXB to simpleframework to avoid references of IDEA internal classes
+- Remove deprecated API usage
 
 ## [0.0.1-beta] - 2023-01-03
 

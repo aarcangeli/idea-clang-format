@@ -16,10 +16,7 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.configurations.PathEnvironmentVariableUtil
 import com.intellij.execution.process.CapturingProcessHandler
 import com.intellij.execution.process.ProcessOutput
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationListener
-import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
+import com.intellij.notification.*
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.*
 import com.intellij.openapi.command.CommandProcessor
@@ -40,6 +37,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.events.*
+import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
@@ -60,7 +58,6 @@ import java.util.*
 import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicReference
 import java.util.regex.Pattern
-import javax.swing.event.HyperlinkEvent
 import kotlin.Pair
 
 private val LOG = Logger.getInstance(ClangFormatServiceImpl::class.java)
@@ -95,7 +92,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     val replacements = computeReplacementsWithProgress(project, virtualFile, content)
 
     // Apply replacements
-    if (replacements.replacements != null && stamp == document.modificationStamp) {
+    if (replacements != null && stamp == document.modificationStamp) {
       applyReplacementsWithCommand(project, content, document, replacements)
     }
 
@@ -154,7 +151,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     project: Project,
     file: VirtualFile,
     content: ByteArray
-  ): ClangFormatResponse {
+  ): ClangFormatResponse? {
     val replacementsRef = Ref<ClangFormatResponse>()
     val fileName = getFileName(file)
     ProgressManager.getInstance().runProcessWithProgressSynchronously({
@@ -196,10 +193,9 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       showFormatError(
         project,
         e.description,
-        fileSmallName
-      ) { _: Notification?, _: HyperlinkEvent? ->
-        e.getFileNavigatable().navigate(true)
-      }
+        fileSmallName,
+        e.getFileNavigatable()
+      )
       null
     }
     catch (e: ClangFormatError) {
@@ -241,12 +237,14 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     project: Project?,
     content: String?,
     fileSmallName: String,
-    listener: NotificationListener?
+    openStyle: Navigatable?
   ) {
     val title = message("error.clang-format.failed", fileSmallName)
     val notification = Notification(ClangFormatService.GROUP_ID, title, content!!, NotificationType.ERROR)
-    if (listener != null) {
-      notification.setListener(listener)
+    if (openStyle != null) {
+      notification.addAction(NotificationAction.createSimple(message("error.clang-format.open.style")) {
+        openStyle.navigate(true)
+      })
     }
     Notifications.Bus.notify(notification, project)
     val oldNotification = errorNotification.getAndSet(notification)
@@ -422,7 +420,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
         val message = matcher.group("Message")
         if (type == "error") {
           val description = """
-                        <a href=open>${fileName.name}:$lineNumber:$column</a>: $message
+                        ${fileName.name}:$lineNumber:$column: $message
                         ${stderr.substring(matcher.group(0).length).trim { it <= ' ' }}
                         """.trimIndent()
           return ClangExitCodeError(
