@@ -1,40 +1,35 @@
 package com.github.aarcangeli.ideaclangformat;
 
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError;
-import com.intellij.openapi.util.NlsSafe;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement(name = "replacements")
+@JacksonXmlRootElement(localName = "replacements")
 public class ClangFormatResponse {
-  static final JAXBContext REPLACEMENTS_CTX;
 
-  static {
+  public static ClangFormatResponse unmarshal(@NotNull String stdout) {
     try {
-      REPLACEMENTS_CTX = JAXBContext.newInstance(ClangFormatResponse.class);
+      XmlMapper xmlMapper = new XmlMapper();
+      return xmlMapper.readValue(stdout, ClangFormatResponse.class);
     }
-    catch (JAXBException e) {
-      throw new RuntimeException("Failed to load JAXB context", e);
+    catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  public static ClangFormatResponse unmarshal(@NotNull @NlsSafe String stdout) {
-    try {
-      // JAXB closes the InputStream.
-      return (ClangFormatResponse) REPLACEMENTS_CTX.createUnmarshaller().unmarshal(new StringReader(stdout));
-    }
-    catch (JAXBException e) {
-      throw new ClangFormatError("Failed to parse clang-format XML replacements\n" + stdout, e);
-    }
-  }
+  @JacksonXmlProperty(localName = "space", isAttribute = true)
+  public String space;
 
-  @XmlElement(name = "replacement")
-  public List<ClangFormatReplacement> replacements;
+  @JacksonXmlProperty(localName = "incomplete_format", isAttribute = true)
+  public boolean incompleteFormat;
+
+  @JacksonXmlProperty(localName = "replacement")
+  @JacksonXmlElementWrapper(useWrapping = false)
+  public final List<ClangFormatReplacement> replacements = new ArrayList<>();
 }
-

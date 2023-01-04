@@ -1,13 +1,15 @@
 package com.github.aarcangeli.ideaclangformat;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
 public class ClangFormatReplacement {
-  @XmlAttribute
+  @JacksonXmlProperty(isAttribute = true)
   public int offset;
-  @XmlAttribute
+
+  @JacksonXmlProperty(isAttribute = true)
   public int length;
-  @XmlValue
+
+  @JacksonXmlText(false)
   public String value;
 }
