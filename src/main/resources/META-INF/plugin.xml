@@ -11,9 +11,10 @@
   <extensions defaultExtensionNs="com.intellij">
     <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
+    <projectService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
+
     <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatService"
                         serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatServiceImpl"/>
-
 
     <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON"/>
 
@@ -25,6 +26,10 @@
               fieldName="INSTANCE"
               fileNames=".clang-format;_clang-format"
               language="aarcangeli.ClangFormat"/>
+
+    <actionOnSave id="aarcangeli.ClangFormatOnSave" implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSave"/>
+    <actionOnSaveInfoProvider id="aarcangeli.ClangFormatOnSaveInfoProvider"
+                              implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSaveInfoProvider"/>
 
     <lang.parserDefinition language="aarcangeli.ClangFormat"
                            implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatParserDefinition"/>
