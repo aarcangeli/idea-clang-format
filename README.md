@@ -20,10 +20,10 @@ This plugin adds support for [clang-format](https://clang.llvm.org/docs/ClangFor
 ## Installation
 
 - Using IDE built-in plugin system:
-  
+
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "idea-clang-format"</kbd> >
   <kbd>Install Plugin</kbd>
-  
+
 - Manually:
 
   Download the [latest release](https://github.com/aarcangeli/idea-clang-format/releases/latest) and install it manually using
