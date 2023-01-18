@@ -69,10 +69,6 @@ tasks {
     gradleVersion = properties("gradleVersion")
   }
 
-  runPluginVerifier {
-    //ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
-  }
-
   patchPluginXml {
     version.set(properties("pluginVersion"))
     sinceBuild.set(properties("pluginSinceBuild"))
@@ -101,6 +97,10 @@ tasks {
         )
       }
     })
+  }
+
+  compileKotlin {
+    kotlinOptions.jvmTarget = "11"
   }
 
   // Configure UI tests plugin
