@@ -1,10 +1,10 @@
-package com.github.aarcangeli.ideaclangformat
+package com.github.aarcangeli.ideaclangformat.experimental
 
-import com.github.aarcangeli.ideaclangformat.MyBundle.message
+import com.github.aarcangeli.ideaclangformat.MyBundle
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
-import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons.isUnconditionallyNotSupported
+import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.CodeStyleBundle
 import com.intellij.application.options.CodeStyle
 import com.intellij.icons.AllIcons
@@ -12,6 +12,7 @@ import com.intellij.ide.actions.ShowSettingsUtilImpl
 import com.intellij.ide.util.PsiNavigationSupport
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -40,7 +41,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     if (!settings.getCustomSettings(ClangFormatSettings::class.java).ENABLED) {
       return false
     }
-    if (isUnconditionallyNotSupported(file)) {
+    if (ClangFormatCommons.isUnconditionallyNotSupported(file)) {
       return false
     }
 
@@ -75,7 +76,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
   }
 
   override fun getName(): @Nls(capitalization = Nls.Capitalization.Title) String {
-    return message("error.clang-format.name")
+    return MyBundle.message("error.clang-format.name")
   }
 
   override fun getStatusBarUiContributor(settings: TransientCodeStyleSettings): CodeStyleStatusBarUIContributor {
@@ -84,7 +85,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
         val builder = HtmlBuilder()
         builder.append(
           HtmlChunk.span("color:" + ColorUtil.toHtmlColor(JBColor.GRAY))
-            .addText(message("error.clang-format.status.hint"))
+            .addText(MyBundle.message("error.clang-format.status.hint"))
         )
         builder
           .append(CodeStyleBundle.message("indent.status.bar.indent.tooltip"))
@@ -111,7 +112,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       }
 
       override fun getHint(): String {
-        return message("error.clang-format.status.hint")
+        return MyBundle.message("error.clang-format.status.hint")
       }
 
       override fun areActionsAvailable(file: VirtualFile): Boolean {
@@ -127,7 +128,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       }
 
       override fun createDisableAction(project: Project): AnAction {
-        return DumbAwareAction.create(message("clang-format.disable")) {
+        return DumbAwareAction.create(MyBundle.message("clang-format.disable")) {
           val currentSettings = CodeStyle.getSettings(project).getCustomSettings(ClangFormatSettings::class.java)
           currentSettings.ENABLED = false
           CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
@@ -144,7 +145,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
 
   private class ClangFormatDisabledNotification(project: Project) : Notification(
     ClangFormatService.GROUP_ID,
-    message("clang-format.disabled.notification"),
+    MyBundle.message("clang-format.disabled.notification"),
     "",
     NotificationType.INFORMATION
   ) {
@@ -177,7 +178,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
 
   private class OpenClangConfigAction : AnAction(), DumbAware {
     override fun update(e: AnActionEvent) {
-      e.presentation.text = message("error.clang-format.status.open")
+      e.presentation.text = MyBundle.message("error.clang-format.status.open")
       e.presentation.isEnabled = isEnabled(e)
     }
 
@@ -200,6 +201,10 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
           PsiNavigationSupport.getInstance().createNavigatable(project, styleFile, -1).navigate(true)
         }
       }
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+      return ActionUpdateThread.BGT
     }
   }
 

@@ -3,10 +3,7 @@ package com.github.aarcangeli.ideaclangformat.actions
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.codeInsight.actions.ReformatCodeAction
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.OverridingAction
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 
@@ -52,5 +49,9 @@ class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction()
       ClangFormatCommons.getVirtualFileFor(project, editor.document) != null
     }
     else false
+  }
+
+  override fun getActionUpdateThread(): ActionUpdateThread {
+    return ActionUpdateThread.BGT
   }
 }

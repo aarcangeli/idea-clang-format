@@ -1,7 +1,7 @@
 package com.github.aarcangeli.ideaclangformat.ui
 
 import com.github.aarcangeli.ideaclangformat.MyBundle
-import com.github.aarcangeli.ideaclangformat.ClangFormatSettings
+import com.github.aarcangeli.ideaclangformat.experimental.ClangFormatSettings
 import com.intellij.application.options.GeneralCodeStyleOptionsProvider
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettingsProvider

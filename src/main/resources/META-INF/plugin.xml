@@ -46,7 +46,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <codeStyleSettingsModifier
       id="aarcangeli.ClangFormatStyleSettingsModifier"
-      implementation="com.github.aarcangeli.ideaclangformat.ClangFormatStyleSettingsModifier"/>
-    <externalFormatProcessor implementation="com.github.aarcangeli.ideaclangformat.ClangFormatExternalFormatProcessor"/>
+      implementation="com.github.aarcangeli.ideaclangformat.experimental.ClangFormatStyleSettingsModifier"/>
+    <externalFormatProcessor implementation="com.github.aarcangeli.ideaclangformat.experimental.ClangFormatExternalFormatProcessor"/>
   </extensions>
 </idea-plugin>

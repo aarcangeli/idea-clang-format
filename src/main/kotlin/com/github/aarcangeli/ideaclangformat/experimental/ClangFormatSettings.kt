@@ -1,4 +1,4 @@
-package com.github.aarcangeli.ideaclangformat
+package com.github.aarcangeli.ideaclangformat.experimental
 
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings

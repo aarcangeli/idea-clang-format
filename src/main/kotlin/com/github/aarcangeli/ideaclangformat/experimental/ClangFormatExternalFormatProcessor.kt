@@ -1,4 +1,4 @@
-package com.github.aarcangeli.ideaclangformat
+package com.github.aarcangeli.ideaclangformat.experimental
 
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.openapi.components.service
@@ -13,16 +13,16 @@ class ClangFormatExternalFormatProcessor : ExternalFormatProcessor {
   }
 
   override fun format(
-    source: PsiFile,
-    range: TextRange,
-    canChangeWhiteSpacesOnly: Boolean,
-    keepLineBreaks: Boolean,
-    enableBulkUpdate: Boolean,
-    cursorOffset: Int
+      source: PsiFile,
+      range: TextRange,
+      canChangeWhiteSpacesOnly: Boolean,
+      keepLineBreaks: Boolean,
+      enableBulkUpdate: Boolean,
+      cursorOffset: Int
   ): TextRange? {
     val virtualFile = source.originalFile.virtualFile
     if (virtualFile != null) {
-      ProgressManager.checkCanceled()
+        ProgressManager.checkCanceled()
       service<ClangFormatService>().reformatFileSync(source.project, virtualFile)
       return range
     }
