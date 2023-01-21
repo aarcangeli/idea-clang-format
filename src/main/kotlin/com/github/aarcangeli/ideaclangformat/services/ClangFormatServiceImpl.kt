@@ -69,7 +69,6 @@ private const val BULK_REPLACE_OPTIMIZATION_CRITERIA = 1000
 
 class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private val errorNotification = AtomicReference<Notification?>()
-  private val wasClangFormatSupported = Key.create<Boolean>("WAS_CLANG_FORMAT_SUPPORTED")
   private val afterWriteActionFinished = ContainerUtil.createLockFreeCopyOnWriteList<Runnable>()
   private val cache: MutableMap<VirtualFile, List<VirtualFile>> = FixedHashMap(100)
 
@@ -340,21 +339,16 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     }
     if (getStyleFile(virtualFile) == null) {
       // no ".clang-format" file found.
-      // this is not a real issue for clang-format, but when no format is provided
-      // the editor shouldn't modify the appearance with llvm's default settings
-      file.putUserData(wasClangFormatSupported, null)
       return false
     }
     val formatStyle = try {
       getRawFormatStyle(file)
     }
     catch (e: ClangExitCodeError) {
-      // the configuration is (maybe temporary) broken. We reuse the answer of last invocation until the configuration is fixed
-      return java.lang.Boolean.TRUE == file.getUserData(wasClangFormatSupported)
+      // the configuration file contains errors
+      return true
     }
     catch (e: ClangFormatError) {
-      // the configuration is broken or the file language is not supported in ".clang-format"
-      file.putUserData(wasClangFormatSupported, null)
       return false
     }
     val language = formatStyle["Language"]
@@ -363,11 +357,9 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       // for clang, Cpp is a fallback for any file.
       // we must ensure that the file is really c++
       if (!ClangFormatCommons.isCppFile(file)) {
-        file.putUserData(wasClangFormatSupported, null)
         return false
       }
     }
-    file.putUserData(wasClangFormatSupported, true)
     return true
   }
 
