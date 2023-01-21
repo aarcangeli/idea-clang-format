@@ -16,6 +16,9 @@
     <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatService"
                         serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatServiceImpl"/>
 
+    <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleService"
+                        serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleServiceImpl"/>
+
     <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON"/>
 
     <generalCodeStyleOptionsProvider instance="com.github.aarcangeli.ideaclangformat.ui.ClangFormatConfigurable"/>

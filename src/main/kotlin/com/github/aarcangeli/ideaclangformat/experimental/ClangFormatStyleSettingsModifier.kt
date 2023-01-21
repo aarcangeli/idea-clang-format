@@ -4,6 +4,7 @@ import com.github.aarcangeli.ideaclangformat.MyBundle
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
+import com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleService
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.CodeStyleBundle
 import com.intellij.application.options.CodeStyle
@@ -46,7 +47,9 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     }
 
     val formatService = service<ClangFormatService>()
-    settings.addDependency(formatService.makeDependencyTracker(file))
+    val formatStyleService = service<ClangFormatStyleService>()
+
+    settings.addDependency(formatStyleService.makeDependencyTracker(file))
 
     if (!formatService.mayBeFormatted(file)) {
       // clang format disabled for this file
@@ -55,7 +58,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     }
 
     try {
-      val clangFormatStyle = ClangFormatStyle(formatService.getRawFormatStyle(file))
+      val clangFormatStyle = ClangFormatStyle(formatStyleService.getRawFormatStyle(file))
       file.putUserData(LAST_PROVIDED_SETTINGS, clangFormatStyle)
       clangFormatStyle.apply(settings)
       return true
@@ -186,7 +189,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       val project = e.project
       val virtualFile = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE)
       if (project != null && virtualFile != null) {
-        val styleFile: VirtualFile? = service<ClangFormatService>().getStyleFile(virtualFile)
+        val styleFile: VirtualFile? = service<ClangFormatStyleService>().getStyleFile(virtualFile)
         return styleFile != null
       }
       return false
@@ -196,7 +199,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       val project = e.project
       val virtualFile = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE)
       if (project != null && virtualFile != null) {
-        val styleFile: VirtualFile? = service<ClangFormatService>().getStyleFile(virtualFile)
+        val styleFile: VirtualFile? = service<ClangFormatStyleService>().getStyleFile(virtualFile)
         if (styleFile != null) {
           PsiNavigationSupport.getInstance().createNavigatable(project, styleFile, -1).navigate(true)
         }
