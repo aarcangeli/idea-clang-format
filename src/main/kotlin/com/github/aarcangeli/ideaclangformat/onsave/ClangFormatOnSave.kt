@@ -3,7 +3,6 @@ package com.github.aarcangeli.ideaclangformat.onsave
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.ide.actionsOnSave.impl.ActionsOnSaveFileDocumentManagerListener.ActionOnSave
-import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -22,9 +21,7 @@ class ClangFormatOnSave : ActionOnSave() {
       val virtualFile = fileDocumentManager.getFile(document) ?: continue
       val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: continue
       if (service<ClangFormatService>().mayBeFormatted(psiFile)) {
-        runWriteAction {
-          service<ClangFormatService>().reformatFileSync(project, virtualFile)
-        }
+        service<ClangFormatService>().reformatFileSync(project, virtualFile)
       }
     }
   }

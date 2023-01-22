@@ -54,6 +54,9 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   }
 
   override fun reformatFileSync(project: Project, virtualFile: VirtualFile) {
+    // remove last error notification
+    clearLastNotification()
+
     val document = FileDocumentManager.getInstance().getDocument(virtualFile) ?: return
     if (!ensureModifiable(project, virtualFile, document)) {
       return
@@ -68,14 +71,16 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
 
     // Apply replacements
     if (replacements != null && stamp == document.modificationStamp) {
-      applyReplacementsWithCommand(project, content, document, replacements)
+      runWriteAction {
+        applyReplacementsWithCommand(project, content, document, replacements)
+      }
     }
-
-    // remove last error notification
-    clearLastNotification()
   }
 
   override fun reformatInBackground(project: Project, virtualFile: VirtualFile) {
+    // remove last error notification
+    clearLastNotification()
+
     val document = FileDocumentManager.getInstance().getDocument(virtualFile) ?: return
     if (!ensureModifiable(project, virtualFile, document)) {
       return
