@@ -19,3 +19,6 @@ ij_formatter_tags_enabled = true
 
 [*.py]
 indent_size = 4
+
+[build.gradle.kts]
+indent_size = 4
