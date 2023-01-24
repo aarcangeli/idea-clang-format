@@ -5,11 +5,11 @@
 ## [Unreleased]
 ### Changed
 - Change icon
+- Update template to [1.4.0](https://github.com/JetBrains/intellij-platform-plugin-template/releases/tag/v1.4.0)
 ### Fixes
 - Remove deprecated API usage
 
 ## [0.0.1-beta] - 2023-01-03
-
 ### Added
 - Initial formatter implementation (via ExternalFormatProcessor and action override)
 - Language support for `.clang-format` files
