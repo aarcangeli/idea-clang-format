@@ -21,8 +21,8 @@
 
     <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON"/>
 
-    <generalCodeStyleOptionsProvider instance="com.github.aarcangeli.ideaclangformat.ui.ClangFormatConfigurable"/>
-    <codeStyleSettingsProvider implementation="com.github.aarcangeli.ideaclangformat.ui.ClangFormatConfigurable"/>
+    <generalCodeStyleOptionsProvider instance="com.github.aarcangeli.ideaclangformat.configurable.ClangFormatConfigurable"/>
+    <codeStyleSettingsProvider implementation="com.github.aarcangeli.ideaclangformat.configurable.ClangFormatConfigurable"/>
 
     <fileType name="ClangFormatStyle"
               implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatFileType"
