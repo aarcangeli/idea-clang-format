@@ -177,6 +177,7 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
         val commandLine = ClangFormatCommons.createCompileCommand(clangFormat.path)
         commandLine.addParameter("--dump-config")
         commandLine.addParameter("-assume-filename=" + getFileName(virtualFile))
+        LOG.info("Running command: " + commandLine.commandLineString)
         val programOutput = ProcessUtils.executeProgram(commandLine)
         if (programOutput.exitCode != 0) {
           throw ClangFormatCommons.getException(psiFile.project, commandLine, programOutput)

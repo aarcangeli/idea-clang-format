@@ -29,7 +29,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.newvfs.events.*
 import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiFile
-import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.DocumentUtil
 import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.containers.ContainerUtil
@@ -64,16 +63,13 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
 
     // save all ".clang-format"
     saveAllClangFormatFiles()
-    val stamp = document.modificationStamp
     val content = ReadAction.compute<String, RuntimeException> { document.text }
       .toByteArray(StandardCharsets.UTF_8)
     val replacements = computeReplacementsWithProgress(project, virtualFile, content)
 
     // Apply replacements
-    if (replacements != null && stamp == document.modificationStamp) {
-      runWriteAction {
-        applyReplacementsWithCommand(project, content, document, replacements)
-      }
+    if (replacements != null) {
+      applyReplacementsWithCommand(project, content, document, replacements)
     }
   }
 
@@ -91,8 +87,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
 
     // Read the file content
     val stamp = document.modificationStamp
-    val fileName = getFileName(virtualFile)
-    val content = ReadAction.compute<String, RuntimeException> { document.text }
+    val fileName = ClangFormatCommons.getFileName(virtualFile)
+    val content = runReadAction { document.immutableCharSequence }
 
     runTaskAsync(project) { indicator ->
       // cancel the operation if the document is changed
@@ -103,7 +99,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
         }
       }
 
-      val contentAsByteArray = content.toByteArray(StandardCharsets.UTF_8)
+      val contentAsByteArray = content.toString().toByteArray()
 
       try {
         afterWriteActionFinished.add(canceller)
@@ -133,7 +129,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     content: ByteArray
   ): ClangFormatResponse? {
     val replacementsRef = Ref<ClangFormatResponse>()
-    val fileName = getFileName(file)
+    val fileName = ClangFormatCommons.getFileName(file)
     ProgressManager.getInstance().runProcessWithProgressSynchronously({
       replacementsRef.set(
         computeReplacementsWithError(
@@ -216,13 +212,11 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       })
     }
     Notifications.Bus.notify(notification, project)
-    val oldNotification = errorNotification.getAndSet(notification)
-    oldNotification?.expire()
+    errorNotification.getAndSet(notification)?.expire()
   }
 
   private fun clearLastNotification() {
-    val oldNotification = errorNotification.getAndSet(null)
-    oldNotification?.expire()
+    errorNotification.getAndSet(null)?.expire()
   }
 
   @get:Throws(ClangFormatError::class)
@@ -261,7 +255,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       return false
     }
     val language = formatStyle["Language"]
-    val languageStr = language?.toString()?.trim { it <= ' ' } ?: ""
+    val languageStr = language?.toString()?.trim()
     if (languageStr == "Cpp") {
       // for clang, Cpp is a fallback for any file.
       // we must ensure that the file is really c++
@@ -279,6 +273,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     val commandLine = ClangFormatCommons.createCompileCommand(clangFormatPath)
     commandLine.addParameter("-output-replacements-xml")
     commandLine.addParameter("-assume-filename=$filename")
+    LOG.info("Running command: " + commandLine.commandLineString)
     val output = ProcessUtils.executeProgram(commandLine, content)
     if (output.exitCode != 0) {
       LOG.warn(commandLine.exePath + " exited with code " + output.exitCode)
@@ -298,17 +293,19 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     document: Document,
     replacements: ClangFormatResponse
   ) {
-    CommandProcessor.getInstance().executeCommand(project, {
-      val executeInBulk =
-        document.isInBulkUpdate || replacements.replacements.size > BULK_REPLACE_OPTIMIZATION_CRITERIA
-      DocumentUtil.executeInBulk(document, executeInBulk) {
-        applyAllReplacements(
-          content,
-          document,
-          replacements
-        )
-      }
-    }, message("error.clang-format.command.name"), null, document)
+    runWriteAction {
+      CommandProcessor.getInstance().executeCommand(project, {
+        val executeInBulk =
+          document.isInBulkUpdate || replacements.replacements.size > BULK_REPLACE_OPTIMIZATION_CRITERIA
+        DocumentUtil.executeInBulk(document, executeInBulk) {
+          applyAllReplacements(
+            content,
+            document,
+            replacements
+          )
+        }
+      }, message("error.clang-format.command.name"), null, document)
+    }
   }
 
   /**
@@ -344,19 +341,6 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       for (cancellation in afterWriteActionFinished) {
         cancellation.run()
       }
-    }
-  }
-
-  companion object {
-    private fun getFileName(virtualFile: VirtualFile): String {
-      var it = virtualFile
-      if (it is LightVirtualFile) {
-        it = it.originalFile
-      }
-      if (it.isInLocalFileSystem) {
-        return it.path
-      }
-      return virtualFile.name
     }
   }
 }

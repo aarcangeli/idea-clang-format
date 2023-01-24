@@ -16,6 +16,7 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.intellij.testFramework.LightVirtualFile
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.util.regex.Pattern
@@ -86,7 +87,7 @@ object ClangFormatCommons {
         // in case of overflow
       }
     }
-    if (stderr.trim { it <= ' ' }.isEmpty()) {
+    if (stderr.trim().isEmpty()) {
       // nothing on stderr, we use stdout instead
       stderr = output.stdout
     }
@@ -124,5 +125,16 @@ object ClangFormatCommons {
       }
     }
     return documents.toTypedArray()
+  }
+
+  fun getFileName(virtualFile: VirtualFile): String {
+    var it = virtualFile
+    if (it is LightVirtualFile) {
+      it = it.originalFile
+    }
+    if (it.isInLocalFileSystem) {
+      return it.path
+    }
+    return virtualFile.name
   }
 }

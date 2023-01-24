@@ -30,25 +30,17 @@ class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction()
   private fun handleAction(event: AnActionEvent): Boolean {
     val dataContext = event.dataContext
     val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return false
-    val editor = CommonDataKeys.EDITOR.getData(dataContext)
-    if (editor != null) {
-      val virtualFile = ClangFormatCommons.getVirtualFileFor(project, editor.document)
-      if (virtualFile != null) {
-        service<ClangFormatService>().reformatInBackground(project, virtualFile)
-        return true
-      }
-    }
-    return false
+    val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return false
+    val virtualFile = ClangFormatCommons.getVirtualFileFor(project, editor.document) ?: return false
+    service<ClangFormatService>().reformatInBackground(project, virtualFile)
+    return true
   }
 
   private fun isManaged(event: AnActionEvent): Boolean {
     val dataContext = event.dataContext
     val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return false
-    val editor = CommonDataKeys.EDITOR.getData(dataContext)
-    return if (editor != null) {
-      ClangFormatCommons.getVirtualFileFor(project, editor.document) != null
-    }
-    else false
+    val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return false
+    return ClangFormatCommons.getVirtualFileFor(project, editor.document) != null
   }
 
   override fun getActionUpdateThread(): ActionUpdateThread {
