@@ -10,10 +10,10 @@
 This plugin adds support for [clang-format](https://clang.llvm.org/docs/ClangFormat.html) to all JetBrains IDEs.
 
 ## Features
+- `.clang-format` file support with completion and documentation
 - Format code using clang-format
 - Automatically format code on save (via project settings)
-- `.clang-format` file support with completion and documentation
-- Automatically detects indentation style and column limit from `.clang-format` file
+- Automatically detects indentation style and column limit from `.clang-format` file (note that .editorconfig has the precedence)
 
 <!-- Plugin description end -->
 
