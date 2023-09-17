@@ -15,7 +15,7 @@ class ClangFormatFileType private constructor() : LanguageFileType(ClangFormatLa
   }
 
   override fun getDefaultExtension(): String {
-    return ".clang-format"
+    return "clang-format"
   }
 
   override fun getIcon(): Icon {

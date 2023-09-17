@@ -1,71 +1,51 @@
 package com.github.aarcangeli.ideaclangformat.configurable
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.github.aarcangeli.ideaclangformat.services.ClangFormatInstallationManager
+import com.intellij.icons.AllIcons
+import com.intellij.openapi.components.service
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.ColoredListCellRenderer
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-import javax.swing.JComboBox
+import com.intellij.util.ui.JBUI
 import javax.swing.JList
-import javax.swing.JPanel
 
-private const val url = "https://pypi.org/pypi/clang-format/json"
 
-private val objectMapper = ObjectMapper()
-  .registerKotlinModule()
-  .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-class ClangFormatVersionComboBox : JPanel() {
-  private val comboBox = MyComboBox()
-
+class ClangFormatVersionComboBox : ComboBox<Any>() {
   init {
-    comboBox.renderer = MyCellRenderer()
-    add(comboBox)
+    // enable speed search
+    isSwingPopup = false
+    renderer = MyCellRenderer()
+    setMinimumAndPreferredWidth(JBUI.scale(300))
     updateComboBox()
-
-    downloadReleaseList()
   }
 
   private fun updateComboBox() {
-    comboBox.removeAllItems()
-    comboBox.addItem("1.0")
-    comboBox.addItem("2.0")
-    comboBox.addItem("3.0")
-  }
-
-  private fun downloadReleaseList() {
-    // download versions from pypi
-    val response = HttpClient.newBuilder()
-      .build()
-      .send(
-        HttpRequest.newBuilder()
-          .uri(URI.create(url))
-          .build(), HttpResponse.BodyHandlers.ofString()
-      )
-    val versionsJson = response.body()
-    val versions = objectMapper.readTree(versionsJson)
-    versions["releases"].fieldNames().forEachRemaining {
-      comboBox.addItem(it)
+    removeAllItems()
+    service<ClangFormatInstallationManager>().getReleaseList().forEach {
+      addItem(it.version)
     }
+    addItem(DownloadRelease())
   }
 
   private class MyCellRenderer : ColoredListCellRenderer<Any>() {
     override fun customizeCellRenderer(list: JList<out Any>, value: Any?, index: Int, selected: Boolean, hasFocus: Boolean) {
-      append("Version $value")
+      if (value is String) {
+        append("Version $value")
+      }
+      else if (value is DownloadRelease) {
+        append("Download...")
+        icon = AllIcons.Actions.Download
+      }
     }
   }
 
-  private class MyComboBox : JComboBox<Any>() {
-    override fun setSelectedItem(anObject: Any?) {
-      //if (anObject is UnrealEngineInstallation) {
-      //  super.setSelectedItem(anObject)
-      //}
-      //else if (anObject is AddSdkAction) {
-      //  addSdk()
-      //}
-    }
+  override fun setSelectedItem(anObject: Any?) {
+    //if (anObject is UnrealEngineInstallation) {
+    //  super.setSelectedItem(anObject)
+    //}
+    //else if (anObject is AddSdkAction) {
+    //  addSdk()
+    //}
   }
+
+  class DownloadRelease
 }

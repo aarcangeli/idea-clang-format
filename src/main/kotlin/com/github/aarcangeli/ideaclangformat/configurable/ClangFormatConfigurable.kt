@@ -32,8 +32,8 @@ class ClangFormatConfigurable : CodeStyleSettingsProvider(), GeneralCodeStyleOpt
           val fileChooserDescriptor = FileChooserDescriptor(true, false, false, false, false, false)
           textFieldWithBrowseButton(MyBundle.message("clang-format.config.path"), fileChooserDescriptor = fileChooserDescriptor)
             .horizontalAlign(HorizontalAlign.FILL)
-          button(MyBundle.message("clang-format.config.path.test")) {
-          }
+          //button(MyBundle.message("clang-format.config.path.test")) {
+          //}
         }
       }
     }
