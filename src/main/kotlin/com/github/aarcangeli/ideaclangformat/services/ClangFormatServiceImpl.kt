@@ -1,5 +1,6 @@
 package com.github.aarcangeli.ideaclangformat.services
 
+import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle.message
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
@@ -54,7 +55,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
 
   override fun reformatFileSync(project: Project, virtualFile: VirtualFile) {
     // remove last error notification
-    clearLastNotification()
+    clearErrorNotification()
 
     val document = FileDocumentManager.getInstance().getDocument(virtualFile) ?: return
     if (!ensureModifiable(project, virtualFile, document)) {
@@ -75,7 +76,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
 
   override fun reformatInBackground(project: Project, virtualFile: VirtualFile) {
     // remove last error notification
-    clearLastNotification()
+    clearErrorNotification()
 
     val document = FileDocumentManager.getInstance().getDocument(virtualFile) ?: return
     if (!ensureModifiable(project, virtualFile, document)) {
@@ -215,7 +216,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     errorNotification.getAndSet(notification)?.expire()
   }
 
-  private fun clearLastNotification() {
+  override fun clearErrorNotification() {
     errorNotification.getAndSet(null)?.expire()
   }
 
@@ -234,6 +235,9 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   }
 
   override fun mayBeFormatted(file: PsiFile): Boolean {
+    if (!service<ClangFormatConfig>().state.enabled) {
+      return false
+    }
     val virtualFile = file.originalFile.virtualFile
     if (ClangFormatCommons.isUnconditionallyNotSupported(virtualFile)) {
       // invalid virtual file
@@ -252,7 +256,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       return true
     }
     catch (e: ClangFormatError) {
-      return false
+      // A generic error is considered as valid, so we can notify the user
+      return true
     }
     val language = formatStyle["Language"]
     val languageStr = language?.toString()?.trim()

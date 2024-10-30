@@ -1,32 +1,25 @@
 package com.github.aarcangeli.ideaclangformat
 
-import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.State
-import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.StoragePathMacros
+import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.intellij.util.xmlb.annotations.Property
+import com.jetbrains.rd.generator.nova.PredefinedType
+import org.jetbrains.debugger.values.PrimitiveValue.Companion.bool
 
-@State(name = "ClangFormatConfig", storages = [(Storage(StoragePathMacros.WORKSPACE_FILE))])
-class ClangFormatConfig(private val project: Project) : PersistentStateComponent<ClangFormatConfig.State> {
+/**
+ * Application-wide configuration for the ClangFormat plugin.
+ */
+@State(name = "ClangFormatConfig", storages = [(Storage("clang-format.xml"))])
+class ClangFormatConfig : SimplePersistentStateComponent<ClangFormatConfig.State>(State()) {
 
-  private var state = State()
+  class State : BaseState() {
+    var enabled by property(true)
 
-  fun isFormatOnSaveEnabled(): Boolean {
-    return state.formatOnSaveEnabled
+    var formatOnSave by property(false)
+
+    /// The path to the clang-format executable.
+    /// If null, the plugin will try to find it in the PATH.
+    var path by string()
   }
-
-  fun setFormatOnSaveEnabled(enabled: Boolean) {
-    state.formatOnSaveEnabled = enabled
-  }
-
-  override fun getState(): State {
-    return state
-  }
-
-  override fun loadState(state: State) {
-    this.state = state
-  }
-
-  data class State(@Property var formatOnSaveEnabled: Boolean = false)
 }

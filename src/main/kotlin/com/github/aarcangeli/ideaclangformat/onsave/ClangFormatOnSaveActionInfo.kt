@@ -6,15 +6,17 @@ import com.intellij.ide.actionsOnSave.ActionOnSaveContext
 import com.intellij.ide.actionsOnSave.ActionOnSaveInfo
 import com.intellij.openapi.components.service
 
+
 class ClangFormatOnSaveActionInfo(context: ActionOnSaveContext) : ActionOnSaveInfo(context) {
-  private var isFormatOnSaveEnabled: Boolean = context.project.service<ClangFormatConfig>().isFormatOnSaveEnabled()
+  private val settings = service<ClangFormatConfig>().state
+  private var isFormatOnSaveEnabled: Boolean = settings.formatOnSave
 
   override fun apply() {
-    context.project.service<ClangFormatConfig>().setFormatOnSaveEnabled(isFormatOnSaveEnabled)
+    settings.formatOnSave = isFormatOnSaveEnabled
   }
 
   override fun isModified(): Boolean {
-    return isFormatOnSaveEnabled != context.project.service<ClangFormatConfig>().isFormatOnSaveEnabled()
+    return isFormatOnSaveEnabled != settings.formatOnSave
   }
 
   override fun getActionOnSaveName(): String {

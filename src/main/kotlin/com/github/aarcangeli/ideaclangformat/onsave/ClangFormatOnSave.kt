@@ -11,7 +11,7 @@ import com.intellij.psi.PsiDocumentManager
 
 class ClangFormatOnSave : ActionOnSave() {
   override fun isEnabledForProject(project: Project): Boolean {
-    return project.service<ClangFormatConfig>().isFormatOnSaveEnabled()
+    return service<ClangFormatConfig>().state.formatOnSave
   }
 
   override fun processDocuments(project: Project, documents: Array<Document?>) {

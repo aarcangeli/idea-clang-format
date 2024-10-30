@@ -8,7 +8,9 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 
 /**
- * This action is faster than the original [ReformatCodeAction] when used with a single file.
+ * This action is a little faster than the original [ReformatCodeAction] when used with a single file.
+ * This uses an asynchronous reformatting process, so it doesn't block the UI.
+ * The alternative way is [ClangFormatExternalFormatProcessor], which is synchronous and blocks the UI.
  */
 class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction(), DumbAware, OverridingAction {
   init {

@@ -1,6 +1,8 @@
 package com.github.aarcangeli.ideaclangformat.experimental
 
+import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle
+import com.github.aarcangeli.ideaclangformat.configurable.AppConfigurable
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
@@ -38,8 +40,10 @@ import org.jetbrains.annotations.Nls
 import javax.swing.Icon
 
 class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
+  val stateConfig = service<ClangFormatConfig>().state
+
   override fun modifySettings(settings: TransientCodeStyleSettings, file: PsiFile): Boolean {
-    if (!settings.getCustomSettings(ClangFormatSettings::class.java).ENABLED) {
+    if (!stateConfig.enabled) {
       return false
     }
     if (ClangFormatCommons.isUnconditionallyNotSupported(file)) {
@@ -132,8 +136,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
 
       override fun createDisableAction(project: Project): AnAction {
         return DumbAwareAction.create(MyBundle.message("clang-format.disable")) {
-          val currentSettings = CodeStyle.getSettings(project).getCustomSettings(ClangFormatSettings::class.java)
-          currentSettings.ENABLED = false
+          stateConfig.enabled = false
           CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
           ClangFormatDisabledNotification(project).notify(project)
         }
@@ -163,11 +166,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     private val myNotification: Notification
   ) : DumbAwareAction(ApplicationBundle.message("code.style.indent.provider.notification.re.enable")) {
     override fun actionPerformed(e: AnActionEvent) {
-      val rootSettings = CodeStyle.getSettings(myProject)
-      val settings = rootSettings.getCustomSettings(
-        ClangFormatSettings::class.java
-      )
-      settings.ENABLED = true
+      service<ClangFormatConfig>().state.enabled = true
       CodeStyleSettingsManager.getInstance(myProject).notifyCodeStyleSettingsChanged()
       myNotification.expire()
     }

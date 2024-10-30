@@ -15,6 +15,7 @@ interface ClangFormatService {
    * The file must also be with a matching language.
    * The result of this value may be cached using the tracker returned by "makeDependencyTracker"
    *
+   * @throws ClangFormatError if an error occurs while checking the file
    * @return
    */
   fun mayBeFormatted(file: PsiFile): Boolean
@@ -33,6 +34,11 @@ interface ClangFormatService {
    */
   @RequiresEdt
   fun reformatInBackground(project: Project, virtualFile: VirtualFile)
+
+  /**
+   * Remove the last notification displayed by the service.
+   */
+  fun clearErrorNotification()
 
   companion object {
     const val GROUP_ID = "aarcangeli.notification.ClangFormat"

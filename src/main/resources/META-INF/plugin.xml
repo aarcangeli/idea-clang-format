@@ -9,9 +9,14 @@
 
   <resource-bundle>messages.ClangFormatBundle</resource-bundle>
   <extensions defaultExtensionNs="com.intellij">
+
+    <!-- Error handler so the user can easly open an issue on github when something goes wrong -->
     <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
-    <projectService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
+    <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
+
+    <applicationService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
+    <applicationSettings serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
 
     <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatService"
                         serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatServiceImpl"/>
@@ -21,22 +26,27 @@
 
     <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON"/>
 
-    <generalCodeStyleOptionsProvider instance="com.github.aarcangeli.ideaclangformat.ui.ClangFormatConfigurable"/>
-    <codeStyleSettingsProvider implementation="com.github.aarcangeli.ideaclangformat.ui.ClangFormatConfigurable"/>
-
-    <fileType name="ClangFormatStyle"
-              implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatFileType"
-              fieldName="INSTANCE"
-              fileNames=".clang-format;_clang-format"
-              language="aarcangeli.ClangFormat"/>
+    <!-- Set a configuration under "Languages & Frameworks | Clang-Format Tools" -->
+    <applicationConfigurable id="aarcangeli.ideaclangformat.appconfig" parentId="language"
+                             instance="com.github.aarcangeli.ideaclangformat.configurable.AppConfigurable"
+                             displayName="Clang-Format Tools"/>
 
     <actionOnSave id="aarcangeli.ClangFormatOnSave" implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSave"/>
     <actionOnSaveInfoProvider id="aarcangeli.ClangFormatOnSaveInfoProvider"
                               implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSaveInfoProvider"/>
 
+  </extensions>
+
+
+  <!-- BEGIN .clang-format language support -->
+  <extensions defaultExtensionNs="com.intellij">
+    <fileType name="ClangFormatStyle"
+              implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatFileType"
+              fieldName="INSTANCE"
+              fileNames=".clang-format;_clang-format"
+              language="aarcangeli.ClangFormat"/>
     <lang.parserDefinition language="aarcangeli.ClangFormat"
                            implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatParserDefinition"/>
-    <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
     <completion.contributor language="yaml"
                             implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatCompletionContributor"/>
   </extensions>
@@ -44,6 +54,7 @@
   <extensions defaultExtensionNs="JavaScript.JsonSchema">
     <ProviderFactory implementation="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaProviderFactory"/>
   </extensions>
+  <!-- END .clang-format language support -->
 
   <!-- Experimental apis-->
   <extensions defaultExtensionNs="com.intellij">
