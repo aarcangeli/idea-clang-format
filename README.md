@@ -4,6 +4,8 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![codecov](https://codecov.io/github/aarcangeli/idea-clang-format/branch/main/graph/badge.svg?token=R9GW965X3Y)](https://codecov.io/github/aarcangeli/idea-clang-format)
+![Static Badge](https://img.shields.io/badge/Get%20from%20Marketplace-blue?link=https%3A%2F%2Fplugins.jetbrains.com%2Fplugin%2F20785-clang-format-tools)
+
 
 <!-- Plugin description -->
 

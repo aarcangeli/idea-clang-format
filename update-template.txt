@@ -1,3 +1,5 @@
+Tips to update the plugin from template (intellij-platform-plugin-template)
+
 LAST_PULL_COMMIT=98cba4ff3176dbc83b800190a74559c594f8d772
 git remote add template git@github.com:JetBrains/intellij-platform-plugin-template.git
 git fetch template
@@ -8,4 +10,3 @@ git diff $LAST_PULL_COMMIT template/main > diff.patch
 
 # Double check the diff before committing
 git diff HEAD template/main
-

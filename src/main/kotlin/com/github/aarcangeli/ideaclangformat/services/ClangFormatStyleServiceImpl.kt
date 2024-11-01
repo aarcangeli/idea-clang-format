@@ -280,4 +280,3 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     }
   }
 }
-

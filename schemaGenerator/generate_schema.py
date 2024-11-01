@@ -1,21 +1,32 @@
 #!/usr/bin/env python
+import argparse
 import io
 import json
 import re
 import urllib.request
 from pathlib import Path
 
-from dump_format_style import OptionsReader, Option
+from clang.dump_format_style import (
+    OptionsReader,
+    Option,
+    NestedEnum,
+    NestedField,
+    NestedStruct,
+    Enum,
+)
 
 # Generates "clangFormat-options.json" from clang-format.
 # Should be run for every llvm update.
 # Based on dump_format_style.py
 
-CLANG_BRANCH = "main"
-PROJECT_ROOT = Path(__file__).parent.parent
-
-OUTPUT_FILE = str(PROJECT_ROOT / "src/main/resources/schemas/clangFormat-options.json")
+# Update the CLANG_BRANCH to the latest version
+CLANG_BRANCH = "release/19.x"
 CLANG_ROOT = f"https://raw.githubusercontent.com/llvm/llvm-project/{CLANG_BRANCH}/clang"
+
+PROJECT_ROOT = Path(__file__).parent.parent
+OUTPUT_FILE = str(PROJECT_ROOT / "src/main/resources/schemas/clangFormat-options.json")
+
+PARAGRAPH_BEGIN = "<p style='margin-top:5px'>"
 
 
 def download_file(url, file_name):
@@ -23,72 +34,161 @@ def download_file(url, file_name):
     urllib.request.urlretrieve(url, file_name)
 
 
-def remove_doxygen(text):
-    text = re.sub(r'<tt>\s*(.*?)\s*<\/tt>', r'\1', text)
-    text = re.sub(r'\\c ([^ ,;\.]+)', r'\1', text)
-    text = re.sub(r'\\\w+ ', '', text)
-    text = re.sub(r'\n *\n', '\n', text)
-    text = re.sub(r'<[^>]*>', '', text)
+def remove_rst(text):
+    text = re.sub(r"<tt>\s*(.*?)\s*<\/tt>", r"\1", text)
+    text = re.sub(r"\\c ([^ ,;\.]+)", r"\1", text)
+    text = re.sub(r"\\\w+ ", "", text)
+    text = re.sub(r"\n *\n", "\n", text)
+    text = re.sub(r"<[^>]*>", "", text)
     return text
 
 
-def doxygen2html(text):
-    text = re.sub(r'<tt>\s*(.*?)\s*</tt>', r'``\1``', text)
-    text = re.sub(r'\\c ([^ ,;.]+)', r'``\1``', text)
-    text = re.sub(r'\\\w+ ', '', text)
-    text = re.sub(r'\n *\n', '\n<p>', text)
-    return '<p>' + text
+def rst2html(text):
+    text = re.sub(r"<tt>\s*(.*?)\s*</tt>", r"<code>\1</code>", text)
+    text = re.sub(r"\\c ([^ ,;.]+)", r"<code>\1</code>", text)
+    text = re.sub(r"``(.*?)``", r"<code>\1</code>", text)
+    text = re.sub(r"\\\w+ ", "", text)
+    # text = re.sub(r"\n *\n", "\n" + PARAGRAPH_BEGIN, text)
+
+    # Links
+    text = re.sub(r"(?<!<)(https://[^\s>()]+)", r"<a href='\1'>\1</a>", text)
+    text = re.sub(r"`([^<]+) *<(.+)>`_", r"<a href='\2'>\1</a>", text)
+
+    return text
 
 
-def generate_json(options: list[Option]):
+def make_link(name):
+    return f"https://clang.llvm.org/docs/ClangFormatStyleOptions.html#{name.lower()}"
+
+
+def make_anchor(name):
+    return f"<a href='{make_link(name)}'>{name} Documentation</a>\n"
+
+
+def split_enum_value(x: str):
+    return x.split("_")[1]
+
+
+def split_subfield_name(x: str):
+    return x.split(" ")[1] if " " in x else x
+
+
+def make_based_on_style(desc):
+    return {
+        "x-intellij-html-description": desc,
+        "type": "string",
+        "enum": [
+            "LLVM",
+            "Google",
+            "Chromium",
+            "Mozilla",
+            "WebKit",
+            "Microsoft",
+            "GNU",
+            "InheritParentConfig",
+        ],
+        "x-intellij-enum-metadata": {
+            "LLVM": {"description": "A style complying with the LLVM coding standards"},
+            "Google": {
+                "description": "A style complying with Google's C++ style guide",
+            },
+            "Chromium": {
+                "description": "A style complying with Chromium's style guide"
+            },
+            "Mozilla": {"description": "A style complying with Mozilla's style guide"},
+            "WebKit": {"description": "A style complying with WebKit's style guide"},
+            "Microsoft": {
+                "description": "A style complying with Microsoft's style guide"
+            },
+            "GNU": {"description": "A style complying with the GNU coding standards"},
+        },
+        "x-intellij-enum-order-sensitive": True,
+    }
+
+
+def option2schema(
+    opt: Option, nested_structs: dict[str, NestedStruct], enums: dict[str, Enum]
+):
     def get_type(cpp_type: str):
-        if cpp_type in ['int', 'unsigned']:
+        if cpp_type in ["int", "unsigned", "int8_t"]:
             return {"type": "number"}
-        if cpp_type == 'bool':
+        if cpp_type == "bool":
             return {"type": "boolean"}
-        if cpp_type == 'std::string':
+        if cpp_type == "std::string":
             return {"type": "string"}
-        if cpp_type == 'std::vector<std::string>':
-            return {"type": "array", "items": {"type": "string"}}
+        if cpp_type == "deprecated":
+            return {}
+
+        if match := re.match(r"std::vector<(.+)>", cpp_type):
+            return {"type": "array", "items": get_type(match.group(1))}
+
+        if match := re.match(r"std::optional<(.+)>", cpp_type):
+            return {"type": get_type(match.group(1))}
+
+        if cpp_type in nested_structs:
+            sub_properties = {}
+
+            struct = nested_structs[cpp_type]
+            for nested_opt in sorted(struct.values, key=lambda x: x.name):
+                sub_prop = {}
+                if isinstance(nested_opt, NestedField):
+                    sub_prop = get_type(nested_opt.name.split(" ")[0])
+                elif isinstance(nested_opt, NestedEnum):
+                    full_description = nested_opt.comment + "<p>" + "Possible values: "
+                    for enum_value in nested_opt.values:
+                        full_description += f"<i> {enum_value.name}"
+                    sub_prop["x-intellij-html-description"] = rst2html(full_description)
+
+                # link the root option since nested structs doesn't have fragments
+                sub_prop["x-intellij-html-description"] = (
+                    f"{rst2html(nested_opt.comment)}<p>{make_anchor(opt.name)}"
+                )
+
+                sub_properties[split_subfield_name(nested_opt.name)] = sub_prop
+
+            return {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": sub_properties,
+            }
+
+        if cpp_type in enums:
+            enum = enums[cpp_type]
+            return {
+                "type": "string",
+                "enum": [split_enum_value(x.name) for x in enum.values],
+                "x-intellij-enum-metadata": {
+                    split_enum_value(x.name): {
+                        "description": remove_rst(x.comment.split("\n")[0])
+                    }
+                    for x in enum.values
+                },
+            }
+
+        print(f"Unknown type: {cpp_type}")
         return {"type": f"???({cpp_type})"}
 
-    def make_link(name):
-        return f"https://clang.llvm.org/docs/ClangFormatStyleOptions.html#:~:text={name}%20("
+    value = get_type(opt.type)
 
-    def make_anchor(name):
-        return f"<a href='{make_link(name)}'>Documentation</a>\n"
+    # https://www.jetbrains.com/help/idea/json.html#ws_json_show_doc_in_html
+    full_doc = f"{make_anchor(opt.name)}"
+    full_doc += PARAGRAPH_BEGIN + rst2html(opt.comment)
+    if opt.nested_struct:
+        full_doc += PARAGRAPH_BEGIN + rst2html(opt.nested_struct.comment)
+    if opt.version:
+        full_doc += PARAGRAPH_BEGIN + f"From clang-format {opt.version}"
+    if opt.enum:
+        full_doc += PARAGRAPH_BEGIN + "Invoke completion to see all options"
+    value["x-intellij-html-description"] = full_doc
 
-    def split_enum_value(x: str):
-        return x.split('_')[1]
+    return value
 
-    def split_subfield_name(x: str):
-        return x.split(' ')[1] if ' ' in x else x
 
-    def make_based_on_style(desc):
-        return {
-            "x-intellij-html-description": desc,
-            "type": "string",
-            "enum": [
-                "LLVM",
-                "Google",
-                "Chromium",
-                "Mozilla",
-                "WebKit",
-                "Microsoft",
-                "GNU",
-                "InheritParentConfig"
-            ],
-            "x-intellij-enum-metadata": {
-                "LLVM": {"description": "A style complying with the LLVM coding standards"},
-                "Google": {"description": "A style complying with Google's C++ style guide", },
-                "Chromium": {"description": "A style complying with Chromium's style guide"},
-                "Mozilla": {"description": "A style complying with Mozilla's style guide"},
-                "WebKit": {"description": "A style complying with WebKit's style guide"},
-                "Microsoft": {"description": "A style complying with Microsoft's style guide"},
-                "GNU": {"description": "A style complying with the GNU coding standards"},
-            },
-        }
-
+def generate_schema(
+    options: list[Option],
+    nested_structs: dict[str, NestedStruct],
+    enums: dict[str, Enum],
+):
     # doc: https://json-schema.org/understanding-json-schema/reference/object.html
     schema = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -97,130 +197,60 @@ def generate_json(options: list[Option]):
         "additionalProperties": False,
         "properties": {},
     }
+
+    # BasedOnStyle is not in the Format.h file
+    schema["properties"]["BasedOnStyle"] = make_based_on_style(
+        make_anchor("BasedOnStyle")
+        + "The style used for all options not specifically set in the configuration."
+        + PARAGRAPH_BEGIN
+        + "Invoke completion to see all options"
+    )
+
     for opt in options:
-        value = {}
+        schema["properties"][opt.name] = option2schema(opt, nested_structs, enums)
 
-        based_on_style = make_based_on_style(
-            make_anchor("BasedOnStyle") + "The style used for all options not specifically set in the configuration.")
-        based_on_style["x-romolo-link"] = make_link("BasedOnStyle")
-        schema['properties']["BasedOnStyle"] = based_on_style
-
-        if opt.name == 'IncludeCategories':
-            value = {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "Regex": {
-                            "type": "string"
-                        },
-                        "Priority": {
-                            "type": "integer"
-                        },
-                        "SortPriority": {
-                            "type": "integer"
-                        },
-                        "CaseSensitive": {
-                            "type": "boolean"
-                        }
-                    }
-                },
-            }
-        elif opt.name == 'RawStringFormats':
-            value = {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "Language": {
-                            "x-intellij-html-description": "The language of this raw string.",
-                            "type": "string",
-                            "enum": [
-                                "None",
-                                "Cpp",
-                                "CSharp",
-                                "Java",
-                                "JavaScript",
-                                "ObjC",
-                                "Proto",
-                                "TableGen",
-                                "TextProto"
-                            ],
-                        },
-                        "Delimiters": {
-                            "x-intellij-html-description": "A list of raw string delimiters that match this language.",
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "EnclosingFunctions": {
-                            "x-intellij-html-description": "A list of enclosing function names that match this language.",
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "BasedOnStyle": make_based_on_style(
-                            "The style name on which this raw string format is based on."
-                            " If not specified, the raw string format is based on the style that this format is based on."),
-                        "CanonicalDelimiter": {
-                            "x-intellij-html-description": "The canonical delimiter for this language.",
-                            "type": "string"
-                        }
-                    }
-                },
-            }
-        elif opt.nested_struct:
-            value["type"] = "object"
-            value["additionalProperties"] = False
-            # NestedEnum or NestedField
-            sub_properties = {}
-            for nestedOpt in opt.nested_struct.values:
-                sub_prop = {}
-                if ' ' in nestedOpt.name:
-                    # field value
-                    sub_prop = get_type(nestedOpt.name.split(' ')[0])
-                    pass
-                sub_prop["x-intellij-html-description"] = doxygen2html(nestedOpt.comment)
-                sub_properties[split_subfield_name(nestedOpt.name)] = sub_prop
-            value["properties"] = sub_properties
-        elif opt.enum is not None:
-            value["type"] = "string"
-            value["enum"] = [split_enum_value(x.name) for x in opt.enum.values]
-            value["x-intellij-enum-metadata"] = {split_enum_value(x.name): {"description": remove_doxygen(x.comment.split('\n')[0])} for x
-                                                 in opt.enum.values}
-        else:
-            value = get_type(opt.type)
-
-        # https://www.jetbrains.com/help/idea/json.html#ws_json_show_doc_in_html
-        # value["title"] = remove_doxygen(opt.comment.split('\n')[0])
-        value["x-intellij-html-description"] = f'{doxygen2html(opt.comment)}<p>{make_anchor(opt.name)}'
-
-        schema['properties'][opt.name] = value
-
-    return json.dumps(schema, indent=2)
+    return json.dumps(schema, indent=2) + "\n"
 
 
 def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--download",
+        action="store_true",
+        help="Download the latest version of the schema from the GitHub",
+    )
+
+    args = parser.parse_args()
+
     # Download the latest version of the schema from the GitHub
-    download_file(f"{CLANG_ROOT}/include/clang/Format/Format.h", "clang/Format.h")
-    download_file(f"{CLANG_ROOT}/include/clang/Tooling/Inclusions/IncludeStyle.h", "clang/IncludeStyle.h")
+    if args.download:
+        download_file(f"{CLANG_ROOT}/include/clang/Format/Format.h", "clang/Format.h")
+        download_file(
+            f"{CLANG_ROOT}/include/clang/Tooling/Inclusions/IncludeStyle.h",
+            "clang/IncludeStyle.h",
+        )
 
     # Parse the schema
     print("Parsing the schema")
     with io.open("clang/Format.h") as f:
-        opts = OptionsReader(f).read_options()
+        options, nested_structs, enums = OptionsReader(f).read_options()
     with io.open("clang/IncludeStyle.h") as f:
-        opts += OptionsReader(f).read_options()
+        it_options, it_nested_structs, it_enums = OptionsReader(f).read_options()
+        options += it_options
+        nested_structs = {**nested_structs, **it_nested_structs}
+        enums = {**enums, **it_enums}
 
-    opts = sorted(opts, key=lambda x: x.name)
-    generate_json(opts)
+    options = sorted(options, key=lambda x: x.name)
+
+    # print("\n".join([str(x) for x in options]))
+
+    schema = generate_schema(options, nested_structs, enums)
 
     print(f"Writing the schema to {OUTPUT_FILE}")
-    with open(OUTPUT_FILE, 'wb') as output:
-        output.write(generate_json(opts).encode())
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as output:
+        output.write(schema)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
