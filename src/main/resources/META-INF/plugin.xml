@@ -49,7 +49,14 @@
                            implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatParserDefinition"/>
     <completion.contributor language="yaml"
                             implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatCompletionContributor"/>
+    <editorNotificationProvider implementation="com.github.aarcangeli.ideaclangformat.lang.ClangEditorNotificationProvider"/>
   </extensions>
+
+  <projectListeners>
+    <listener
+      class="com.github.aarcangeli.ideaclangformat.lang.ClangFileListener"
+      topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+  </projectListeners>
 
   <extensions defaultExtensionNs="JavaScript.JsonSchema">
     <ProviderFactory implementation="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaProviderFactory"/>
