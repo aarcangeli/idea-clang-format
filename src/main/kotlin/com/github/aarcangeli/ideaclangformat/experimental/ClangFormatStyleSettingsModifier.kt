@@ -2,14 +2,12 @@ package com.github.aarcangeli.ideaclangformat.experimental
 
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle
-import com.github.aarcangeli.ideaclangformat.configurable.AppConfigurable
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleService
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.CodeStyleBundle
-import com.intellij.application.options.CodeStyle
 import com.intellij.icons.AllIcons
 import com.intellij.ide.actions.ShowSettingsUtilImpl
 import com.intellij.ide.util.PsiNavigationSupport
@@ -67,7 +65,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       clangFormatStyle.apply(settings)
       return true
     }
-    catch (e: ClangExitCodeError) {
+    catch (e: ClangValidationError) {
       // configuration broken, re-use last provided settings
       val clangFormatStyle = file.getUserData(LAST_PROVIDED_SETTINGS)
       if (clangFormatStyle != null) {

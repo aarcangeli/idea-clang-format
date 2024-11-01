@@ -170,11 +170,10 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
         LOG.warn("Missing filename for $psiFile")
         throw ClangFormatError("Cannot get clang-format configuration")
       }
-      val clangFormat = service.getClangFormatVirtualPath()
-        ?: throw ClangFormatNotFound(MyBundle.message("error.clang-format.error.not-found"))
+      val clangFormat = service.getClangFormatVirtualPath() ?: throw ClangFormatNotFound()
       dependencies.add(clangFormat)
       try {
-        val commandLine = ClangFormatCommons.createCompileCommand(clangFormat.path)
+        val commandLine = ClangFormatCommons.createCommandLine(clangFormat.path)
         commandLine.addParameter("--dump-config")
         commandLine.addParameter("-assume-filename=" + getFileName(virtualFile))
         LOG.info("Running command: " + commandLine.commandLineString)

@@ -1,6 +1,6 @@
 package com.github.aarcangeli.ideaclangformat.utils
 
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangMissingLanguageException
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
@@ -58,7 +58,7 @@ object ClangFormatCommons {
       filename.equals("_clang-format", ignoreCase = true)
   }
 
-  @Throws(ClangExitCodeError::class)
+  @Throws(ClangValidationError::class)
   fun getException(project: Project, commandLine: GeneralCommandLine, output: ProcessOutput): ClangFormatError {
     var stderr = output.stderr
     if (stderr.startsWith("Configuration file(s) do(es) not support")) {
@@ -77,7 +77,7 @@ object ClangFormatCommons {
                         ${fileName.name}:$lineNumber:$column: $message
                         ${stderr.substring(matcher.group(0).length).trim { it <= ' ' }}
                         """.trimIndent()
-          return ClangExitCodeError(
+          return ClangValidationError(
             description,
             FileNavigatable(project, FilePosition(fileName, lineNumber - 1, column - 1))
           )
@@ -94,7 +94,7 @@ object ClangFormatCommons {
     return ClangFormatError("Exit code ${output.exitCode} from ${commandLine.commandLineString}\n${stderr}")
   }
 
-  fun createCompileCommand(clangFormatPath: String): GeneralCommandLine {
+  fun createCommandLine(clangFormatPath: String): GeneralCommandLine {
     val commandLine = GeneralCommandLine()
     if (SystemInfo.isWindows && isWinShellScript(clangFormatPath)) {
       commandLine.exePath = "cmd.exe"

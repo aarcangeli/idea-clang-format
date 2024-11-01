@@ -20,8 +20,13 @@ interface ClangFormatService {
    */
   fun mayBeFormatted(file: PsiFile): Boolean
 
+  /**
+   * A list of possible paths to the clang-format binary.
+   */
+  fun detectFromPath(): String?
+
   @get:Throws(ClangFormatError::class)
-  val clangFormatPath: String
+  val clangFormatPath: String?
 
   /**
    * Reformat the specified file
@@ -39,6 +44,11 @@ interface ClangFormatService {
    * Remove the last notification displayed by the service.
    */
   fun clearErrorNotification()
+
+  /**
+   * @throws ClangFormatError
+   */
+  fun validatePath(path: String): String
 
   companion object {
     const val GROUP_ID = "aarcangeli.notification.ClangFormat"

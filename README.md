@@ -24,14 +24,13 @@ To use the plugin, you need to have `clang-format` installed on your system.
 You can install clang-format together with [LLVM](https://github.com/llvm/llvm-project/releases) or separately using a package manager.
 
 ```bash
-# All platforms
+# Using PIP (all platforms)
 pip install clang-format
+# Using NPM (all platforms)
 npm install -g clang-format
-# ubuntu
+# Using APT (Linux)
 sudo apt-get install clang-format
-# Windows
-choco install llvm
-# macOS
+# Using Homebrew (macOS)
 brew install clang-format
 ```
 

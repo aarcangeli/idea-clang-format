@@ -2,7 +2,8 @@ package com.github.aarcangeli.ideaclangformat.services
 
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle.message
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCodeError
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCode
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.github.aarcangeli.ideaclangformat.utils.OffsetConverter
@@ -165,7 +166,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     catch (e: ProcessCanceledException) {
       null
     }
-    catch (e: ClangExitCodeError) {
+    catch (e: ClangValidationError) {
       LOG.warn("Cannot format document", e)
       showFormatError(
         project,
@@ -220,19 +221,40 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     errorNotification.getAndSet(null)?.expire()
   }
 
-  @get:Throws(ClangFormatError::class)
-  override val clangFormatPath: String
-    get() {
-      val path = findClangFormatPath()
-      if (path == null || !path.canExecute()) {
-        throw ClangFormatError("Cannot find clang-format")
-      }
-      return path.absolutePath
+  override fun validatePath(path: String): String {
+    val file = File(path)
+    if (!file.exists() || !file.canExecute()) {
+      throw ClangFormatError("Invalid clang-format path")
     }
-
-  private fun findClangFormatPath(): File? {
-    return PathEnvironmentVariableUtil.findExecutableInPathOnAnyOS("clang-format")
+    LOG.info("Validating path: $path")
+    val commandLine = ClangFormatCommons.createCommandLine(path)
+    commandLine.addParameter("--version")
+    try {
+      val output = ProcessUtils.executeProgram(commandLine, ByteArray(0))
+      LOG.info("Output: ${output.stdout}")
+      if (output.exitCode != 0) {
+        throw ClangExitCode(output.exitCode)
+      }
+      return output.stdout.trim()
+    }
+    catch (e: ExecutionException) {
+      throw ClangFormatError("Invalid clang-format path")
+    }
   }
+
+  @get:Throws(ClangFormatError::class)
+  override val clangFormatPath: String?
+    get() {
+      val config = service<ClangFormatConfig>()
+      if (!config.state.path.isNullOrBlank()) {
+        return config.state.path!!.trim()
+      }
+      val path = detectFromPath()
+      if (path != null) {
+        return path
+      }
+      return null
+    }
 
   override fun mayBeFormatted(file: PsiFile): Boolean {
     if (!service<ClangFormatConfig>().state.enabled) {
@@ -251,7 +273,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     val formatStyle = try {
       formatStyleService.getRawFormatStyle(file)
     }
-    catch (e: ClangExitCodeError) {
+    catch (e: ClangValidationError) {
       // the configuration file contains errors
       return true
     }
@@ -271,11 +293,20 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     return true
   }
 
+  override fun detectFromPath(): String? {
+    val path = PathEnvironmentVariableUtil.findExecutableInPathOnAnyOS("clang-format")
+    if (path != null && path.canExecute()) {
+      return path.absolutePath
+    }
+    return null
+  }
+
   override fun dispose() {}
 
   @Throws(ExecutionException::class)
   private fun executeClangFormat(project: Project, content: ByteArray, filename: String): ClangFormatResponse {
-    val commandLine = ClangFormatCommons.createCompileCommand(clangFormatPath)
+    val path = clangFormatPath ?: throw ClangFormatError("Cannot find clang-format")
+    val commandLine = ClangFormatCommons.createCommandLine(path)
     commandLine.addParameter("-output-replacements-xml")
     commandLine.addParameter("-assume-filename=$filename")
     LOG.info("Running command: " + commandLine.commandLineString)
