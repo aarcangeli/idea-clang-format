@@ -3,6 +3,7 @@ package com.github.aarcangeli.ideaclangformat.configurable
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
+import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.Configurable.NoScroll
 import com.intellij.openapi.options.DslConfigurableBase
@@ -41,6 +42,13 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
                 CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
               }
             }
+        }
+        if (ClangFormatCommons.isUsingCustomFormatOnSave()) {
+          row {
+            combobox = checkBox("Format on save")
+              .bindSelected(settings::formatOnSave)
+              .enabledIf(combobox.selected)
+          }
         }
       }
 

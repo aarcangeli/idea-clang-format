@@ -133,4 +133,17 @@ object ClangFormatCommons {
     }
     return virtualFile.name
   }
+
+  /**
+   * Rider doesn't work with "Reformat on save" option, so we need to create a custom provider.
+   */
+  fun isUsingCustomFormatOnSave(): Boolean {
+    return isRider()
+  }
+
+  private fun isRider(): Boolean {
+    val prefix = System.getProperty("idea.platform.prefix", null)
+    val isRider = prefix == "Rider"
+    return isRider
+  }
 }

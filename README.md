@@ -16,9 +16,9 @@
 ## Overview
 
 - `.clang-format` file support with completion and documentation
-- [Format code](#usage) using clang-format
+- Format code using clang-format
 - Automatically detects indentation style and column limit from `.clang-format` file (note that .editorconfig has the precedence)
-- Automatically format code on save (via [project settings](#format-on-save))
+- Automatically format code on save (via project settings)
 - Support all JetBrains IDEs (Rider, IntelliJ IDEA, PyCharm, WebStorm, etc.)
 - Support any language supported by `clang-format` (C, C++, Java, JavaScript, TypeScript, etc.)
 
@@ -55,7 +55,7 @@ There are also alternative ways to format the code:
 
 - Select a directory or a file in the project view, right-click, and choose `Reformat Code` (or use the shortcut) to format all files in the directory.
 - In the Commit Tab, you can enable "Reformat code" to format the code before committing it.
-- Format on save (see [Format on save](#format-on-save))
+- Format on save
 
 Note: At the moment, it is not possible to format only a selection of the code.
 
@@ -63,9 +63,18 @@ Note: At the moment, it is not possible to format only a selection of the code.
 
 To enable the format on save feature, follow these steps:
 
+**For Most JetBrains IDEs**
+
 1. Go to `File | Settings | Tools | Actions on Save`
 2. Enable the `Reformat code` action
 3. Optionally, choose the file types you want to format on save
+
+**For Rider**
+
+Unfortunately, Rider is not supported by the `Actions on Save` feature, but you can use the `Clang-Format` action instead.
+
+1. Go to `File | Settings | Tools | Actions on Save`
+2. Enable the `Clang-Format` action
 
 ### Configuration
 

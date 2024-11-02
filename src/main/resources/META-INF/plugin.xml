@@ -30,6 +30,13 @@
     <applicationConfigurable id="aarcangeli.ideaclangformat.appconfig" parentId="language"
                              instance="com.github.aarcangeli.ideaclangformat.configurable.AppConfigurable"
                              displayName="Clang-Format Tools"/>
+
+    <!-- Format on save -->
+    <!-- IntelliJ already has this feature, but Rider uses his internal formatter instead -->
+    <actionOnSave id="aarcangeli.ClangFormatOnSave" implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSave"/>
+    <actionOnSaveInfoProvider id="aarcangeli.ClangFormatOnSaveInfoProvider"
+                              implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSaveInfoProvider"/>
+
   </extensions>
 
   <!-- BEGIN .clang-format language support -->
