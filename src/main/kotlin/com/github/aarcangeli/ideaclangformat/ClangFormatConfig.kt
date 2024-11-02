@@ -1,6 +1,9 @@
 package com.github.aarcangeli.ideaclangformat
 
-import com.intellij.openapi.components.*
+import com.intellij.openapi.components.BaseState
+import com.intellij.openapi.components.SimplePersistentStateComponent
+import com.intellij.openapi.components.State
+import com.intellij.openapi.components.Storage
 
 /**
  * Application-wide configuration for the ClangFormat plugin.

@@ -8,8 +8,6 @@ import com.github.aarcangeli.ideaclangformat.utils.ProcessUtils
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.PathEnvironmentVariableUtil
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -63,8 +61,6 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
   }
 
   override fun getRawFormatStyle(psiFile: PsiFile): Map<String, Any> {
-    // save changed documents
-    saveUnsavedClangFormatFiles()
     val result = CachedValuesManager.getCachedValue(psiFile, CLANG_STYLE, FormatStyleProvider(this, psiFile))
     if (result.second != null) {
       throw result.second!!
@@ -118,19 +114,6 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
 
   override fun isThereStyleForFile(virtualFile: VirtualFile): Boolean {
     return getClangFormatFiles(virtualFile).isNotEmpty()
-  }
-
-  private fun saveUnsavedClangFormatFiles() {
-    // save changed documents
-    if (ClangFormatCommons.getUnsavedClangFormats().isNotEmpty()) {
-      ApplicationManager.getApplication().invokeLater {
-        WriteAction.run<RuntimeException> {
-          for (document in ClangFormatCommons.getUnsavedClangFormats()) {
-            FileDocumentManager.getInstance().saveDocument(document)
-          }
-        }
-      }
-    }
   }
 
   override fun dispose() {}

@@ -26,7 +26,7 @@ class ClangValidationError(@JvmField val description: @Nls String, private val f
 /**
  * Thrown on any exit code different from 0.
  */
-class ClangExitCode(val exitCode: Int) : ClangFormatError("Clang-format exited with code $exitCode")
+class ClangExitCode(exitCode: Int) : ClangFormatError("Clang-format exited with code $exitCode")
 
 /**
  * Thrown when no ".clang-format" files support the file language.

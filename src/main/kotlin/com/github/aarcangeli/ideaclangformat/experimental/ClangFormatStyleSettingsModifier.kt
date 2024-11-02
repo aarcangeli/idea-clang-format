@@ -2,12 +2,11 @@ package com.github.aarcangeli.ideaclangformat.experimental
 
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleService
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
-import com.intellij.CodeStyleBundle
 import com.intellij.icons.AllIcons
 import com.intellij.ide.actions.ShowSettingsUtilImpl
 import com.intellij.ide.util.PsiNavigationSupport
@@ -32,8 +31,6 @@ import com.intellij.psi.codeStyle.IndentStatusBarUIContributor
 import com.intellij.psi.codeStyle.modifier.CodeStyleSettingsModifier
 import com.intellij.psi.codeStyle.modifier.CodeStyleStatusBarUIContributor
 import com.intellij.psi.codeStyle.modifier.TransientCodeStyleSettings
-import com.intellij.ui.ColorUtil
-import com.intellij.ui.JBColor
 import org.jetbrains.annotations.Nls
 import javax.swing.Icon
 
@@ -56,7 +53,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     if (!formatService.mayBeFormatted(file, true)) {
       // clang format disabled for this file
       file.putUserData(LAST_PROVIDED_SETTINGS, null)
-      return true
+      return false
     }
 
     try {
@@ -77,7 +74,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       // ignore other error
     }
 
-    return false;
+    return false
   }
 
   override fun getName(): @Nls(capitalization = Nls.Capitalization.Title) String {
@@ -88,12 +85,10 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
     return object : IndentStatusBarUIContributor(settings.indentOptions) {
       override fun getTooltip(): String {
         val builder = HtmlBuilder()
-        builder.append(
-          HtmlChunk.span("color:" + ColorUtil.toHtmlColor(JBColor.GRAY))
-            .addText(MyBundle.message("error.clang-format.status.hint"))
-        )
+        builder.append(MyBundle.message("error.clang-format.status.hint"))
+          .br()
         builder
-          .append(CodeStyleBundle.message("indent.status.bar.indent.tooltip"))
+          .append("Indent:")
           .append(" ")
           .append(
             HtmlChunk.tag("b").addText(
@@ -212,21 +207,13 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
    * This is used to apply the settings to the IDE.
    */
   private class ClangFormatStyle(formatStyle: Map<String, Any>) {
-    private val columnLimit: Int
-    private val indentWidth: Int
-    private val tabWidth: Int
-    private val useTab: Boolean
+    private val columnLimit: Int = getInt(formatStyle, "ColumnLimit")
+    private val indentWidth: Int = getInt(formatStyle, "IndentWidth")
+    private val tabWidth: Int = getInt(formatStyle, "TabWidth")
 
-    init {
-      columnLimit = getInt(formatStyle, "ColumnLimit")
-      indentWidth = getInt(formatStyle, "IndentWidth")
-      tabWidth = getInt(formatStyle, "TabWidth")
-
-      // fixme: unsupported values "ForIndentation", "ForContinuationAndIndentation", etc
-      val useTabProp = formatStyle["UseTab"]
-      useTab = useTabProp != null && !useTabProp.toString()
-        .equals("false", ignoreCase = true) && !useTabProp.toString().equals("never", ignoreCase = true)
-    }
+    // fixme: unsupported values "ForIndentation", "ForContinuationAndIndentation", etc
+    private val useTab: Boolean = formatStyle["UseTab"] != null && !formatStyle["UseTab"].toString()
+      .equals("false", ignoreCase = true) && !formatStyle["UseTab"].toString().equals("never", ignoreCase = true)
 
     fun apply(settings: TransientCodeStyleSettings) {
       if (columnLimit > 0) {

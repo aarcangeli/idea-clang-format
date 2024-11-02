@@ -1,5 +1,6 @@
 package com.github.aarcangeli.ideaclangformat.actions
 
+import com.github.aarcangeli.ideaclangformat.experimental.ClangFormatExternalFormatProcessor
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.codeInsight.actions.ReformatCodeAction
 import com.intellij.openapi.actionSystem.*
@@ -48,7 +49,7 @@ class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction()
     return getVirtualFileFor(project, editor.document) != null
   }
 
-  fun getVirtualFileFor(project: Project, document: Document): VirtualFile? {
+  private fun getVirtualFileFor(project: Project, document: Document): VirtualFile? {
     val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document)
     if (psiFile != null && service<ClangFormatService>().mayBeFormatted(psiFile, true)) {
       return psiFile.originalFile.virtualFile

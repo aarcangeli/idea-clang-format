@@ -1,6 +1,6 @@
 # Clang-Format Tools for JetBrains IDEs
 
-[![Build](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml)
+[![Build](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml?query=branch%3Amain)
 [![Version](https://img.shields.io/jetbrains/plugin/v/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![Rating](https://img.shields.io/jetbrains/plugin/r/rating/20785-clang-format-tools)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)

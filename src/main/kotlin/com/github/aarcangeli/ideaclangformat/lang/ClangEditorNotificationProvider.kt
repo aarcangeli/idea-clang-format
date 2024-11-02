@@ -19,42 +19,42 @@ import javax.swing.JComponent
  * Show an error if .clang-format is not saved in UTF-8
  */
 class ClangEditorNotificationProvider : EditorNotificationProvider, DumbAware {
-    override fun collectNotificationData(
-        project: Project,
-        file: VirtualFile
-    ): Function<in FileEditor, out JComponent?>? {
-        if (ClangFormatCommons.isClangFormatFile(file.name)) {
-            return Function { fileEditor -> createPanel(fileEditor) }
-        }
-        return null
+  override fun collectNotificationData(
+    project: Project,
+    file: VirtualFile
+  ): Function<in FileEditor, out JComponent?>? {
+    if (ClangFormatCommons.isClangFormatFile(file.name)) {
+      return Function { fileEditor -> createPanel(fileEditor) }
     }
+    return null
+  }
 
-    @RequiresEdt
-    private fun createPanel(
-        fileEditor: FileEditor,
-    ): EditorNotificationPanel? {
-        if (fileEditor.file.charset.name() != "UTF-8") {
-            val panel = EditorNotificationPanel(fileEditor, EditorNotificationPanel.Status.Error)
-            panel.text = "ClangFormat file is not UTF-8 encoded"
-            return panel
-        }
-        return null
+  @RequiresEdt
+  private fun createPanel(
+    fileEditor: FileEditor,
+  ): EditorNotificationPanel? {
+    if (fileEditor.file.charset.name() != "UTF-8") {
+      val panel = EditorNotificationPanel(fileEditor, EditorNotificationPanel.Status.Error)
+      panel.text = "ClangFormat file is not UTF-8 encoded"
+      return panel
     }
+    return null
+  }
 }
 
 /**
  * Ensure that the editor notification is updated when the file encoding changes.
  */
 class ClangFileListener(val project: Project) : BulkFileListener {
-    override fun after(events: List<VFileEvent>) {
-        for (event in events) {
-            if (event is VFilePropertyChangeEvent) {
-                if (event.propertyName == VirtualFile.PROP_ENCODING) {
-                    if (ClangFormatCommons.isClangFormatFile(event.file.name)) {
-                        EditorNotifications.getInstance(project).updateNotifications(event.file)
-                    }
-                }
-            }
+  override fun after(events: List<VFileEvent>) {
+    for (event in events) {
+      if (event is VFilePropertyChangeEvent) {
+        if (event.propertyName == VirtualFile.PROP_ENCODING) {
+          if (ClangFormatCommons.isClangFormatFile(event.file.name)) {
+            EditorNotifications.getInstance(project).updateNotifications(event.file)
+          }
         }
+      }
     }
+  }
 }

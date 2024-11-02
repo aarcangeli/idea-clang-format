@@ -1,8 +1,8 @@
 package com.github.aarcangeli.ideaclangformat.utils
 
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangMissingLanguageException
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.intellij.build.FileNavigatable
 import com.intellij.build.FilePosition
 import com.intellij.execution.configurations.GeneralCommandLine
