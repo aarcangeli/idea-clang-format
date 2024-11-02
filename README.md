@@ -18,8 +18,10 @@
 
 - `.clang-format` file support with completion and documentation
 - Format code using clang-format
-- Automatically format code on save (via project settings)
 - Automatically detects indentation style and column limit from `.clang-format` file (note that .editorconfig has the precedence)
+- Automatically format code on save (via project settings)
+
+At the moment, it is not possible to format only a selection of the code.
 
 ## Installation of clang-format
 
@@ -46,6 +48,14 @@ clang-format --version
 Note: if `clang-format` is executed without arguments, it formats the code from standard input
 and writes the result to the standard output.
 
+## Format on save
+
+To enable the format on save feature, follow these steps:
+
+1. Go to `File | Settings | Tools | Actions on Save`
+2. Enable the `Reformat code` action
+3. Optionally, choose the file types you want to format on save
+
 ## Configuration
 
 This plugin should work out of the box, but if you want to customize the behavior, you can do so in the settings.
@@ -55,12 +65,14 @@ The setting page is located at `File | Settings | Languages & Frameworks | Clang
 All configuration are stored at the application level, so they are shared across all projects.
 
 - Enabled: Globally enable/disable formatting utilities (The language support remains active)
-- Format on Save: Automatically format the file on save
 - Path: Allows you to specify a custom path to the `clang-format` executable, if it's not in your PATH
 
 ## Column limit
 
 When the style `ColumnLimit` is set in the `.clang-format` file, the plugin will apply the settings to the editor.
+
+Note: sometimes, the change in the column limit is not immediately visible in the editor.
+You can force the update by enabling/disabling the integration (see Configuration) or by restarting the IDE.
 
 ## General clang-format guide
 

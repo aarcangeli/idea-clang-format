@@ -246,8 +246,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   override val clangFormatPath: String?
     get() {
       val config = service<ClangFormatConfig>()
-      if (!config.state.path.isNullOrBlank()) {
-        return config.state.path!!.trim()
+      if (!config.state.customPath.isNullOrBlank()) {
+        return config.state.customPath!!.trim()
       }
       val path = detectFromPath()
       if (path != null) {

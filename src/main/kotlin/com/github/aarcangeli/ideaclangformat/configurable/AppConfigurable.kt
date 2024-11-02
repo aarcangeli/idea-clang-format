@@ -42,11 +42,6 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
               }
             }
         }
-        row {
-          combobox = checkBox("Format on save")
-            .bindSelected(settings::formatOnSave)
-            .enabledIf(combobox.selected)
-        }
       }
 
       group("Location") {
@@ -62,7 +57,7 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
         row("Custom Path:") {
           pathField = textFieldWithBrowseButton("Clang-Format Path")
             .align(AlignX.FILL)
-            .bindText({ settings.path ?: "" }, { settings.path = it })
+            .bindText({ settings.customPath ?: "" }, { settings.customPath = it })
         }
         row {
           button("Test", ::testExe)
