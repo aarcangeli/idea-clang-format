@@ -3,9 +3,10 @@
 [![Build](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aarcangeli/idea-clang-format/actions/workflows/build.yml)
 [![Version](https://img.shields.io/jetbrains/plugin/v/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/20785-clang-format-tools.svg)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
-![Rating](https://img.shields.io/jetbrains/plugin/r/rating/20785-clang-format-tools)
-![Static Badge](https://img.shields.io/badge/Get%20from%20Marketplace-blue?link=https%3A%2F%2Fplugins.jetbrains.com%2Fplugin%2F20785-clang-format-tools)
+[![Rating](https://img.shields.io/jetbrains/plugin/r/rating/20785-clang-format-tools)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
+[![Static Badge](https://img.shields.io/badge/Get%20from%20Marketplace-blue)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 
+<img width="710" height="450" src="https://plugins.jetbrains.com/files/20785/screenshot_925c0be8-97a9-4912-bd75-eb10f06cc15b" alt="demo">
 
 <!-- Plugin description -->
 
