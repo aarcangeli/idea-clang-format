@@ -24,7 +24,7 @@
     <applicationService serviceInterface="com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleService"
                         serviceImplementation="com.github.aarcangeli.ideaclangformat.services.ClangFormatStyleServiceImpl"/>
 
-    <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON"/>
+    <notificationGroup id="aarcangeli.notification.ClangFormat" displayType="STICKY_BALLOON" key="clang-format.title"/>
 
     <!-- Set a configuration under "Languages & Frameworks | Clang-Format Tools" -->
     <applicationConfigurable id="aarcangeli.ideaclangformat.appconfig" parentId="language"
