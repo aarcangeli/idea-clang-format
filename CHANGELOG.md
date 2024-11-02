@@ -2,6 +2,8 @@
 
 # idea-clang-format Changelog
 
+[Unreleased]
+
 ## [1.0.0] - 2024-11-02
 
 ### Added
@@ -11,4 +13,5 @@
 - Settings page to configure `clang-format` binary path
 - Format on save option
 
+[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/aarcangeli/idea-clang-format/commits/v1.0.0

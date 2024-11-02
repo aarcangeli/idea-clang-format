@@ -10,8 +10,10 @@ import com.intellij.execution.configurations.PathEnvironmentVariableUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.ModificationTracker
 import com.intellij.openapi.vfs.AsyncFileListener
@@ -20,6 +22,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.events.*
 import com.intellij.psi.PsiFile
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
@@ -119,11 +122,10 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
 
   private fun saveUnsavedClangFormatFiles() {
     // save changed documents
-    val unsavedClangFormats = ClangFormatCommons.getUnsavedClangFormats()
-    if (unsavedClangFormats.isNotEmpty()) {
+    if (ClangFormatCommons.getUnsavedClangFormats().isNotEmpty()) {
       ApplicationManager.getApplication().invokeLater {
         WriteAction.run<RuntimeException> {
-          for (document in unsavedClangFormats) {
+          for (document in ClangFormatCommons.getUnsavedClangFormats()) {
             FileDocumentManager.getInstance().saveDocument(document)
           }
         }
@@ -229,17 +231,31 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
 
   private inner class CacheFileWatcher : AsyncFileListener {
     override fun prepareChange(events: List<VFileEvent>): AsyncFileListener.ChangeApplier? {
-      if (isThereAnyChangeInClangFormat(events)) {
+      val hasSchemaChanged = isClangFormatFileChange(events)
+      val hasContentChanged = isThereClangFormatContentChange(events)
+      if (hasSchemaChanged || hasContentChanged) {
         return object : AsyncFileListener.ChangeApplier {
           override fun afterVfsChange() {
-            dropCaches()
+            if (hasSchemaChanged) {
+              dropCaches()
+            }
+            if (hasSchemaChanged || hasContentChanged) {
+              // The code style settings may have changed
+              for (project in service<ProjectManager>().openProjects) {
+                CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
+              }
+            }
           }
         }
       }
       return null
     }
 
-    private fun isThereAnyChangeInClangFormat(events: List<VFileEvent>): Boolean {
+    /**
+     * Return true if any .clang-format file is added or removed.
+     * Doesn't check if the content of the file has changed.
+     */
+    private fun isClangFormatFileChange(events: List<VFileEvent>): Boolean {
       for (event in events) {
         if (event is VFileCreateEvent) {
           if (ClangFormatCommons.isClangFormatFile(event.childName)) {
@@ -277,6 +293,20 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
               if (ClangFormatCommons.isClangFormatFile(event.file.name)) {
                 return true
               }
+          }
+        }
+      }
+      return false
+    }
+
+    /**
+     * Return true if any .clang-format has modified the content of the file.
+     */
+    private fun isThereClangFormatContentChange(events: List<VFileEvent>): Boolean {
+      for (event in events) {
+        if (event is VFileContentChangeEvent) {
+          if (ClangFormatCommons.isClangFormatFile(event.file.name)) {
+            return true
           }
         }
       }

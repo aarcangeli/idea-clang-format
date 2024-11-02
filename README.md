@@ -6,22 +6,21 @@
 [![Rating](https://img.shields.io/jetbrains/plugin/r/rating/20785-clang-format-tools)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 [![Static Badge](https://img.shields.io/badge/Get%20from%20Marketplace-blue)](https://plugins.jetbrains.com/plugin/20785-clang-format-tools)
 
-<img width="710" height="450" src="https://plugins.jetbrains.com/files/20785/screenshot_925c0be8-97a9-4912-bd75-eb10f06cc15b" alt="demo">
+<img width="710" height="450" src="https://plugins.jetbrains.com/files/20785/screenshot_0edd8132-28b5-47a4-a819-03ae2230f2bd" alt="demo">
 
 <!-- Plugin description -->
 
 [Clang-Format Tools](https://plugins.jetbrains.com/plugin/20785-clang-format-tools/edit) adds language support for
-`.clang-format` [option files](https://clang.llvm.org/docs/ClangFormatStyleOptions.html) and allow developers to format their code using
-`clang-format` directly from the IDE.
+`.clang-format` [option files](https://clang.llvm.org/docs/ClangFormatStyleOptions.html) and allow to format code directly from the IDE.
 
-## Features
+## Overview
 
 - `.clang-format` file support with completion and documentation
-- Format code using clang-format
+- [Format code](#usage) using clang-format
 - Automatically detects indentation style and column limit from `.clang-format` file (note that .editorconfig has the precedence)
-- Automatically format code on save (via project settings)
-
-At the moment, it is not possible to format only a selection of the code.
+- Automatically format code on save (via [project settings](#format-on-save))
+- Support all JetBrains IDEs (Rider, IntelliJ IDEA, PyCharm, WebStorm, etc.)
+- Support any language supported by `clang-format` (C, C++, Java, JavaScript, TypeScript, etc.)
 
 ## Installation of clang-format
 
@@ -48,7 +47,19 @@ clang-format --version
 Note: if `clang-format` is executed without arguments, it formats the code from standard input
 and writes the result to the standard output.
 
-## Format on save
+## Usage
+
+To format the code, you can use the `Code | Reformat Code`, this is the standard action used in JetBrains IDEs to format the code.
+
+There are also alternative ways to format the code:
+
+- Select a directory or a file in the project view, right-click, and choose `Reformat Code` (or use the shortcut) to format all files in the directory.
+- In the Commit Tab, you can enable "Reformat code" to format the code before committing it.
+- Format on save (see [Format on save](#format-on-save))
+
+Note: At the moment, it is not possible to format only a selection of the code.
+
+### Format on save
 
 To enable the format on save feature, follow these steps:
 
@@ -56,7 +67,7 @@ To enable the format on save feature, follow these steps:
 2. Enable the `Reformat code` action
 3. Optionally, choose the file types you want to format on save
 
-## Configuration
+### Configuration
 
 This plugin should work out of the box, but if you want to customize the behavior, you can do so in the settings.
 
@@ -67,12 +78,17 @@ All configuration are stored at the application level, so they are shared across
 - Enabled: Globally enable/disable formatting utilities (The language support remains active)
 - Path: Allows you to specify a custom path to the `clang-format` executable, if it's not in your PATH
 
-## Column limit
+### Code style settings
 
-When the style `ColumnLimit` is set in the `.clang-format` file, the plugin will apply the settings to the editor.
+This plugin will automatically detect the indentation style and column limit from the `.clang-format` file.
 
-Note: sometimes, the change in the column limit is not immediately visible in the editor.
-You can force the update by enabling/disabling the integration (see Configuration) or by restarting the IDE.
+- `ColumnLimit`: The IDE will show a vertical line at the specified column limit.
+- `IndentWidth`: The number of spaces to add when "tab" is pressed, not used if `UseTab` is enabled.
+- `TabWidth`: The size of the tab character in columns.
+- `UseTab`: Indicates if the tab should be used for indentation instead of spaces. Only used when "tab" key is pressed.
+
+Note: At the moment, options from `.editorconfig` files take precedence over `.clang-format` files.
+Ensure that the `.editorconfig` file is correctly configured to avoid conflicts.
 
 ## General clang-format guide
 

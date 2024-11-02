@@ -3,23 +3,28 @@ package com.github.aarcangeli.ideaclangformat.utils
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangMissingLanguageException
-import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.build.FileNavigatable
 import com.intellij.build.FilePosition
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessOutput
-import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.LightVirtualFile
+import com.intellij.util.PathUtil
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.util.regex.Pattern
+
+// TODO: We should respect the user's settings for the file extensions
+val knownCppExtensions = setOf(
+  "c", "cp", "cpp", "cppm", "c++", "cxx", "cc", "cu",
+  "ino", "ixx",
+  "h", "hh", "hpp", "hxx", "inc", "inl", "ipp", "mpp", "pch", "tch", "tpp", "cuh",
+)
 
 object ClangFormatCommons {
   private val CLANG_ERROR_PATTERN = Pattern.compile(
@@ -27,9 +32,8 @@ object ClangFormatCommons {
   )
 
   fun isCppFile(file: PsiFile): Boolean {
-    // TODO: add more extensions
-    val filename = file.name.lowercase()
-    return filename.endsWith(".cpp") || filename.endsWith(".h") || filename.endsWith(".h")
+    val extension = PathUtil.getFileExtension(file.name.lowercase()) ?: return false
+    return extension in knownCppExtensions
   }
 
   fun isUnconditionallyNotSupported(file: PsiFile): Boolean {
@@ -112,7 +116,7 @@ object ClangFormatCommons {
     val documents = ArrayList<Document>()
     for (document in FileDocumentManager.getInstance().unsavedDocuments) {
       val file = FileDocumentManager.getInstance().getFile(document) ?: continue
-      if (ClangFormatCommons.isClangFormatFile(file.name) && document.isWritable) {
+      if (isClangFormatFile(file.name) && document.isWritable) {
         documents.add(document)
       }
     }

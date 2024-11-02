@@ -283,7 +283,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     val language = formatStyle["Language"]
     val languageStr = language?.toString()?.trim()
     if (languageStr == "Cpp") {
-      // for clang, Cpp is a fallback for any file.
+      // clang-format treat all unknown languages as C++
       // we must ensure that the file is really c++
       if (!ClangFormatCommons.isCppFile(file)) {
         return false
