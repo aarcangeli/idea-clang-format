@@ -53,10 +53,10 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
 
     settings.addDependency(formatStyleService.makeDependencyTracker(file))
 
-    if (!formatService.mayBeFormatted(file)) {
+    if (!formatService.mayBeFormatted(file, true)) {
       // clang format disabled for this file
       file.putUserData(LAST_PROVIDED_SETTINGS, null)
-      return false
+      return true
     }
 
     try {
@@ -186,8 +186,7 @@ class ClangFormatStyleSettingsModifier : CodeStyleSettingsModifier {
       val project = e.project
       val virtualFile = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE)
       if (project != null && virtualFile != null) {
-        val styleFile: VirtualFile? = service<ClangFormatStyleService>().getStyleFile(virtualFile)
-        return styleFile != null
+        return service<ClangFormatStyleService>().isThereStyleForFile(virtualFile)
       }
       return false
     }

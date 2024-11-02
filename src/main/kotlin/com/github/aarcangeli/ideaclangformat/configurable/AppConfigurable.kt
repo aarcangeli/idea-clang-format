@@ -1,15 +1,16 @@
 package com.github.aarcangeli.ideaclangformat.configurable
 
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
-import com.github.aarcangeli.ideaclangformat.MyBundle
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.Configurable.NoScroll
 import com.intellij.openapi.options.DslConfigurableBase
 import com.intellij.openapi.options.SearchableConfigurable
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
 import java.awt.event.ActionEvent
@@ -27,20 +28,25 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
 
   override fun createPanel(): DialogPanel {
     return panel {
-      row {
-        combobox = checkBox("Enable Clang-Format support")
-          .comment("When disabled, Clang-Format will not be used")
-          .bindSelected(settings::enabled)
-          .onApply {
-            if (!settings.enabled) {
-              service<ClangFormatService>().clearErrorNotification()
+      group("Options") {
+        row {
+          combobox = checkBox("Enable Clang-Format support")
+            .comment("When disabled, Clang-Format will not be used")
+            .bindSelected(settings::enabled)
+            .onApply {
+              if (!settings.enabled) {
+                service<ClangFormatService>().clearErrorNotification()
+              }
+              for (project in service<ProjectManager>().openProjects) {
+                CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged()
+              }
             }
-          }
-      }
-      row {
-        combobox = checkBox("Format on save")
-          .bindSelected(settings::formatOnSave)
-          .enabledIf(combobox.selected)
+        }
+        row {
+          combobox = checkBox("Format on save")
+            .bindSelected(settings::formatOnSave)
+            .enabledIf(combobox.selected)
+        }
       }
 
       group("Location") {

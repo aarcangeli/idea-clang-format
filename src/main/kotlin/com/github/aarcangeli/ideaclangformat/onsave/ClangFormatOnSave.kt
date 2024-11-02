@@ -20,7 +20,7 @@ class ClangFormatOnSave : ActionOnSave() {
     for (document in documents) {
       val virtualFile = fileDocumentManager.getFile(document ?: continue) ?: continue
       val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: continue
-      if (service<ClangFormatService>().mayBeFormatted(psiFile)) {
+      if (service<ClangFormatService>().mayBeFormatted(psiFile, false)) {
         service<ClangFormatService>().reformatFileSync(project, virtualFile)
       }
     }

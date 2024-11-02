@@ -9,7 +9,7 @@ import com.intellij.psi.codeStyle.ExternalFormatProcessor
 
 class ClangFormatExternalFormatProcessor : ExternalFormatProcessor {
   override fun activeForFile(file: PsiFile): Boolean {
-    return service<ClangFormatService>().mayBeFormatted(file)
+    return service<ClangFormatService>().mayBeFormatted(file, true)
   }
 
   override fun format(

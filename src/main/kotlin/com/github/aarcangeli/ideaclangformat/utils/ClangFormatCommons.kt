@@ -45,14 +45,6 @@ object ClangFormatCommons {
       isClangFormatFile(virtualFile.name)
   }
 
-  fun getVirtualFileFor(project: Project, document: Document): VirtualFile? {
-    val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document)
-    if (psiFile != null && service<ClangFormatService>().mayBeFormatted(psiFile)) {
-      return psiFile.originalFile.virtualFile
-    }
-    return null
-  }
-
   fun isClangFormatFile(filename: String): Boolean {
     return filename.equals(".clang-format", ignoreCase = true) ||
       filename.equals("_clang-format", ignoreCase = true)

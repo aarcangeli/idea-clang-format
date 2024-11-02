@@ -34,6 +34,13 @@ private val LOG = Logger.getInstance(ClangFormatStyleServiceImpl::class.java)
 private val CLANG_STYLE = Key.create<CachedValue<Pair<Map<String, Any>?, ClangFormatError?>>>("CLANG_STYLE")
 
 class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
+  /**
+   * Cache the list of .clang-format files in the parent directories of a directory.
+   *
+   * [CacheFileWatcher] will drop the cache when a .clang-format file is added or removed.
+   * We should only invalidate the relevant cache entries, but it's not worth the effort since it is rare that
+   * a .clang-format file is added or removed.
+   */
   private val cache: MutableMap<VirtualFile, List<VirtualFile>> = FixedHashMap(100)
 
   init {
@@ -106,6 +113,10 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     return null
   }
 
+  override fun isThereStyleForFile(virtualFile: VirtualFile): Boolean {
+    return getClangFormatFiles(virtualFile).isNotEmpty()
+  }
+
   private fun saveUnsavedClangFormatFiles() {
     // save changed documents
     val unsavedClangFormats = ClangFormatCommons.getUnsavedClangFormats()
@@ -128,26 +139,44 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
 
   @RequiresReadLock
   private fun getClangFormatFiles(file: VirtualFile): List<VirtualFile> {
+    val parentDir = if (file.isDirectory) file else file.parent
     synchronized(cache) {
-      return cache.computeIfAbsent(file) { inFile: VirtualFile? ->
-        val files: MutableList<VirtualFile> = ArrayList()
-        var it = inFile
-        while (it != null) {
-          val child = it.findChild(".clang-format")
-          if (child != null) {
-            // read files in
-            files.add(child)
-          }
-          val childAlt = it.findChild("_clang-format")
-          if (childAlt != null) {
-            // read files in
-            files.add(childAlt)
-          }
-          it = it.parent
-        }
-        files
-      }
+      return getClangFormatFilesRecursive(parentDir)
     }
+  }
+
+  @RequiresReadLock
+  private fun getClangFormatFilesRecursive(dir: VirtualFile?): List<VirtualFile> {
+    if (dir == null) {
+      return emptyList()
+    }
+    var cachedValue = cache[dir]
+    if (cachedValue == null) {
+      val standardFile = dir.findChild(".clang-format")
+      val alternativeFile = dir.findChild("_clang-format")
+      val parentResults = getClangFormatFilesRecursive(dir.parent)
+
+      if (alternativeFile == null && standardFile == null) {
+        cachedValue = parentResults
+      }
+      else {
+        val files: MutableList<VirtualFile> = ArrayList()
+        if (standardFile != null) {
+          // read files in
+          files.add(standardFile)
+        }
+        if (alternativeFile != null) {
+          // read files in
+          files.add(alternativeFile)
+        }
+        cachedValue = files + parentResults
+      }
+
+      // update cache
+      cache[dir] = cachedValue
+    }
+
+    return cachedValue
   }
 
   private class FormatStyleProvider(private val service: ClangFormatStyleServiceImpl, private val psiFile: PsiFile) :
@@ -198,7 +227,6 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     }
   }
 
-  // drop caches when a file is created or deleted
   private inner class CacheFileWatcher : AsyncFileListener {
     override fun prepareChange(events: List<VFileEvent>): AsyncFileListener.ChangeApplier? {
       if (isThereAnyChangeInClangFormat(events)) {

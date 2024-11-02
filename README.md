@@ -43,7 +43,8 @@ After installation, you should be able to execute `clang-format` from the comman
 clang-format --version
 ```
 
-Note: running `clang-format` without arguments will wait for input from stdin and format it
+Note: if `clang-format` is executed without arguments, it formats the code from standard input
+and writes the result to the standard output.
 
 ## Configuration
 

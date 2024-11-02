@@ -18,7 +18,7 @@ interface ClangFormatService {
    * @throws ClangFormatError if an error occurs while checking the file
    * @return
    */
-  fun mayBeFormatted(file: PsiFile): Boolean
+  fun mayBeFormatted(file: PsiFile, inCaseOfStyleError: Boolean): Boolean
 
   /**
    * A list of possible paths to the clang-format binary.

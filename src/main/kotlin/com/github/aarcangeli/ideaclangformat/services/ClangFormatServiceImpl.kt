@@ -3,8 +3,8 @@ package com.github.aarcangeli.ideaclangformat.services
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle.message
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCode
-import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
+import com.github.aarcangeli.ideaclangformat.exceptions.ClangValidationError
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.github.aarcangeli.ideaclangformat.utils.OffsetConverter
 import com.github.aarcangeli.ideaclangformat.utils.ProcessUtils
@@ -167,7 +167,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       null
     }
     catch (e: ClangValidationError) {
-      LOG.warn("Cannot format document", e)
+      LOG.warn("Cannot format document due to validation error", e)
       showFormatError(
         project,
         e.description,
@@ -256,7 +256,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       return null
     }
 
-  override fun mayBeFormatted(file: PsiFile): Boolean {
+  override fun mayBeFormatted(file: PsiFile, inCaseOfStyleError: Boolean): Boolean {
     if (!service<ClangFormatConfig>().state.enabled) {
       return false
     }
@@ -266,7 +266,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       return false
     }
     val formatStyleService = service<ClangFormatStyleService>()
-    if (formatStyleService.getStyleFile(virtualFile) == null) {
+    if (!formatStyleService.isThereStyleForFile(virtualFile)) {
       // no ".clang-format" file found.
       return false
     }
@@ -275,11 +275,10 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     }
     catch (e: ClangValidationError) {
       // the configuration file contains errors
-      return true
+      return inCaseOfStyleError
     }
     catch (e: ClangFormatError) {
-      // A generic error is considered as valid, so we can notify the user
-      return true
+      return false
     }
     val language = formatStyle["Language"]
     val languageStr = language?.toString()?.trim()
@@ -307,8 +306,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private fun executeClangFormat(project: Project, content: ByteArray, filename: String): ClangFormatResponse {
     val path = clangFormatPath ?: throw ClangFormatError("Cannot find clang-format")
     val commandLine = ClangFormatCommons.createCommandLine(path)
-    commandLine.addParameter("-output-replacements-xml")
-    commandLine.addParameter("-assume-filename=$filename")
+    commandLine.addParameter("--output-replacements-xml")
+    commandLine.addParameter("--assume-filename=$filename")
     LOG.info("Running command: " + commandLine.commandLineString)
     val output = ProcessUtils.executeProgram(commandLine, content)
     if (output.exitCode != 0) {

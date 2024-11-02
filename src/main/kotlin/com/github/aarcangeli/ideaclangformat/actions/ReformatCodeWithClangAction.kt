@@ -1,11 +1,14 @@
 package com.github.aarcangeli.ideaclangformat.actions
 
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
-import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.codeInsight.actions.ReformatCodeAction
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.components.service
+import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiDocumentManager
 
 /**
  * This action is a little faster than the original [ReformatCodeAction] when used with a single file.
@@ -33,7 +36,7 @@ class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction()
     val dataContext = event.dataContext
     val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return false
     val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return false
-    val virtualFile = ClangFormatCommons.getVirtualFileFor(project, editor.document) ?: return false
+    val virtualFile = getVirtualFileFor(project, editor.document) ?: return false
     service<ClangFormatService>().reformatInBackground(project, virtualFile)
     return true
   }
@@ -42,7 +45,15 @@ class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction()
     val dataContext = event.dataContext
     val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return false
     val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return false
-    return ClangFormatCommons.getVirtualFileFor(project, editor.document) != null
+    return getVirtualFileFor(project, editor.document) != null
+  }
+
+  fun getVirtualFileFor(project: Project, document: Document): VirtualFile? {
+    val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document)
+    if (psiFile != null && service<ClangFormatService>().mayBeFormatted(psiFile, true)) {
+      return psiFile.originalFile.virtualFile
+    }
+    return null
   }
 
   override fun getActionUpdateThread(): ActionUpdateThread {
