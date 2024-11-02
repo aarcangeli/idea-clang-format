@@ -28,12 +28,11 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
   override fun createPanel(): DialogPanel {
     return panel {
       row {
-        combobox = checkBox(MyBundle.message("clang-format.enable"))
-          .comment("Enable ClangFormat for the application")
+        combobox = checkBox("Enable Clang-Format support")
+          .comment("When disabled, Clang-Format will not be used")
           .bindSelected(settings::enabled)
           .onApply {
             if (!settings.enabled) {
-              // do something
               service<ClangFormatService>().clearErrorNotification()
             }
           }
@@ -41,6 +40,7 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
       row {
         combobox = checkBox("Format on save")
           .bindSelected(settings::formatOnSave)
+          .enabledIf(combobox.selected)
       }
 
       group("Location") {
