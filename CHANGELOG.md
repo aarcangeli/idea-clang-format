@@ -4,8 +4,6 @@
 
 ## [Unreleased]
 
-## [1.0.0] - 2024-11-02
-
 ### Added
 
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
@@ -14,6 +12,3 @@
 - Format code using `clang-format` binary
 - Settings page to configure `clang-format` binary path
 - On Rider, format code on save (other IDEs already have this feature)
-
-[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/aarcangeli/idea-clang-format/commits/v1.0.0
