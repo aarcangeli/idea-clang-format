@@ -35,11 +35,14 @@ def download_file(url, file_name):
 
 
 def remove_rst(text):
-    text = re.sub(r"<tt>\s*(.*?)\s*<\/tt>", r"\1", text)
+    text = re.sub(r"``\s*(.*?)\s*``", r"'\1'", text)
+    text = re.sub(r"<tt>\s*(.*?)\s*</tt>", r"\1", text)
     text = re.sub(r"\\c ([^ ,;\.]+)", r"\1", text)
     text = re.sub(r"\\\w+ ", "", text)
     text = re.sub(r"\n *\n", "\n", text)
     text = re.sub(r"<[^>]*>", "", text)
+    text = re.sub(r"\*\*", "", text)
+    text = re.sub(r"\s+", " ", text)
     return text
 
 
@@ -180,6 +183,13 @@ def option2schema(
     if opt.enum:
         full_doc += PARAGRAPH_BEGIN + "Invoke completion to see all options"
     value["x-intellij-html-description"] = full_doc
+
+    if opt.type == "deprecated":
+        value["deprecated"] = True
+        value["deprecationMessage"] = remove_rst(opt.comment)
+    if "**deprecated**" in opt.comment:
+        value["deprecated"] = True
+        value["deprecationMessage"] = "Check the documentation for more information."
 
     return value
 

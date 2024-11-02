@@ -50,6 +50,34 @@
     <completion.contributor language="yaml"
                             implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatCompletionContributor"/>
     <editorNotificationProvider implementation="com.github.aarcangeli.ideaclangformat.lang.ClangEditorNotificationProvider"/>
+
+    <lang.inspectionSuppressor language="aarcangeli.ClangFormat"
+                               implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatInspectionSuppressor"/>
+
+    <localInspection language="aarcangeli.ClangFormat"
+                     bundle="messages.YAMLBundle"
+                     shortName="aarcangeli.SchemaValidation"
+                     key="inspections.schema.validation.name"
+                     groupName="Clang Format"
+                     enabledByDefault="true"
+                     level="ERROR"
+                     implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaHighlightingInspection"/>
+    <localInspection language="yaml"
+                     bundle="messages.YAMLBundle"
+                     shortName="aarcangeli.SchemaDeprecation"
+                     key="inspections.schema.deprecation.name"
+                     groupName="Clang Format"
+                     enabledByDefault="true"
+                     level="WARNING"
+                     implementationClass="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaDeprecationInspection"/>
+  </extensions>
+
+  <extensions defaultExtensionNs="JavaScript.JsonSchema">
+    <ProviderFactory implementation="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaProviderFactory"/>
+  </extensions>
+
+  <extensions defaultExtensionNs="com.intellij.json">
+    <jsonSchemaEnabler implementation="com.github.aarcangeli.ideaclangformat.lang.ClangFormatJsonSchemaEnabler"/>
   </extensions>
 
   <projectListeners>
@@ -57,10 +85,6 @@
       class="com.github.aarcangeli.ideaclangformat.lang.ClangFileListener"
       topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
   </projectListeners>
-
-  <extensions defaultExtensionNs="JavaScript.JsonSchema">
-    <ProviderFactory implementation="com.github.aarcangeli.ideaclangformat.lang.ClangFormatSchemaProviderFactory"/>
-  </extensions>
   <!-- END .clang-format language support -->
 
   <!-- Experimental apis-->

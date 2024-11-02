@@ -59,7 +59,7 @@
           "description": "Align parameters on the open bracket, e.g.:"
         },
         "DontAlign": {
-          "description": "Don't align, instead use ``ContinuationIndentWidth``, e.g.:"
+          "description": "Don't align, instead use 'ContinuationIndentWidth', e.g.:"
         },
         "AlwaysBreak": {
           "description": "Always break after an open bracket, if the parameters don't fit"
@@ -398,7 +398,9 @@
     },
     "AllowAllConstructorInitializersOnNextLine": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowallconstructorinitializersonnextline'>AllowAllConstructorInitializersOnNextLine Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>NextLine</code> of\n<code>PackConstructorInitializers</code>.<p style='margin-top:5px'>From clang-format 9"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowallconstructorinitializersonnextline'>AllowAllConstructorInitializersOnNextLine Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>NextLine</code> of\n<code>PackConstructorInitializers</code>.<p style='margin-top:5px'>From clang-format 9",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "AllowAllParametersOfDeclarationOnNextLine": {
       "type": "boolean",
@@ -416,7 +418,7 @@
           "description": "No line break allowed."
         },
         "OnlyWithParen": {
-          "description": "For a simple ``noexcept`` there is no line break allowed, but when we"
+          "description": "For a simple 'noexcept' there is no line break allowed, but when we"
         },
         "Always": {
           "description": "Line breaks are allowed. But note that because of the associated"
@@ -474,13 +476,13 @@
           "description": "Never merge functions into a single line."
         },
         "InlineOnly": {
-          "description": "Only merge functions defined inside a class. Same as ``inline``,"
+          "description": "Only merge functions defined inside a class. Same as 'inline',"
         },
         "Empty": {
           "description": "Only merge empty functions."
         },
         "Inline": {
-          "description": "Only merge functions defined inside a class. Implies ``empty``."
+          "description": "Only merge functions defined inside a class. Implies 'empty'."
         },
         "All": {
           "description": "Merge all functions fitting on a single line."
@@ -558,17 +560,23 @@
           "description": "Always break after the return types of top-level functions."
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreakafterdefinitionreturntype'>AlwaysBreakAfterDefinitionReturnType Documentation</a>\n<p style='margin-top:5px'>The function definition return type breaking style to use.  This\noption is **deprecated** and is retained for backwards compatibility.<p style='margin-top:5px'>From clang-format 3.7<p style='margin-top:5px'>Invoke completion to see all options"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreakafterdefinitionreturntype'>AlwaysBreakAfterDefinitionReturnType Documentation</a>\n<p style='margin-top:5px'>The function definition return type breaking style to use.  This\noption is **deprecated** and is retained for backwards compatibility.<p style='margin-top:5px'>From clang-format 3.7<p style='margin-top:5px'>Invoke completion to see all options",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "AlwaysBreakAfterReturnType": {
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreakafterreturntype'>AlwaysBreakAfterReturnType Documentation</a>\n<p style='margin-top:5px'>This option is renamed to <code>BreakAfterReturnType</code>.<p style='margin-top:5px'>From clang-format 3.8"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreakafterreturntype'>AlwaysBreakAfterReturnType Documentation</a>\n<p style='margin-top:5px'>This option is renamed to <code>BreakAfterReturnType</code>.<p style='margin-top:5px'>From clang-format 3.8",
+      "deprecated": true,
+      "deprecationMessage": "This option is renamed to 'BreakAfterReturnType'."
     },
     "AlwaysBreakBeforeMultilineStrings": {
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreakbeforemultilinestrings'>AlwaysBreakBeforeMultilineStrings Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, always break before multiline string literals.\n<p style='margin-top:5px'>This flag is mean to make cases where there are multiple multiline strings\nin a file look more consistent. Thus, it will only take effect if wrapping\nthe string at that point leads to it being indented\n<code>ContinuationIndentWidth</code> spaces from the start of the line.\n\n<pre><code class='c++'>   true:                                  false:\n   aaaa =                         vs.     aaaa = \"bbbb\"\n       \"bbbb\"                                    \"cccc\";\n       \"cccc\";\n</code></pre><p style='margin-top:5px'>From clang-format 3.4"
     },
     "AlwaysBreakTemplateDeclarations": {
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreaktemplatedeclarations'>AlwaysBreakTemplateDeclarations Documentation</a>\n<p style='margin-top:5px'>This option is renamed to <code>BreakTemplateDeclarations</code>.<p style='margin-top:5px'>From clang-format 3.4"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alwaysbreaktemplatedeclarations'>AlwaysBreakTemplateDeclarations Documentation</a>\n<p style='margin-top:5px'>This option is renamed to <code>BreakTemplateDeclarations</code>.<p style='margin-top:5px'>From clang-format 3.4",
+      "deprecated": true,
+      "deprecationMessage": "This option is renamed to 'BreakTemplateDeclarations'."
     },
     "AttributeMacros": {
       "type": "array",
@@ -595,16 +603,16 @@
       ],
       "x-intellij-enum-metadata": {
         "Both": {
-          "description": "Add one space on each side of the ``:``"
+          "description": "Add one space on each side of the ':'"
         },
         "None": {
-          "description": "Add no space around the ``:`` (except when needed for"
+          "description": "Add no space around the ':' (except when needed for"
         },
         "Before": {
-          "description": "Add space before the ``:`` only"
+          "description": "Add space before the ':' only"
         },
         "After": {
-          "description": "Add space after the ``:`` only (space may be added before if"
+          "description": "Add space after the ':' only (space may be added before if"
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#bitfieldcolonspacing'>BitFieldColonSpacing Documentation</a>\n<p style='margin-top:5px'>The BitFieldColonSpacingStyle to use for bitfields.<p style='margin-top:5px'>From clang-format 12<p style='margin-top:5px'>Invoke completion to see all options"
@@ -734,13 +742,13 @@
       ],
       "x-intellij-enum-metadata": {
         "None": {
-          "description": "This is **deprecated**. See ``Automatic`` below."
+          "description": "This is deprecated. See 'Automatic' below."
         },
         "Automatic": {
-          "description": "Break after return type based on ``PenaltyReturnTypeOnItsOwnLine``."
+          "description": "Break after return type based on 'PenaltyReturnTypeOnItsOwnLine'."
         },
         "ExceptShortType": {
-          "description": "Same as ``Automatic`` above, except that there is no break after short"
+          "description": "Same as 'Automatic' above, except that there is no break after short"
         },
         "All": {
           "description": "Always break after the return type."
@@ -799,28 +807,28 @@
           "description": "Always attach braces to surrounding context."
         },
         "Linux": {
-          "description": "Like ``Attach``, but break before braces on function, namespace and"
+          "description": "Like 'Attach', but break before braces on function, namespace and"
         },
         "Mozilla": {
-          "description": "Like ``Attach``, but break before braces on enum, function, and record"
+          "description": "Like 'Attach', but break before braces on enum, function, and record"
         },
         "Stroustrup": {
-          "description": "Like ``Attach``, but break before function definitions, ``catch``, and"
+          "description": "Like 'Attach', but break before function definitions, 'catch', and"
         },
         "Allman": {
           "description": "Always break before braces."
         },
         "Whitesmiths": {
-          "description": "Like ``Allman`` but always indent braces and line up code with braces."
+          "description": "Like 'Allman' but always indent braces and line up code with braces."
         },
         "GNU": {
           "description": "Always break before braces and add an extra level of indentation to"
         },
         "WebKit": {
-          "description": "Like ``Attach``, but break before functions."
+          "description": "Like 'Attach', but break before functions."
         },
         "Custom": {
-          "description": "Configure each individual brace in ``BraceWrapping``."
+          "description": "Configure each individual brace in 'BraceWrapping'."
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#breakbeforebraces'>BreakBeforeBraces Documentation</a>\n<p style='margin-top:5px'>The brace breaking style to use.<p style='margin-top:5px'>From clang-format 3.7<p style='margin-top:5px'>Invoke completion to see all options"
@@ -834,13 +842,13 @@
       ],
       "x-intellij-enum-metadata": {
         "Never": {
-          "description": "Keep the template declaration line together with ``concept``."
+          "description": "Keep the template declaration line together with 'concept'."
         },
         "Allowed": {
-          "description": "Breaking between template declaration and ``concept`` is allowed. The"
+          "description": "Breaking between template declaration and 'concept' is allowed. The"
         },
         "Always": {
-          "description": "Always break before ``concept``, putting it in the line after the"
+          "description": "Always break before 'concept', putting it in the line after the"
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#breakbeforeconceptdeclarations'>BreakBeforeConceptDeclarations Documentation</a>\n<p style='margin-top:5px'>The concept declaration style to use.<p style='margin-top:5px'>From clang-format 12<p style='margin-top:5px'>Invoke completion to see all options"
@@ -959,7 +967,9 @@
     },
     "ConstructorInitializerAllOnOneLineOrOnePerLine": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#constructorinitializerallononelineoroneperline'>ConstructorInitializerAllOnOneLineOrOnePerLine Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>CurrentLine</code> of\n<code>PackConstructorInitializers</code>.<p style='margin-top:5px'>From clang-format 3.7"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#constructorinitializerallononelineoroneperline'>ConstructorInitializerAllOnOneLineOrOnePerLine Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>CurrentLine</code> of\n<code>PackConstructorInitializers</code>.<p style='margin-top:5px'>From clang-format 3.7",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "ConstructorInitializerIndentWidth": {
       "type": "number",
@@ -975,7 +985,9 @@
     },
     "DeriveLineEnding": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#derivelineending'>DeriveLineEnding Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>DeriveLF</code> and <code>DeriveCRLF</code> of\n<code>LineEnding</code>.<p style='margin-top:5px'>From clang-format 10"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#derivelineending'>DeriveLineEnding Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>DeriveLF</code> and <code>DeriveCRLF</code> of\n<code>LineEnding</code>.<p style='margin-top:5px'>From clang-format 10",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "DerivePointerAlignment": {
       "type": "boolean",
@@ -1060,13 +1072,13 @@
       ],
       "x-intellij-enum-metadata": {
         "Preserve": {
-          "description": "Sort each ``#include`` block separately."
+          "description": "Sort each '#include' block separately."
         },
         "Merge": {
-          "description": "Merge multiple ``#include`` blocks together and sort as one."
+          "description": "Merge multiple '#include' blocks together and sort as one."
         },
         "Regroup": {
-          "description": "Merge multiple ``#include`` blocks together and sort as one."
+          "description": "Merge multiple '#include' blocks together and sort as one."
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#includeblocks'>IncludeBlocks Documentation</a>\n<p style='margin-top:5px'>Dependent on the value, multiple <code>#include</code> blocks can be sorted\nas one and divided based on category.<p style='margin-top:5px'>From clang-format 6<p style='margin-top:5px'>Invoke completion to see all options"
@@ -1364,16 +1376,16 @@
       ],
       "x-intellij-enum-metadata": {
         "LF": {
-          "description": "Use ``\\n``."
+          "description": "Use '\\n'."
         },
         "CRLF": {
-          "description": "Use ``\\r\\n``."
+          "description": "Use '\\r\\n'."
         },
         "DeriveLF": {
-          "description": "Use ``\\n`` unless the input has more lines ending in ``\\r\\n``."
+          "description": "Use '\\n' unless the input has more lines ending in '\\r\\n'."
         },
         "DeriveCRLF": {
-          "description": "Use ``\\r\\n`` unless the input has more lines ending in ``\\n``."
+          "description": "Use '\\r\\n' unless the input has more lines ending in '\\n'."
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#lineending'>LineEnding Documentation</a>\n<p style='margin-top:5px'>Line ending style (<code>\\n</code> or <code>\\r\\n</code>) to use.<p style='margin-top:5px'>From clang-format 16<p style='margin-top:5px'>Invoke completion to see all options"
@@ -1402,10 +1414,10 @@
       ],
       "x-intellij-enum-metadata": {
         "Quote": {
-          "description": "Main include uses quotes: ``#include \"foo.hpp\"`` (the default)."
+          "description": "Main include uses quotes: '#include \"foo.hpp\"' (the default)."
         },
         "AngleBracket": {
-          "description": "Main include uses angle brackets: ``#include ``."
+          "description": "Main include uses angle brackets: '#include '."
         },
         "Any": {
           "description": "Main include uses either quotes or angle brackets."
@@ -1511,7 +1523,7 @@
           "description": "Put all constructor initializers on the current line if they fit."
         },
         "NextLine": {
-          "description": "Same as ``PCIS_CurrentLine`` except that if all constructor initializers"
+          "description": "Same as 'PCIS_CurrentLine' except that if all constructor initializers"
         },
         "NextLineOnly": {
           "description": "Put all constructor initializers on the next line if they fit."
@@ -1602,7 +1614,7 @@
           "description": "Change specifiers/qualifiers to be right-aligned."
         },
         "Custom": {
-          "description": "Change specifiers/qualifiers to be aligned based on ``QualifierOrder``."
+          "description": "Change specifiers/qualifiers to be aligned based on 'QualifierOrder'."
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#qualifieralignment'>QualifierAlignment Documentation</a>\n<p style='margin-top:5px'>Different ways to arrange specifiers and qualifiers (e.g. const/volatile).\n<b>Warning:</b> Setting <code>QualifierAlignment</code>  to something other than <code>Leave</code>, COULD\n lead to incorrect code formatting due to incorrect decisions made due to\n clang-formats lack of complete semantic information.\n As such extra care should be taken to review code changes made by the use\n of this option.<p style='margin-top:5px'>From clang-format 14<p style='margin-top:5px'>Invoke completion to see all options"
@@ -1659,7 +1671,7 @@
       ],
       "x-intellij-enum-metadata": {
         "Pointer": {
-          "description": "Align reference like ``PointerAlignment``."
+          "description": "Align reference like 'PointerAlignment'."
         },
         "Left": {
           "description": "Align reference to the left."
@@ -1715,13 +1727,13 @@
       ],
       "x-intellij-enum-metadata": {
         "OwnLine": {
-          "description": "Always put the ``requires`` clause on its own line."
+          "description": "Always put the 'requires' clause on its own line."
         },
         "WithPreceding": {
           "description": "Try to put the clause together with the preceding part of a declaration."
         },
         "WithFollowing": {
-          "description": "Try to put the ``requires`` clause together with the class or function"
+          "description": "Try to put the 'requires' clause together with the class or function"
         },
         "SingleLine": {
           "description": "Try to put everything in the same line if possible. Otherwise normal"
@@ -1740,7 +1752,7 @@
           "description": "Align requires expression body relative to the indentation level of the"
         },
         "Keyword": {
-          "description": "Align requires expression body relative to the ``requires`` keyword."
+          "description": "Align requires expression body relative to the 'requires' keyword."
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#requiresexpressionindentation'>RequiresExpressionIndentation Documentation</a>\n<p style='margin-top:5px'>The indentation used for requires expression bodies.<p style='margin-top:5px'>From clang-format 16<p style='margin-top:5px'>Invoke completion to see all options"
@@ -1901,13 +1913,13 @@
       ],
       "x-intellij-enum-metadata": {
         "Never": {
-          "description": "This is **deprecated** and replaced by ``Custom`` below, with all"
+          "description": "This is deprecated and replaced by 'Custom' below, with all"
         },
         "ControlStatements": {
           "description": "Put a space before opening parentheses only after control statement"
         },
         "ControlStatementsExceptControlMacros": {
-          "description": "Same as ``SBPO_ControlStatements`` except this option doesn't apply to"
+          "description": "Same as 'SBPO_ControlStatements' except this option doesn't apply to"
         },
         "NonEmptyParentheses": {
           "description": "Put a space before opening parentheses only if the parentheses are not"
@@ -1982,7 +1994,9 @@
     },
     "SpaceInEmptyParentheses": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spaceinemptyparentheses'>SpaceInEmptyParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces may be inserted into <code>()</code>.\nThis option is **deprecated**. See <code>InEmptyParentheses</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 3.7"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spaceinemptyparentheses'>SpaceInEmptyParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces may be inserted into <code>()</code>.\nThis option is **deprecated**. See <code>InEmptyParentheses</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 3.7",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "SpacesBeforeTrailingComments": {
       "type": "number",
@@ -1997,24 +2011,28 @@
       ],
       "x-intellij-enum-metadata": {
         "Never": {
-          "description": "Remove spaces after ````."
+          "description": "Remove spaces after ''."
         },
         "Always": {
-          "description": "Add spaces after ````."
+          "description": "Add spaces after ''."
         },
         "Leave": {
-          "description": "Keep a single space after ```` if any spaces were"
+          "description": "Keep a single space after '' if any spaces were"
         }
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesinangles'>SpacesInAngles Documentation</a>\n<p style='margin-top:5px'>The SpacesInAnglesStyle to use for template argument lists.<p style='margin-top:5px'>From clang-format 3.4<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "SpacesInCStyleCastParentheses": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesincstylecastparentheses'>SpacesInCStyleCastParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces may be inserted into C style casts.\nThis option is **deprecated**. See <code>InCStyleCasts</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 3.7"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesincstylecastparentheses'>SpacesInCStyleCastParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces may be inserted into C style casts.\nThis option is **deprecated**. See <code>InCStyleCasts</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 3.7",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "SpacesInConditionalStatement": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesinconditionalstatement'>SpacesInConditionalStatement Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces will be inserted around if/for/switch/while\nconditions.\nThis option is **deprecated**. See <code>InConditionalStatements</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 10"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesinconditionalstatement'>SpacesInConditionalStatement Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces will be inserted around if/for/switch/while\nconditions.\nThis option is **deprecated**. See <code>InConditionalStatements</code> of\n<code>SpacesInParensOptions</code>.<p style='margin-top:5px'>From clang-format 10",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "SpacesInContainerLiterals": {
       "type": "boolean",
@@ -2080,7 +2098,9 @@
     },
     "SpacesInParentheses": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesinparentheses'>SpacesInParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces will be inserted after <code>(</code> and before <code>)</code>.\nThis option is **deprecated**. The previous behavior is preserved by using\n<code>SpacesInParens</code> with <code>Custom</code> and by setting all\n<code>SpacesInParensOptions</code> to <code>true</code> except for <code>InCStyleCasts</code> and\n<code>InEmptyParentheses</code>.<p style='margin-top:5px'>From clang-format 3.7"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#spacesinparentheses'>SpacesInParentheses Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, spaces will be inserted after <code>(</code> and before <code>)</code>.\nThis option is **deprecated**. The previous behavior is preserved by using\n<code>SpacesInParens</code> with <code>Custom</code> and by setting all\n<code>SpacesInParensOptions</code> to <code>true</code> except for <code>InCStyleCasts</code> and\n<code>InEmptyParentheses</code>.<p style='margin-top:5px'>From clang-format 3.7",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "SpacesInSquareBrackets": {
       "type": "boolean",
@@ -2183,7 +2203,9 @@
     },
     "UseCRLF": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#usecrlf'>UseCRLF Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>LF</code> and <code>CRLF</code> of <code>LineEnding</code>.<p style='margin-top:5px'>From clang-format 10"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#usecrlf'>UseCRLF Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>LF</code> and <code>CRLF</code> of <code>LineEnding</code>.<p style='margin-top:5px'>From clang-format 10",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "UseTab": {
       "type": "string",

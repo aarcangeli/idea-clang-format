@@ -14,7 +14,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 
-private val schema = ClangFormatSchemaProviderFactory.readSchema()
+private val schema = readSchema()
 private val clangFormatSchemaFile = LightVirtualFile("clangFormat-options.json", schema)
 
 class ClangFormatSchemaProviderFactory : JsonSchemaProviderFactory, DumbAware {
@@ -30,7 +30,7 @@ class ClangFormatSchemaProviderFactory : JsonSchemaProviderFactory, DumbAware {
     }
 
     override fun getName(): @Nls String {
-      return "Clang Format Schema Provider"
+      return "Clang-Format Tools"
     }
 
     override fun getSchemaFile(): VirtualFile {
@@ -42,27 +42,25 @@ class ClangFormatSchemaProviderFactory : JsonSchemaProviderFactory, DumbAware {
     }
 
     override fun isUserVisible(): Boolean {
-      return false
+      return true
     }
   }
+}
 
-  companion object {
-    fun readSchema(): String {
-      val resourceAsStream =
-        ClangFormatSchemaProviderFactory::class.java.getResourceAsStream("/schemas/clangFormat-options.json")
-      try {
-        resourceAsStream.use {
-          return StreamUtil.readText(
-            InputStreamReader(
-              resourceAsStream!!,
-              StandardCharsets.UTF_8
-            )
-          )
-        }
-      }
-      catch (e: IOException) {
-        throw RuntimeException("Cannot read schema", e)
-      }
+fun readSchema(): String {
+  val resourceAsStream =
+    ClangFormatSchemaProviderFactory::class.java.getResourceAsStream("/schemas/clangFormat-options.json")
+  try {
+    resourceAsStream.use {
+      return StreamUtil.readText(
+        InputStreamReader(
+          resourceAsStream!!,
+          StandardCharsets.UTF_8
+        )
+      )
     }
+  }
+  catch (e: IOException) {
+    throw RuntimeException("Cannot read schema", e)
   }
 }
