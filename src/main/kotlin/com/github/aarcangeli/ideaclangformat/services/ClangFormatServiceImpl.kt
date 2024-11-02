@@ -107,7 +107,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
         afterWriteActionFinished.add(canceller)
         val replacements = computeReplacementsWithError(project, contentAsByteArray, fileName, virtualFile.name)
         if (replacements != null) {
-          invokeAndWaitIfNeeded {
+          ApplicationManager.getApplication().invokeAndWait {
             runWriteAction {
               if (stamp == document.modificationStamp) {
                 applyReplacementsWithCommand(project, contentAsByteArray, document, replacements)
