@@ -10,7 +10,7 @@
 
 <!-- Plugin description -->
 
-[Clang-Format Tools](https://plugins.jetbrains.com/plugin/20785-clang-format-tools/edit) adds language support for
+[Clang-Format Tools](https://plugins.jetbrains.com/plugin/20785-clang-format-tools) adds language support for
 `.clang-format` [option files](https://clang.llvm.org/docs/ClangFormatStyleOptions.html) and allow to format code directly from the IDE.
 
 ## Overview
