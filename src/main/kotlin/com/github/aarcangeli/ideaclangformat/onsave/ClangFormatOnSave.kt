@@ -15,11 +15,11 @@ class ClangFormatOnSave : ActionOnSave() {
     return service<ClangFormatConfig>().state.formatOnSave && ClangFormatCommons.isUsingCustomFormatOnSave()
   }
 
-  override fun processDocuments(project: Project, documents: Array<Document?>) {
+  override fun processDocuments(project: Project, documents: Array<Document>) {
     val fileDocumentManager = service<FileDocumentManager>()
 
     for (document in documents) {
-      val virtualFile = fileDocumentManager.getFile(document ?: continue) ?: continue
+      val virtualFile = fileDocumentManager.getFile(document) ?: continue
       val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: continue
       if (service<ClangFormatService>().mayBeFormatted(psiFile, false)) {
         service<ClangFormatService>().reformatFileSync(project, virtualFile)
