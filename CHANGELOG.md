@@ -7,6 +7,7 @@
 ### Fixed
 
 - Fixed wrong url on README.md
+- Update to idea 2024.3
 
 ## [1.0.0] - 2024-11-02
 
