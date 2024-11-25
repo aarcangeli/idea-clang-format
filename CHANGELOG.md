@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-11-25
+
+- add dependency to json plugin
+
 ## [1.1.0] - 2024-11-24
 
 ### Fixed
@@ -22,6 +26,7 @@
 - Settings page to configure `clang-format` binary path
 - On Rider, format code on save (other IDEs already have this feature)
 
-[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/aarcangeli/idea-clang-format/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/aarcangeli/idea-clang-format/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/aarcangeli/idea-clang-format/commits/v1.0.0
