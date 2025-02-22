@@ -143,7 +143,7 @@ class AppConfigurable : DslConfigurableBase(), SearchableConfigurable, NoScroll 
 
   private fun testExe(action: ActionEvent) {
     version.isVisible = true
-    var path = getFinalPath() ?: ""
+    val path = getFinalPath() ?: ""
     if (path.isBlank()) {
       version.text = "Invalid path"
       return
