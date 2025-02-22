@@ -33,7 +33,7 @@ jobs:
           latest_tag=$(gh release view --repo llvm/llvm-project --json tagName --jq .tagName)
           echo "Latest tag: $latest_tag"
           branch_name="autoupdate-clang-$latest_tag"
-          current_version=$(cat src/main/resources/clang-format-tag.txt)
+          current_version=$(cat src/main/resources/llvm-tag.txt)
           found_branch=$(gh api repos/llvm/llvm-project/branches/$branch_name --jq .name 2> /dev/null || true)
           echo "Branch found: $found_branch"
           # We need to update if: 1. The current branch is outdated and 2. There is no other branch with the same name
@@ -65,6 +65,9 @@ jobs:
         if: steps.check-for-updates.outputs.update_needed == 'true'
         run: |
           latest_tag=${{ steps.check-for-updates.outputs.version }}
+          
+          # Remove all existing clang-format binaries
+          rm -rf src/main/resources/clang-format-*
 
           echo "Downloading windows binary"
           echo "::group::Download Details"
@@ -75,27 +78,27 @@ jobs:
             rm clang/clang+llvm-*
           echo "::endgroup::"
 
-          echo "Downloading linux aarch64 binary"
+          echo "Downloading linux X64 binary"
           echo "::group::Download Details"
-            gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-aarch64-linux-gnu.tar.xz" --dir clang
-            tar -xvf clang/clang+llvm-*-aarch64-linux-gnu.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
-            mkdir -p src/main/resources/clang-format-linux-aarch64
-            mv clang/clang-format src/main/resources/clang-format-linux-aarch64/clang-format
-            chmod +x src/main/resources/clang-format-linux-aarch64/clang-format
+            gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-Linux-X64.tar.xz" --dir clang
+            tar -xvf clang/LLVM-*-Linux-X64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
+            mkdir -p src/main/resources/clang-format-linux-x64
+            mv clang/clang-format src/main/resources/clang-format-linux-x64/clang-format
+            chmod +x src/main/resources/clang-format-linux-x64/clang-format
+            rm clang/LLVM-*
+          echo "::endgroup::"
+
+          echo "Downloading linux ARM64 binary"
+          echo "::group::Download Details"
+            gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-Linux-ARM64.tar.xz" --dir clang
+            tar -xvf clang/LLVM-*-Linux-ARM64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
+            mkdir -p src/main/resources/clang-format-linux-arm64
+            mv clang/clang-format src/main/resources/clang-format-linux-arm64/clang-format
+            chmod +x src/main/resources/clang-format-linux-arm64/clang-format
             rm clang/clang+llvm-*
           echo "::endgroup::"
 
-          echo "Downloading linux armv7a binary"
-          echo "::group::Download Details"
-            gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-armv7a-linux-*.tar.gz" --dir clang
-            tar -xvf clang/clang+llvm-*-armv7a-linux-*.tar.gz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
-            mkdir -p src/main/resources/clang-format-linux-armv7a
-            mv clang/clang-format src/main/resources/clang-format-linux-armv7a/clang-format
-            chmod +x src/main/resources/clang-format-linux-armv7a/clang-format
-            rm clang/clang+llvm-*
-          echo "::endgroup::"
-
-          echo "Downloading macos x64 binary"
+          echo "Downloading macos X64 binary"
           echo "::group::Download Details"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-X64.tar.xz" --dir clang
             tar -xvf clang/LLVM-*-macOS-X64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
@@ -105,7 +108,7 @@ jobs:
             rm clang/LLVM-*
           echo "::endgroup::"
 
-          echo "Downloading macos arm64 binary"
+          echo "Downloading macos ARM64 binary"
           echo "::group::Download Details"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-ARM64.tar.xz" --dir clang
             tar -xvf clang/LLVM-*-macOS-ARM64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
@@ -121,7 +124,7 @@ jobs:
         if: steps.check-for-updates.outputs.update_needed == 'true'
         run: |
           latest_tag=${{ steps.check-for-updates.outputs.version }}
-          echo $latest_tag > src/main/resources/clang-format-tag.txt
+          echo $latest_tag > src/main/resources/llvm-tag.txt
           git config --global user.email "alessandroarcangeli.rm@gmail.com"
           git config --global user.name "Alessandro Arcangeli (bot)"
           branch_name="autoupdate-clang-$latest_tag"

@@ -81,37 +81,43 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   }
 
   override fun getBuiltinPath(): BuiltinPath? {
-    val tempDir = Paths.get(PathManager.getPluginTempPath(), "clang-format-tools")
-    val version = ClangFormatCommons.readBuiltInVersion()
-    val versionMarkerString = "version-$version-${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}"
-    val versionMarker = tempDir.resolve("version.txt")
+    try {
+      val tempDir = Paths.get(PathManager.getPluginTempPath(), "clang-format-tools")
+      val version = ClangFormatCommons.readBuiltInVersion()
+      val versionMarkerString = "version-$version-${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}"
+      val versionMarker = tempDir.resolve("version.txt")
 
-    val outputFilename = if (SystemInfo.isWindows) "clang-format.exe" else "clang-format"
-    val outputFile = tempDir.resolve(outputFilename)
+      val outputFilename = if (SystemInfo.isWindows) "clang-format.exe" else "clang-format"
+      val outputFile = tempDir.resolve(outputFilename)
 
-    val currentVersion = runCatching { versionMarker.toFile().readText() }
+      val currentVersion = runCatching { versionMarker.toFile().readText() }
 
-    // Check if the file exists
-    if (Files.exists(outputFile) && Files.isExecutable(outputFile) && currentVersion.isSuccess && currentVersion.getOrNull() == versionMarkerString) {
+      // Check if the file exists
+      if (Files.exists(outputFile) && Files.isExecutable(outputFile) && currentVersion.isSuccess && currentVersion.getOrNull() == versionMarkerString) {
+        return BuiltinPath(outputFile.toString(), version)
+      }
+
+      // Copy the file
+      val path = ClangFormatCommons.getClangFormatPath() ?: return null
+      Files.createDirectories(tempDir)
+      Files.copy(path.openStream(), outputFile, StandardCopyOption.REPLACE_EXISTING)
+
+      // Make the file executable
+      if (!SystemInfo.isWindows) {
+        outputFile.toFile().setExecutable(true)
+      }
+
+      // Write the version
+      versionMarker.toFile().writeText(versionMarkerString)
+
+      tracker.incModificationCount()
+
       return BuiltinPath(outputFile.toString(), version)
     }
-
-    // Copy the file
-    val inputStream = ClangFormatCommons.getClangFormatPathFromResources() ?: return null
-    Files.createDirectories(tempDir)
-    Files.copy(inputStream, outputFile, StandardCopyOption.REPLACE_EXISTING)
-
-    // Make the file executable
-    if (!SystemInfo.isWindows) {
-      outputFile.toFile().setExecutable(true)
+    catch (e: Exception) {
+      LOG.warn("Cannot copy clang-format", e)
+      return null
     }
-
-    // Write the version
-    versionMarker.toFile().writeText(versionMarkerString)
-
-    tracker.incModificationCount()
-
-    return BuiltinPath(outputFile.toString(), version)
   }
 
   override fun getBuiltinPathTracker(): ModificationTracker {

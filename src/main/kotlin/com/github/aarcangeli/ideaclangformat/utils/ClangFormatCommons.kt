@@ -7,6 +7,7 @@ import com.intellij.build.FileNavigatable
 import com.intellij.build.FilePosition
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessOutput
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
@@ -18,6 +19,7 @@ import com.intellij.util.PathUtil
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.InputStream
+import java.net.URL
 import java.util.regex.Pattern
 
 // TODO: We should respect the user's settings for the file extensions
@@ -26,6 +28,8 @@ val knownCppExtensions = setOf(
   "ino", "ixx",
   "h", "hh", "hpp", "hxx", "inc", "inl", "ipp", "mpp", "pch", "tch", "tpp", "cuh",
 )
+
+private val LOG = Logger.getInstance(ClangFormatCommons::class.java)
 
 object ClangFormatCommons {
   private val CLANG_ERROR_PATTERN = Pattern.compile(
@@ -91,20 +95,33 @@ object ClangFormatCommons {
     return ClangFormatError("Exit code ${output.exitCode} from ${commandLine.commandLineString}\n${stderr}")
   }
 
-  fun getClangFormatPathFromResources(): InputStream? {
+  fun getClangFormatPath(): URL? {
+    LOG.info("Loading clang-format from resources for ${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}")
     val resourcePath = when {
       SystemInfo.isWindows -> "/clang-format-win/clang-format.exe"
-      SystemInfo.isLinux && SystemInfo.isAarch64 -> "/clang-format-linux-aarch64/clang-format"
-      SystemInfo.isLinux -> "/clang-format-linux-armv7a/clang-format"
+      SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm64" -> "/clang-format-linux-arm64/clang-format"
+      SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm" -> "/clang-format-linux-armv7a/clang-format"
+      SystemInfo.isLinux -> "/clang-format-linux-x64/clang-format"
       SystemInfo.isMac && SystemInfo.isAarch64 -> "/clang-format-macos-arm64/clang-format"
       SystemInfo.isMac -> "/clang-format-macos-x64/clang-format"
       else -> return null
     }
-    return ClangFormatCommons::class.java.getResourceAsStream(resourcePath)
+    val resource = ClangFormatCommons::class.java.getResource(resourcePath)
+    if (resource != null) {
+      LOG.info("Loaded clang-format from $resourcePath")
+      return resource
+    }
+    // Some releases of LLVM don't have linux-arm64, so we fall back to linux-armv7a
+    if (SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm64") {
+      LOG.info("Falling back to linux-armv7a")
+      return ClangFormatCommons::class.java.getResource("/clang-format-linux-armv7a/clang-format")
+    }
+    LOG.warn("Failed to load clang-format from $resourcePath")
+    return null
   }
 
   fun readBuiltInVersion(): String {
-    val inputStream = ClangFormatCommons::class.java.getResourceAsStream("/clang-format-tag.txt")
+    val inputStream = ClangFormatCommons::class.java.getResourceAsStream("/llvm-tag.txt")
     val version = inputStream?.bufferedReader()?.use { it.readText() } ?: return "unknown"
     return version.split("-")[1].trim()
   }
