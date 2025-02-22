@@ -54,12 +54,15 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private val errorNotification = AtomicReference<Notification?>()
   private val afterWriteActionFinished = ContainerUtil.createLockFreeCopyOnWriteList<Runnable>()
   private val tracker: DefaultModificationTracker = DefaultModificationTracker()
+  private var isClangFormatExtracted = false
 
   init {
     ApplicationManager.getApplication().addApplicationListener(MyApplicationListener(), this)
   }
 
   override fun reformatFileSync(project: Project, virtualFile: VirtualFile) {
+    LOG.info("reformatFileSync: Reformatting file ${virtualFile.path} with ClangFormat")
+
     // remove last error notification
     clearErrorNotification()
 
@@ -93,7 +96,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       val currentVersion = runCatching { versionMarker.toFile().readText() }
 
       // Check if the file exists
-      if (Files.exists(outputFile) && Files.isExecutable(outputFile) && currentVersion.isSuccess && currentVersion.getOrNull() == versionMarkerString) {
+      // Extract the file at least once to prevent the plugin from being unusable
+      if (isClangFormatExtracted && Files.exists(outputFile) && Files.isExecutable(outputFile) && currentVersion.isSuccess && currentVersion.getOrNull() == versionMarkerString) {
         return BuiltinPath(outputFile.toString(), version)
       }
 
@@ -111,6 +115,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       versionMarker.toFile().writeText(versionMarkerString)
 
       tracker.incModificationCount()
+      isClangFormatExtracted = true
 
       return BuiltinPath(outputFile.toString(), version)
     }
@@ -125,6 +130,8 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
   }
 
   override fun reformatInBackground(project: Project, virtualFile: VirtualFile) {
+    LOG.info("reformatInBackground: Reformatting file ${virtualFile.path} with ClangFormat")
+
     // remove last error notification
     clearErrorNotification()
 
@@ -155,6 +162,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       try {
         afterWriteActionFinished.add(canceller)
         val replacements = computeReplacementsWithError(project, contentAsByteArray, fileName, virtualFile.name)
+        LOG.info("Replacements async: $replacements")
         if (replacements != null) {
           ApplicationManager.getApplication().invokeAndWait {
             runWriteAction {
@@ -385,6 +393,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     }
     if (output.stdout.isEmpty()) {
       // no replacements
+      LOG.info("No replacements")
       return ClangFormatResponse()
     }
     return parseClangFormatResponse(output.stdout)
@@ -432,6 +441,7 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     if (FileDocumentManager.getInstance().requestWriting(document, project)) {
       return true
     }
+    LOG.info("File ${file.path} is not modifiable")
     Messages.showMessageDialog(
       project, CoreBundle.message("cannot.modify.a.read.only.file", file.name),
       CodeInsightBundle.message("error.dialog.readonly.file.title"),
