@@ -4,9 +4,21 @@
 
 ## [Unreleased]
 
+# Added
+
+- The plugin now includes built-in `clang-format` binaries for Windows, Linux, and macOS.
+- Added an automated GitHub Action to download the latest `clang-format` binaries.
+- The pipeline also generates the schema based on the latest `clang-format` version.
+
+# Changed
+
+- Removed `pluginUntilBuild`, allowing the plugin to be installed on all future versions of the IDE
+
 ## [1.1.1] - 2024-11-25
 
-- add dependency to json plugin
+### Fixed
+
+- Add dependency to json plugin
 
 ## [1.1.0] - 2024-11-24
 
