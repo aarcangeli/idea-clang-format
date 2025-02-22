@@ -17,6 +17,7 @@ import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.PathUtil
 import org.jetbrains.annotations.NonNls
 import java.io.File
+import java.io.InputStream
 import java.util.regex.Pattern
 
 // TODO: We should respect the user's settings for the file extensions
@@ -88,6 +89,24 @@ object ClangFormatCommons {
       stderr = output.stdout
     }
     return ClangFormatError("Exit code ${output.exitCode} from ${commandLine.commandLineString}\n${stderr}")
+  }
+
+  fun getClangFormatPathFromResources(): InputStream? {
+    val resourcePath = when {
+      SystemInfo.isWindows -> "/clang-format-win/clang-format.exe"
+      SystemInfo.isLinux && SystemInfo.isAarch64 -> "/clang-format-linux-aarch64/clang-format"
+      SystemInfo.isLinux -> "/clang-format-linux-armv7a/clang-format"
+      SystemInfo.isMac && SystemInfo.isAarch64 -> "/clang-format-macos-arm64/clang-format"
+      SystemInfo.isMac -> "/clang-format-macos-x64/clang-format"
+      else -> return null
+    }
+    return ClangFormatCommons::class.java.getResourceAsStream(resourcePath)
+  }
+
+  fun readBuiltInVersion(): String {
+    val inputStream = ClangFormatCommons::class.java.getResourceAsStream("/clang-format-tag.txt")
+    val version = inputStream?.bufferedReader()?.use { it.readText() } ?: return "unknown"
+    return version.split("-")[1].trim()
   }
 
   fun createCommandLine(clangFormatPath: String): GeneralCommandLine {

@@ -1,12 +1,12 @@
 package com.github.aarcangeli.ideaclangformat.services
 
+import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
 import com.github.aarcangeli.ideaclangformat.MyBundle
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatNotFound
 import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.github.aarcangeli.ideaclangformat.utils.ProcessUtils
 import com.intellij.execution.ExecutionException
-import com.intellij.execution.configurations.PathEnvironmentVariableUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
@@ -48,14 +48,10 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     VirtualFileManager.getInstance().addAsyncFileListener(CacheFileWatcher(), this)
   }
 
-  private fun findClangFormatPath(): File? {
-    return PathEnvironmentVariableUtil.findExecutableInPathOnAnyOS("clang-format")
-  }
-
   private fun getClangFormatVirtualPath(): VirtualFile? {
-    val clangFormatPath = findClangFormatPath()
+    val clangFormatPath = service<ClangFormatService>().clangFormatPath
     if (clangFormatPath != null) {
-      return VfsUtil.findFileByIoFile(clangFormatPath, true)
+      return VfsUtil.findFileByIoFile(File(clangFormatPath), true)
     }
     return null
   }
@@ -164,7 +160,7 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     return cachedValue
   }
 
-  private class FormatStyleProvider(private val service: ClangFormatStyleServiceImpl, private val psiFile: PsiFile) :
+  private class FormatStyleProvider(private val styleService: ClangFormatStyleServiceImpl, private val psiFile: PsiFile) :
     CachedValueProvider<Pair<Map<String, Any>?, ClangFormatError?>> {
     override fun compute(): CachedValueProvider.Result<Pair<Map<String, Any>?, ClangFormatError?>> {
       val dependencies: MutableList<Any?> = ArrayList()
@@ -178,16 +174,27 @@ class ClangFormatStyleServiceImpl : ClangFormatStyleService, Disposable {
     }
 
     private fun computeFormat(dependencies: MutableList<Any?>): Map<String, Any> {
-      dependencies.add(service.makeDependencyTracker(psiFile))
+      // Invalidate the cache when the configuration changes
+      dependencies.add(ModificationTracker {
+        service<ClangFormatConfig>().stateModificationCount
+      })
+      dependencies.add(service<ClangFormatService>().getBuiltinPathTracker())
+
+      // Retrieve the virtual file for the psi file
       val virtualFile = getVirtualFile(psiFile)
       if (virtualFile == null) {
         LOG.warn("Missing filename for $psiFile")
         throw ClangFormatError("Cannot get clang-format configuration")
       }
-      val clangFormat = service.getClangFormatVirtualPath() ?: throw ClangFormatNotFound()
-      dependencies.add(clangFormat)
+
+      // Invalidate the cache when any .clang-format file changes
+      dependencies.add(styleService.makeDependencyTracker(psiFile))
+
+      val clangFormatBin = styleService.getClangFormatVirtualPath() ?: throw ClangFormatNotFound()
+      dependencies.add(clangFormatBin)
+
       try {
-        val commandLine = ClangFormatCommons.createCommandLine(clangFormat.path)
+        val commandLine = ClangFormatCommons.createCommandLine(clangFormatBin.path)
         commandLine.addParameter("--dump-config")
         commandLine.addParameter("-assume-filename=" + getFileName(virtualFile))
         LOG.info("Running command: " + commandLine.commandLineString)

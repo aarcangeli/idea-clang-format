@@ -26,7 +26,7 @@ interface ClangFormatStyleService {
   fun getRawFormatStyle(psiFile: PsiFile): Map<String, Any>
 
   /**
-   * Returns a tracker that should be invalidated when the .clang-format file changes.
+   * Returns a tracker that is invalidated when any .clang-format associated with the file is changed.
    * This method also covers the case when the .clang-format file is added or removed.
    */
   @RequiresReadLock

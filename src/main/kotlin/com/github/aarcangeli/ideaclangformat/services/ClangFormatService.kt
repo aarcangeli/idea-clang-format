@@ -2,6 +2,7 @@ package com.github.aarcangeli.ideaclangformat.services
 
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.ModificationTracker
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.util.concurrency.annotations.RequiresEdt
@@ -21,11 +22,23 @@ interface ClangFormatService {
   fun mayBeFormatted(file: PsiFile, inCaseOfStyleError: Boolean): Boolean
 
   /**
+   * Extract clang-format to a temporary directory and return the path to the binary.
+   */
+  fun getBuiltinPath(): BuiltinPath?
+
+  /**
+   * Returns a tracker that is invalidated if a new path is detected.
+   */
+  fun getBuiltinPathTracker(): ModificationTracker
+
+  /**
    * A list of possible paths to the clang-format binary.
    */
   fun detectFromPath(): String?
 
-  @get:Throws(ClangFormatError::class)
+  /**
+   * The path to the clang-format binary (based on the configuration).
+   */
   val clangFormatPath: String?
 
   /**
@@ -54,3 +67,5 @@ interface ClangFormatService {
     const val GROUP_ID = "aarcangeli.notification.ClangFormat"
   }
 }
+
+data class BuiltinPath(val path: String, val version: String)

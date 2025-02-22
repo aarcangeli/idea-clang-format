@@ -1,6 +1,7 @@
 package com.github.aarcangeli.ideaclangformat.services
 
 import com.github.aarcangeli.ideaclangformat.ClangFormatConfig
+import com.github.aarcangeli.ideaclangformat.ClangFormatToUse
 import com.github.aarcangeli.ideaclangformat.MyBundle.message
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangExitCode
 import com.github.aarcangeli.ideaclangformat.exceptions.ClangFormatError
@@ -36,6 +37,9 @@ import com.intellij.util.concurrency.annotations.RequiresEdt
 import com.intellij.util.containers.ContainerUtil
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.*
 import java.util.concurrent.atomic.AtomicReference
 
@@ -49,6 +53,7 @@ private const val BULK_REPLACE_OPTIMIZATION_CRITERIA = 1000
 class ClangFormatServiceImpl : ClangFormatService, Disposable {
   private val errorNotification = AtomicReference<Notification?>()
   private val afterWriteActionFinished = ContainerUtil.createLockFreeCopyOnWriteList<Runnable>()
+  private val tracker: DefaultModificationTracker = DefaultModificationTracker()
 
   init {
     ApplicationManager.getApplication().addApplicationListener(MyApplicationListener(), this)
@@ -73,6 +78,44 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     if (replacements != null) {
       applyReplacementsWithCommand(project, content, document, replacements)
     }
+  }
+
+  override fun getBuiltinPath(): BuiltinPath? {
+    val tempDir = Paths.get(PathManager.getPluginTempPath(), "clang-format-tools")
+    val version = ClangFormatCommons.readBuiltInVersion()
+    val versionMarkerString = "version-$version-${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}"
+    val versionMarker = tempDir.resolve("version.txt")
+
+    val outputFilename = if (SystemInfo.isWindows) "clang-format.exe" else "clang-format"
+    val outputFile = tempDir.resolve(outputFilename)
+
+    val currentVersion = runCatching { versionMarker.toFile().readText() }
+
+    // Check if the file exists
+    if (Files.exists(outputFile) && Files.isExecutable(outputFile) && currentVersion.isSuccess && currentVersion.getOrNull() == versionMarkerString) {
+      return BuiltinPath(outputFile.toString(), version)
+    }
+
+    // Copy the file
+    val inputStream = ClangFormatCommons.getClangFormatPathFromResources() ?: return null
+    Files.createDirectories(tempDir)
+    Files.copy(inputStream, outputFile, StandardCopyOption.REPLACE_EXISTING)
+
+    // Make the file executable
+    if (!SystemInfo.isWindows) {
+      outputFile.toFile().setExecutable(true)
+    }
+
+    // Write the version
+    versionMarker.toFile().writeText(versionMarkerString)
+
+    tracker.incModificationCount()
+
+    return BuiltinPath(outputFile.toString(), version)
+  }
+
+  override fun getBuiltinPathTracker(): ModificationTracker {
+    return tracker
   }
 
   override fun reformatInBackground(project: Project, virtualFile: VirtualFile) {
@@ -235,6 +278,12 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
       if (output.exitCode != 0) {
         throw ClangExitCode(output.exitCode)
       }
+
+      // Check if the output contains "clang-format"
+      if (!output.stdout.contains("clang-format")) {
+        throw ClangFormatError("Invalid clang-format path")
+      }
+
       return output.stdout.trim()
     }
     catch (e: ExecutionException) {
@@ -242,15 +291,29 @@ class ClangFormatServiceImpl : ClangFormatService, Disposable {
     }
   }
 
-  @get:Throws(ClangFormatError::class)
   override val clangFormatPath: String?
     get() {
       val config = service<ClangFormatConfig>()
-      if (!config.state.customPath.isNullOrBlank()) {
-        return config.state.customPath!!.trim()
+      var path: String? = null
+      when (config.state.location) {
+        ClangFormatToUse.BUILTIN -> {
+          val builtinPath = getBuiltinPath()
+          if (builtinPath != null) {
+            path = builtinPath.path
+          }
+        }
+
+        ClangFormatToUse.CUSTOM -> {
+          if (!config.state.customPath.isNullOrBlank()) {
+            path = config.state.customPath!!.trim()
+          }
+        }
+
+        ClangFormatToUse.AUTO_DETECT -> {
+          path = detectFromPath()
+        }
       }
-      val path = detectFromPath()
-      if (path != null) {
+      if (path != null && File(path).exists() && File(path).canExecute()) {
         return path
       }
       return null

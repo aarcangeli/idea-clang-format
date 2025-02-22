@@ -14,10 +14,18 @@ class ClangFormatConfig : SimplePersistentStateComponent<ClangFormatConfig.State
   class State : BaseState() {
     var enabled by property(true)
 
+    var location by enum(ClangFormatToUse.BUILTIN)
+
     var formatOnSave by property(false)
 
     /// The path to the clang-format executable.
     /// If null, the plugin will try to find it in the PATH.
     var customPath by string()
   }
+}
+
+enum class ClangFormatToUse {
+  BUILTIN,
+  CUSTOM,
+  AUTO_DETECT
 }
