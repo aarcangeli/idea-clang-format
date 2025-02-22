@@ -14,7 +14,11 @@
     <!-- Error handler so the user can easly open an issue on github when something goes wrong -->
     <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
-    <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
+    <!--
+    Disabled as it doesn't work for some clients
+    https://github.com/aarcangeli/idea-clang-format/issues/15
+    -->
+    <!--<postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>-->
 
     <applicationService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
     <applicationSettings serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
