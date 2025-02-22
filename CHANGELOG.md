@@ -14,6 +14,10 @@
 
 - Removed `pluginUntilBuild`, allowing the plugin to be installed on all future versions of the IDE
 
+# Fixed
+
+- Invalidate the cache when the settings are changed.
+
 ## [1.1.1] - 2024-11-25
 
 ### Fixed
