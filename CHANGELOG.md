@@ -17,6 +17,7 @@
 # Fixed
 
 - Invalidate the cache when the settings are changed.
+- [#15](https://github.com/aarcangeli/idea-clang-format/issues/15) Fix UnsupportedOperationException
 
 ## [1.1.1] - 2024-11-25
 
