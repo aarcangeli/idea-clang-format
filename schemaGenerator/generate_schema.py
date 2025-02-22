@@ -20,8 +20,7 @@ from clang.dump_format_style import (
 # Based on dump_format_style.py
 
 # Update the CLANG_BRANCH to the latest version
-CLANG_BRANCH = "release/19.x"
-CLANG_ROOT = f"https://raw.githubusercontent.com/llvm/llvm-project/{CLANG_BRANCH}/clang"
+CLANG_ROOT = f"https://raw.githubusercontent.com/llvm/llvm-project/__branch__/clang"
 
 PROJECT_ROOT = Path(__file__).parent.parent
 OUTPUT_FILE = str(PROJECT_ROOT / "src/main/resources/schemas/clangFormat-options.json")
@@ -231,13 +230,21 @@ def main():
         help="Download the latest version of the schema from the GitHub",
     )
 
+    parser.add_argument(
+        "--clang-tag",
+        type=str,
+        default="main",
+        help="The tag of the clang-format repository",
+    )
+
     args = parser.parse_args()
 
     # Download the latest version of the schema from the GitHub
     if args.download:
-        download_file(f"{CLANG_ROOT}/include/clang/Format/Format.h", "clang/Format.h")
+        root = CLANG_ROOT.replace("__branch__", args.clang_tag)
+        download_file(f"{root}/include/clang/Format/Format.h", "clang/Format.h")
         download_file(
-            f"{CLANG_ROOT}/include/clang/Tooling/Inclusions/IncludeStyle.h",
+            f"{root}/include/clang/Tooling/Inclusions/IncludeStyle.h",
             "clang/IncludeStyle.h",
         )
 
