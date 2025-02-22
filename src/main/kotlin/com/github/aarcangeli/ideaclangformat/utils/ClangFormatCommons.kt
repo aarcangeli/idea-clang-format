@@ -18,7 +18,6 @@ import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.PathUtil
 import org.jetbrains.annotations.NonNls
 import java.io.File
-import java.io.InputStream
 import java.net.URL
 import java.util.regex.Pattern
 
@@ -98,7 +97,7 @@ object ClangFormatCommons {
   fun getClangFormatPath(): URL? {
     LOG.info("Loading clang-format from resources for ${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}")
     val resourcePath = when {
-      SystemInfo.isWindows -> "/clang-format-win/clang-format.exe"
+      SystemInfo.isWindows -> "/clang-format-win64/clang-format.exe"
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm64" -> "/clang-format-linux-arm64/clang-format"
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm" -> "/clang-format-linux-armv7a/clang-format"
       SystemInfo.isLinux -> "/clang-format-linux-x64/clang-format"
