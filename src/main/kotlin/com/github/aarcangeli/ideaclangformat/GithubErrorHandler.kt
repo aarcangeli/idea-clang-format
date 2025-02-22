@@ -40,14 +40,14 @@ class GithubErrorHandler : ErrorReportSubmitter() {
     private fun makeIssueBody(events: Array<IdeaLoggingEvent>, additionalInfo: String?): String {
       val body = StringBuilder()
       body.append("### Description\n")
-      body.append("<!-- Comment on what were you doing when the exception occurred -->\n")
+      body.append("<!-- Please describe what you were doing when the exception occurred. -->\n")
       if (additionalInfo != null && additionalInfo.trim().isNotEmpty()) {
         body.append(additionalInfo.trim()).append("\n")
       }
       body.append("\n")
 
       body.append("### Stacktrace\n")
-      body.append("<!-- Please paste the full stacktrace from the IDEA error popup -->\n")
+      body.append("<!-- Paste the full stacktrace from the IDEA error popup -->\n")
       val stacktrace = getStacktrace(events)
       if (stacktrace != null) {
         body.append("```\n").append(stacktrace).append("```\n")
