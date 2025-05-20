@@ -69,8 +69,7 @@ jobs:
           # Remove all existing clang-format binaries
           rm -rf src/main/resources/clang-format-*
 
-          echo "Downloading windows X64 binary"
-          echo "::group::Download Details"
+          echo "::group::Downloading windows X64 binary"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-x86_64-pc-windows-msvc.tar.xz" --dir clang
             tar -xvf clang/clang+llvm-*-x86_64-pc-windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
             mkdir -p src/main/resources/clang-format-windows-x64
@@ -78,8 +77,7 @@ jobs:
             rm clang/clang+llvm-*
           echo "::endgroup::"
 
-          echo "Downloading windows X64 binary"
-          echo "::group::Download Details"
+          echo "::group::Downloading windows ARM64 binary"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-aarch64-pc-windows-msvc.tar.xz" --dir clang
             tar -xvf clang/clang+llvm-*-aarch64-pc-windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
             mkdir -p src/main/resources/clang-format-windows-arm64
@@ -87,8 +85,7 @@ jobs:
             rm clang/clang+llvm-*
           echo "::endgroup::"
 
-          echo "Downloading linux X64 binary"
-          echo "::group::Download Details"
+          echo "::group::Downloading linux X64 binary"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-Linux-X64.tar.xz" --dir clang
             tar -xvf clang/LLVM-*-Linux-X64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
             mkdir -p src/main/resources/clang-format-linux-x64
@@ -97,8 +94,7 @@ jobs:
             rm clang/LLVM-*
           echo "::endgroup::"
 
-          echo "Downloading linux ARM64 binary"
-          echo "::group::Download Details"
+          echo "::group::Downloading linux ARM64 binary"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-Linux-ARM64.tar.xz" --dir clang
             tar -xvf clang/LLVM-*-Linux-ARM64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
             mkdir -p src/main/resources/clang-format-linux-arm64
@@ -107,25 +103,24 @@ jobs:
             rm clang/LLVM-*
           echo "::endgroup::"
 
-          echo "Downloading macos X64 binary"
-          echo "::group::Download Details"
-            gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-X64.tar.xz" --dir clang
-            tar -xvf clang/LLVM-*-macOS-X64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
-            mkdir -p src/main/resources/clang-format-macos-x64
-            mv clang/clang-format src/main/resources/clang-format-macos-x64/clang-format
-            chmod +x src/main/resources/clang-format-macos-x64/clang-format
-            rm clang/LLVM-*
-          echo "::endgroup::"
+          # skip macos since it is not in latest release
+          #echo "::group::Downloading macos X64 binary"
+          #  gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-X64.tar.xz" --dir clang
+          #  tar -xvf clang/LLVM-*-macOS-X64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
+          #  mkdir -p src/main/resources/clang-format-macos-x64
+          #  mv clang/clang-format src/main/resources/clang-format-macos-x64/clang-format
+          #  chmod +x src/main/resources/clang-format-macos-x64/clang-format
+          #  rm clang/LLVM-*
+          #echo "::endgroup::"
 
-          echo "Downloading macos ARM64 binary"
-          echo "::group::Download Details"
-            gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-ARM64.tar.xz" --dir clang
-            tar -xvf clang/LLVM-*-macOS-ARM64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
-            mkdir -p src/main/resources/clang-format-macos-arm64
-            mv clang/clang-format src/main/resources/clang-format-macos-arm64/clang-format
-            chmod +x src/main/resources/clang-format-macos-arm64/clang-format
-            rm clang/LLVM-*
-          echo "::endgroup::"
+          #echo "::group::Downloading macos ARM64 binary"
+          #  gh release download $latest_tag --repo llvm/llvm-project --pattern "LLVM-*-macOS-ARM64.tar.xz" --dir clang
+          #  tar -xvf clang/LLVM-*-macOS-ARM64.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format'
+          #  mkdir -p src/main/resources/clang-format-macos-arm64
+          #  mv clang/clang-format src/main/resources/clang-format-macos-arm64/clang-format
+          #  chmod +x src/main/resources/clang-format-macos-arm64/clang-format
+          #  rm clang/LLVM-*
+          #echo "::endgroup::"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
