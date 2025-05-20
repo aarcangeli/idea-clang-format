@@ -71,8 +71,8 @@ jobs:
 
           echo "Downloading windows binary"
           echo "::group::Download Details"
-            gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*windows-msvc.tar.xz" --dir clang
-            tar -xvf clang/clang+llvm-*windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
+            gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-x86_64-pc-windows-msvc.tar.xz" --dir clang
+            tar -xvf clang/clang+llvm-*-x86_64-pc-windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
             mkdir -p src/main/resources/clang-format-win64
             mv clang/clang-format.exe src/main/resources/clang-format-win64/clang-format.exe
             rm clang/clang+llvm-*
