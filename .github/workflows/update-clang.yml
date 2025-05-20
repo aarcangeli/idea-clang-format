@@ -69,12 +69,21 @@ jobs:
           # Remove all existing clang-format binaries
           rm -rf src/main/resources/clang-format-*
 
-          echo "Downloading windows binary"
+          echo "Downloading windows X64 binary"
           echo "::group::Download Details"
             gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-x86_64-pc-windows-msvc.tar.xz" --dir clang
             tar -xvf clang/clang+llvm-*-x86_64-pc-windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
-            mkdir -p src/main/resources/clang-format-win64
-            mv clang/clang-format.exe src/main/resources/clang-format-win64/clang-format.exe
+            mkdir -p src/main/resources/clang-format-windows-x64
+            mv clang/clang-format.exe src/main/resources/clang-format-windows-x64/clang-format.exe
+            rm clang/clang+llvm-*
+          echo "::endgroup::"
+
+          echo "Downloading windows X64 binary"
+          echo "::group::Download Details"
+            gh release download $latest_tag --repo llvm/llvm-project --pattern "clang+llvm-*-aarch64-pc-windows-msvc.tar.xz" --dir clang
+            tar -xvf clang/clang+llvm-*-aarch64-pc-windows-msvc.tar.xz --strip-components=2 -C clang --wildcards --no-anchored 'clang-format.exe'
+            mkdir -p src/main/resources/clang-format-windows-arm64
+            mv clang/clang-format.exe src/main/resources/clang-format-windows-arm64/clang-format.exe
             rm clang/clang+llvm-*
           echo "::endgroup::"
 
@@ -95,7 +104,7 @@ jobs:
             mkdir -p src/main/resources/clang-format-linux-arm64
             mv clang/clang-format src/main/resources/clang-format-linux-arm64/clang-format
             chmod +x src/main/resources/clang-format-linux-arm64/clang-format
-            rm clang/clang+llvm-*
+            rm clang/LLVM-*
           echo "::endgroup::"
 
           echo "Downloading macos X64 binary"

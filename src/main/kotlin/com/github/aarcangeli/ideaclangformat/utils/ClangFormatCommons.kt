@@ -97,13 +97,20 @@ object ClangFormatCommons {
   fun getClangFormatPath(): URL? {
     LOG.info("Loading clang-format from resources for ${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}")
     val resourcePath = when {
-      SystemInfo.isWindows -> "/clang-format-win64/clang-format.exe"
+      // Windows
+      SystemInfo.isWindows && SystemInfo.OS_ARCH == "aarch64" -> "/clang-format-windows-arm64/clang-format.exe"
+      SystemInfo.isWindows -> "/clang-format-windows-x86/clang-format.exe"
+      // Linux
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm64" -> "/clang-format-linux-arm64/clang-format"
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm" -> "/clang-format-linux-armv7a/clang-format"
       SystemInfo.isLinux -> "/clang-format-linux-x64/clang-format"
+      // Mac
       SystemInfo.isMac && SystemInfo.isAarch64 -> "/clang-format-macos-arm64/clang-format"
       SystemInfo.isMac -> "/clang-format-macos-x64/clang-format"
-      else -> return null
+      else -> {
+        LOG.warn("Unsupported OS: ${SystemInfo.OS_NAME}-${SystemInfo.OS_ARCH}")
+        return null
+      }
     }
     val resource = ClangFormatCommons::class.java.getResource(resourcePath)
     if (resource != null) {
