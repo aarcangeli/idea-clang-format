@@ -14,12 +14,6 @@
     <!-- Error handler so the user can easly open an issue on github when something goes wrong -->
     <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
-    <!--
-    Note: Rider sometimes throws an error while trying to format code without a clang-format file.
-    https://github.com/aarcangeli/idea-clang-format/issues/15
-    -->
-    <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
-
     <applicationService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
     <applicationSettings serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
 
@@ -43,6 +37,13 @@
                               implementation="com.github.aarcangeli.ideaclangformat.onsave.ClangFormatOnSaveInfoProvider"/>
 
   </extensions>
+
+  <actions>
+    <action id="aarcangeli.ClangFormatAction" class="com.github.aarcangeli.ideaclangformat.actions.ReformatCodeWithClangAction"
+            text="Reformat with Clang-Format" icon="/icons/plugin13.svg">
+      <add-to-group group-id="CodeFormatGroup" anchor="after" relative-to-action="ReformatCode"/>
+    </action>
+  </actions>
 
   <!-- BEGIN .clang-format language support -->
   <extensions defaultExtensionNs="com.intellij">
