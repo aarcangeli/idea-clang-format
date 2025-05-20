@@ -2,10 +2,13 @@ package com.github.aarcangeli.ideaclangformat.experimental
 
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.ExternalFormatProcessor
+
+private val LOG = Logger.getInstance(ClangFormatExternalFormatProcessor::class.java)
 
 class ClangFormatExternalFormatProcessor : ExternalFormatProcessor {
   override fun activeForFile(file: PsiFile): Boolean {
@@ -22,6 +25,7 @@ class ClangFormatExternalFormatProcessor : ExternalFormatProcessor {
   ): TextRange? {
     val virtualFile = source.originalFile.virtualFile
     if (virtualFile != null) {
+      LOG.debug("Reformatting file: ${virtualFile.path}")
       ProgressManager.checkCanceled()
       service<ClangFormatService>().reformatFileSync(source.project, virtualFile)
       return range

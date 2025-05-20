@@ -1,7 +1,7 @@
 package com.github.aarcangeli.ideaclangformat.utils
 
 /**
- * Converts offsets from utf-8 to utf16
+ * Converts offsets from utf-8 (clang-format) to utf16 (java)
  */
 class OffsetConverter(private val content: ByteArray) {
   private var cursorUtf8 = 0

@@ -15,10 +15,10 @@
     <errorHandler implementation="com.github.aarcangeli.ideaclangformat.GithubErrorHandler"/>
 
     <!--
-    Disabled as it doesn't work for some clients
+    Note: Rider sometimes throws an error while trying to format code without a clang-format file.
     https://github.com/aarcangeli/idea-clang-format/issues/15
     -->
-    <!--<postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>-->
+    <postStartupActivity implementation="com.github.aarcangeli.ideaclangformat.OverrideActions"/>
 
     <applicationService serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>
     <applicationSettings serviceImplementation="com.github.aarcangeli.ideaclangformat.ClangFormatConfig"/>

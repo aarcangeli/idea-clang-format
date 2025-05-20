@@ -99,7 +99,7 @@ object ClangFormatCommons {
     val resourcePath = when {
       // Windows
       SystemInfo.isWindows && SystemInfo.OS_ARCH == "aarch64" -> "/clang-format-windows-arm64/clang-format.exe"
-      SystemInfo.isWindows -> "/clang-format-windows-x86/clang-format.exe"
+      SystemInfo.isWindows -> "/clang-format-windows-x64/clang-format.exe"
       // Linux
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm64" -> "/clang-format-linux-arm64/clang-format"
       SystemInfo.isLinux && SystemInfo.OS_ARCH == "arm" -> "/clang-format-linux-armv7a/clang-format"
@@ -183,9 +183,8 @@ object ClangFormatCommons {
     return isRider()
   }
 
-  private fun isRider(): Boolean {
+  fun isRider(): Boolean {
     val prefix = System.getProperty("idea.platform.prefix", null)
-    val isRider = prefix == "Rider"
-    return isRider
+    return prefix == "Rider"
   }
 }
