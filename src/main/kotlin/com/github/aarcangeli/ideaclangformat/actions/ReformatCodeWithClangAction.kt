@@ -2,44 +2,41 @@ package com.github.aarcangeli.ideaclangformat.actions
 
 import com.github.aarcangeli.ideaclangformat.experimental.ClangFormatExternalFormatProcessor
 import com.github.aarcangeli.ideaclangformat.services.ClangFormatService
+import com.github.aarcangeli.ideaclangformat.utils.ClangFormatCommons
 import com.intellij.codeInsight.actions.ReformatCodeAction
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.PossiblyDumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 
+private val LOG = Logger.getInstance(ReformatCodeWithClangAction::class.java)
+
 /**
- * This action is a little faster than the original [ReformatCodeAction] when used with a single file.
- * This uses an asynchronous reformatting process, so it doesn't block the UI.
- * The alternative way is [ClangFormatExternalFormatProcessor], which is synchronous and blocks the UI.
+ * Rider doesn't support ExternalFormatProcessor, so this is the only way to reformat code in Rider.
  */
-class ReformatCodeWithClangAction(private val baseAction: AnAction) : AnAction(), DumbAware, OverridingAction {
-  init {
-    templatePresentation.copyFrom(baseAction.templatePresentation)
-  }
-
+class ReformatCodeWithClangAction : AnAction(), DumbAware {
   override fun update(e: AnActionEvent) {
-    if (!isManaged(e)) {
-      baseAction.update(e)
+    // Only available in Rider
+    if (!ClangFormatCommons.isRider()) {
+      e.presentation.isEnabledAndVisible = false
+      return
     }
+
+    e.presentation.isEnabled = isManaged(e)
   }
 
-  override fun actionPerformed(e: AnActionEvent) {
-    if (!handleAction(e)) {
-      baseAction.actionPerformed(e)
-    }
-  }
-
-  private fun handleAction(event: AnActionEvent): Boolean {
+  override fun actionPerformed(event: AnActionEvent) {
     val dataContext = event.dataContext
-    val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return false
-    val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return false
-    val virtualFile = getVirtualFileFor(project, editor.document) ?: return false
-    service<ClangFormatService>().reformatInBackground(project, virtualFile)
-    return true
+    val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return
+    val editor = CommonDataKeys.EDITOR.getData(dataContext) ?: return
+    val virtualFile = getVirtualFileFor(project, editor.document) ?: return
+    LOG.info("Reformatting file: ${virtualFile.path}")
+    service<ClangFormatService>().reformatFileSync(project, virtualFile)
   }
 
   private fun isManaged(event: AnActionEvent): Boolean {
