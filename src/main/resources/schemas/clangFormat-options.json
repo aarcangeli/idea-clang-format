@@ -88,7 +88,7 @@
           "description": "Don't align array initializer columns."
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignarrayofstructures'>AlignArrayOfStructures Documentation</a>\n<p style='margin-top:5px'>if not <code>None</code>, when using initialization for an array of structs\naligns the fields into columns.\n<p style='margin-top:5px'><b>Note</b> As of clang-format 15 this option only applied to arrays with equal\n number of columns per row.\n<p style='margin-top:5px'><p style='margin-top:5px'>From clang-format 13<p style='margin-top:5px'>Invoke completion to see all options"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignarrayofstructures'>AlignArrayOfStructures Documentation</a>\n<p style='margin-top:5px'>If not <code>None</code>, when using initialization for an array of structs\naligns the fields into columns.\n<p style='margin-top:5px'><b>Note</b> As of clang-format 15 this option only applied to arrays with equal\n number of columns per row.\n<p style='margin-top:5px'><p style='margin-top:5px'>From clang-format 13<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "AlignConsecutiveAssignments": {
       "type": "object",
@@ -106,6 +106,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n"
@@ -119,7 +123,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive assignments.\n<p style='margin-top:5px'><code>Consecutive</code> will result in formattings like:\n\n<pre><code class='c++'>  int a            = 1;\n  int somelongname = 2;\n  double c         = 3;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutiveassignments'>AlignConsecutiveAssignments Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive assignments.\n<p style='margin-top:5px'><code>Consecutive</code> will result in formattings like:\n\n<pre><code class='c++'>  int a            = 1;\n  int somelongname = 2;\n  double c         = 3;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
     },
     "AlignConsecutiveBitFields": {
       "type": "object",
@@ -137,6 +141,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n"
@@ -150,7 +158,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive bit fields.\n<p style='margin-top:5px'><code>Consecutive</code> will align the bitfield separators of consecutive lines.\nThis will result in formattings like:\n\n<pre><code class='c++'>  int aaaa : 1;\n  int b    : 12;\n  int ccc  : 8;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 11"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivebitfields'>AlignConsecutiveBitFields Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive bit fields.\n<p style='margin-top:5px'><code>Consecutive</code> will align the bitfield separators of consecutive lines.\nThis will result in formattings like:\n\n<pre><code class='c++'>  int aaaa : 1;\n  int b    : 12;\n  int ccc  : 8;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 11"
     },
     "AlignConsecutiveDeclarations": {
       "type": "object",
@@ -168,6 +176,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n"
@@ -181,7 +193,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive declarations.\n<p style='margin-top:5px'><code>Consecutive</code> will align the declaration names of consecutive lines.\nThis will result in formattings like:\n\n<pre><code class='c++'>  int         aaaa = 12;\n  float       b = 23;\n  std::string ccc;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivedeclarations'>AlignConsecutiveDeclarations Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive declarations.\n<p style='margin-top:5px'><code>Consecutive</code> will align the declaration names of consecutive lines.\nThis will result in formattings like:\n\n<pre><code class='c++'>  int         aaaa = 12;\n  float       b = 23;\n  std::string ccc;\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
     },
     "AlignConsecutiveMacros": {
       "type": "object",
@@ -199,6 +211,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n"
@@ -212,7 +228,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive macro definitions.\n<p style='margin-top:5px'><code>Consecutive</code> will result in formattings like:\n\n<pre><code class='c++'>  #define SHORT_NAME       42\n  #define LONGER_NAME      0x007f\n  #define EVEN_LONGER_NAME (2)\n  #define foo(x)           (x * x)\n  #define bar(y, z)        (y + z)\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 9"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivemacros'>AlignConsecutiveMacros Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive macro definitions.\n<p style='margin-top:5px'><code>Consecutive</code> will result in formattings like:\n\n<pre><code class='c++'>  #define SHORT_NAME       42\n  #define LONGER_NAME      0x007f\n  #define EVEN_LONGER_NAME (2)\n  #define foo(x)           (x * x)\n  #define bar(y, z)        (y + z)\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 9"
     },
     "AlignConsecutiveShortCaseStatements": {
       "type": "object",
@@ -257,6 +273,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n"
@@ -270,7 +290,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen DAGArg operator colons.\nIf enabled, align the colon inside DAGArg which have line break inside.\nThis works only when TableGenBreakInsideDAGArg is BreakElements or\nBreakAll and the DAGArg is not excepted by\nTableGenBreakingDAGArgOperators's effect.\n\n<pre><code class='c++'>  let dagarg = (ins\n      a  :$src1,\n      aa :$src2,\n      aaa:$src3\n  )\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegenbreakingdagargcolons'>AlignConsecutiveTableGenBreakingDAGArgColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen DAGArg operator colons.\nIf enabled, align the colon inside DAGArg which have line break inside.\nThis works only when TableGenBreakInsideDAGArg is BreakElements or\nBreakAll and the DAGArg is not excepted by\nTableGenBreakingDAGArgOperators's effect.\n\n<pre><code class='c++'>  let dagarg = (ins\n      a  :$src1,\n      aa :$src2,\n      aaa:$src3\n  )\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
     },
     "AlignConsecutiveTableGenCondOperatorColons": {
       "type": "object",
@@ -288,6 +308,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n"
@@ -301,7 +325,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen cond operator colons.\nAlign the colons of cases inside !cond operators.\n\n<pre><code class='c++'>  !cond(!eq(size, 1) : 1,\n        !eq(size, 16): 1,\n        true         : 0)\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegencondoperatorcolons'>AlignConsecutiveTableGenCondOperatorColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen cond operator colons.\nAlign the colons of cases inside !cond operators.\n\n<pre><code class='c++'>  !cond(!eq(size, 1) : 1,\n        !eq(size, 16): 1,\n        true         : 0)\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
     },
     "AlignConsecutiveTableGenDefinitionColons": {
       "type": "object",
@@ -319,6 +343,10 @@
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether compound assignments\nlike <code>+=</code> are aligned along with <code>=</code>.\n\n<pre><code class='c++'>  true:\n  a   &= 2;\n  bbb  = 2;\n\n  false:\n  a &= 2;\n  bbb = 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n"
         },
+        "AlignFunctionDeclarations": {
+          "type": "boolean",
+          "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function declarations\nare aligned.\n\n<pre><code class='c++'>  true:\n  unsigned int f1(void);\n  void         f2(void);\n  size_t       f3(void);\n\n  false:\n  unsigned int f1(void);\n  void f2(void);\n  size_t f3(void);\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n"
+        },
         "AlignFunctionPointers": {
           "type": "boolean",
           "x-intellij-html-description": "Only for <code>AlignConsecutiveDeclarations</code>. Whether function pointers are\naligned.\n\n<pre><code class='c++'>  true:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int      (*f)();\n\n  false:\n  unsigned i;\n  int     &r;\n  int     *p;\n  int (*f)();\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n"
@@ -332,7 +360,7 @@
           "x-intellij-html-description": "Only for <code>AlignConsecutiveAssignments</code>.  Whether short assignment\noperators are left-padded to the same length as long ones in order to\nput all assignment operators to the right of the left hand side.\n\n<pre><code class='c++'>  true:\n  a   &gt;&gt;= 2;\n  bbb   = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n\n  false:\n  a &gt;&gt;= 2;\n  bbb = 2;\n\n  a     = 2;\n  bbb &gt;&gt;= 2;\n</code></pre><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen definition colons.\nThis aligns the inheritance colons of consecutive definitions.\n\n<pre><code class='c++'>  def Def       : Parent {}\n  def DefDef    : Parent {}\n  def DefDefDef : Parent {}\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n- None\n- Consecutive\n- AcrossEmptyLines\n- AcrossComments\n- AcrossEmptyLinesAndComments\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#alignconsecutivetablegendefinitioncolons'>AlignConsecutiveTableGenDefinitionColons Documentation</a>\n<p style='margin-top:5px'>Style of aligning consecutive TableGen definition colons.\nThis aligns the inheritance colons of consecutive definitions.\n\n<pre><code class='c++'>  def Def       : Parent {}\n  def DefDef    : Parent {}\n  def DefDefDef : Parent {}\n</code></pre><p style='margin-top:5px'>Alignment options.\n<p style='margin-top:5px'>They can also be read as a whole for compatibility. The choices are:\n<p style='margin-top:5px'>* <code>None</code>\n* <code>Consecutive</code>\n* <code>AcrossEmptyLines</code>\n* <code>AcrossComments</code>\n* <code>AcrossEmptyLinesAndComments</code>\n<p style='margin-top:5px'>For example, to align across empty lines and not across comments, either\nof these work.\n\n<pre><code class='c++'>  &lt;option-name&gt;: AcrossEmptyLines\n\n  &lt;option-name&gt;:\n    Enabled: true\n    AcrossEmptyLines: true\n    AcrossComments: false\n</code></pre><p style='margin-top:5px'>From clang-format 19"
     },
     "AlignEscapedNewlines": {
       "type": "string",
@@ -404,7 +432,7 @@
     },
     "AllowAllParametersOfDeclarationOnNextLine": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowallparametersofdeclarationonnextline'>AllowAllParametersOfDeclarationOnNextLine Documentation</a>\n<p style='margin-top:5px'>If the function declaration doesn't fit on a line,\nallow putting all parameters of a function declaration onto\nthe next line even if <code>BinPackParameters</code> is <code>false</code>.\n\n<pre><code class='c++'>  true:\n  void myFunction(\n      int a, int b, int c, int d, int e);\n\n  false:\n  void myFunction(int a,\n                  int b,\n                  int c,\n                  int d,\n                  int e);\n</code></pre><p style='margin-top:5px'>From clang-format 3.3"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowallparametersofdeclarationonnextline'>AllowAllParametersOfDeclarationOnNextLine Documentation</a>\n<p style='margin-top:5px'>If the function declaration doesn't fit on a line,\nallow putting all parameters of a function declaration onto\nthe next line even if <code>BinPackParameters</code> is <code>OnePerLine</code>.\n\n<pre><code class='c++'>  true:\n  void myFunction(\n      int a, int b, int c, int d, int e);\n\n  false:\n  void myFunction(int a,\n                  int b,\n                  int c,\n                  int d,\n                  int e);\n</code></pre><p style='margin-top:5px'>From clang-format 3.3"
     },
     "AllowBreakBeforeNoexceptSpecifier": {
       "type": "string",
@@ -542,6 +570,10 @@
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowshortloopsonasingleline'>AllowShortLoopsOnASingleLine Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, <code>while (true) continue;</code> can be put on a single\nline.<p style='margin-top:5px'>From clang-format 3.7"
     },
+    "AllowShortNamespacesOnASingleLine": {
+      "type": "boolean",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#allowshortnamespacesonasingleline'>AllowShortNamespacesOnASingleLine Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, <code>namespace a { class b; }</code> can be put on a single line.<p style='margin-top:5px'>From clang-format 20"
+    },
     "AlwaysBreakAfterDefinitionReturnType": {
       "type": "string",
       "enum": [
@@ -590,8 +622,24 @@
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#binpackarguments'>BinPackArguments Documentation</a>\n<p style='margin-top:5px'>If <code>false</code>, a function call's arguments will either be all on the\nsame line or will have one line each.\n\n<pre><code class='c++'>  true:\n  void f() {\n    f(aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);\n  }\n\n  false:\n  void f() {\n    f(aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaa,\n      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);\n  }\n</code></pre><p style='margin-top:5px'>From clang-format 3.7"
     },
     "BinPackParameters": {
-      "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#binpackparameters'>BinPackParameters Documentation</a>\n<p style='margin-top:5px'>If <code>false</code>, a function declaration's or function definition's\nparameters will either all be on the same line or will have one line each.\n\n<pre><code class='c++'>  true:\n  void f(int aaaaaaaaaaaaaaaaaaaa, int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa) {}\n\n  false:\n  void f(int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaa,\n         int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa) {}\n</code></pre><p style='margin-top:5px'>From clang-format 3.7"
+      "type": "string",
+      "enum": [
+        "BinPack",
+        "OnePerLine",
+        "AlwaysOnePerLine"
+      ],
+      "x-intellij-enum-metadata": {
+        "BinPack": {
+          "description": "Bin-pack parameters."
+        },
+        "OnePerLine": {
+          "description": "Put all parameters on the current line if they fit."
+        },
+        "AlwaysOnePerLine": {
+          "description": "Always put each parameter on its own line."
+        }
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#binpackparameters'>BinPackParameters Documentation</a>\n<p style='margin-top:5px'>The bin pack parameters style to use.<p style='margin-top:5px'>From clang-format 3.7<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "BitFieldColonSpacing": {
       "type": "string",
@@ -693,7 +741,7 @@
           "x-intellij-html-description": "If <code>false</code>, empty record (e.g. class, struct or union) body\ncan be put on a single line. This option is used only if the opening\nbrace of the record has already been wrapped, i.e. the <code>AfterClass</code>\n(for classes) brace wrapping mode is set.\n\n<pre><code class='c++'>  false:           true:\n  class Foo   vs.  class Foo\n  {}               {\n                   }\n</code></pre>\n<p style='margin-top:5px'><p><a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#bracewrapping'>BraceWrapping Documentation</a>\n"
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#bracewrapping'>BraceWrapping Documentation</a>\n<p style='margin-top:5px'>Control of individual brace wrapping cases.\n<p style='margin-top:5px'>If <code>BreakBeforeBraces</code> is set to <code>BS_Custom</code>, use this to specify how\neach individual brace case should be handled. Otherwise, this is ignored.\n\n<pre><code class='yaml'>  # Example of usage:\n  BreakBeforeBraces: Custom\n  BraceWrapping:\n    AfterEnum: true\n    AfterStruct: false\n    SplitEmptyFunction: false\n</code></pre><p style='margin-top:5px'>Precise control over the wrapping of braces.\n\n<pre><code class='c++'>  # Should be declared this way:\n  BreakBeforeBraces: Custom\n  BraceWrapping:\n      AfterClass: true\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#bracewrapping'>BraceWrapping Documentation</a>\n<p style='margin-top:5px'>Control of individual brace wrapping cases.\n<p style='margin-top:5px'>If <code>BreakBeforeBraces</code> is set to <code>Custom</code>, use this to specify how\neach individual brace case should be handled. Otherwise, this is ignored.\n\n<pre><code class='yaml'>  # Example of usage:\n  BreakBeforeBraces: Custom\n  BraceWrapping:\n    AfterEnum: true\n    AfterStruct: false\n    SplitEmptyFunction: false\n</code></pre><p style='margin-top:5px'>Precise control over the wrapping of braces.\n\n<pre><code class='c++'>  # Should be declared this way:\n  BreakBeforeBraces: Custom\n  BraceWrapping:\n      AfterClass: true\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
     },
     "BracedInitializerIndentWidth": {
       "type": {
@@ -877,6 +925,26 @@
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#breakbeforeternaryoperators'>BreakBeforeTernaryOperators Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, ternary operators will be placed after line breaks.\n\n<pre><code class='c++'>   true:\n   veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongDescription\n       ? firstValue\n       : SecondValueVeryVeryVeryVeryLong;\n\n   false:\n   veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongDescription ?\n       firstValue :\n       SecondValueVeryVeryVeryVeryLong;\n</code></pre><p style='margin-top:5px'>From clang-format 3.7"
     },
+    "BreakBinaryOperations": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "OnePerLine",
+        "RespectPrecedence"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Don't break binary operations"
+        },
+        "OnePerLine": {
+          "description": "Binary operations will either be all on the same line, or each operation"
+        },
+        "RespectPrecedence": {
+          "description": "Binary operations of a particular precedence that exceed the column"
+        }
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#breakbinaryoperations'>BreakBinaryOperations Documentation</a>\n<p style='margin-top:5px'>The break binary operations style to use.<p style='margin-top:5px'>From clang-format 20<p style='margin-top:5px'>Invoke completion to see all options"
+    },
     "BreakConstructorInitializers": {
       "type": "string",
       "enum": [
@@ -981,7 +1049,7 @@
     },
     "Cpp11BracedListStyle": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#cpp11bracedliststyle'>Cpp11BracedListStyle Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, format braced lists as best suited for C++11 braced\nlists.\n<p style='margin-top:5px'>Important differences:\n- No spaces inside the braced list.\n- No line break before the closing brace.\n- Indentation with the continuation indent, not with the block indent.\n<p style='margin-top:5px'>Fundamentally, C++11 braced lists are formatted exactly like function\ncalls would be formatted in their place. If the braced list follows a name\n(e.g. a type or variable name), clang-format formats as if the <code>{}</code> were\nthe parentheses of a function call with that name. If there is no name,\na zero-length name is assumed.\n\n<pre><code class='c++'>   true:                                  false:\n   vector&lt;int&gt; x{1, 2, 3, 4};     vs.     vector&lt;int&gt; x{ 1, 2, 3, 4 };\n   vector&lt;T&gt; x{{}, {}, {}, {}};           vector&lt;T&gt; x{ {}, {}, {}, {} };\n   f(MyMap[{composite, key}]);            f(MyMap[{ composite, key }]);\n   new int[3]{1, 2, 3};                   new int[3]{ 1, 2, 3 };\n</code></pre><p style='margin-top:5px'>From clang-format 3.4"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#cpp11bracedliststyle'>Cpp11BracedListStyle Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, format braced lists as best suited for C++11 braced\nlists.\n<p style='margin-top:5px'>Important differences:\n<p style='margin-top:5px'>* No spaces inside the braced list.\n* No line break before the closing brace.\n* Indentation with the continuation indent, not with the block indent.\n<p style='margin-top:5px'>Fundamentally, C++11 braced lists are formatted exactly like function\ncalls would be formatted in their place. If the braced list follows a name\n(e.g. a type or variable name), clang-format formats as if the <code>{}</code> were\nthe parentheses of a function call with that name. If there is no name,\na zero-length name is assumed.\n\n<pre><code class='c++'>   true:                                  false:\n   vector&lt;int&gt; x{1, 2, 3, 4};     vs.     vector&lt;int&gt; x{ 1, 2, 3, 4 };\n   vector&lt;T&gt; x{{}, {}, {}, {}};           vector&lt;T&gt; x{ {}, {}, {}, {} };\n   f(MyMap[{composite, key}]);            f(MyMap[{ composite, key }]);\n   new int[3]{1, 2, 3};                   new int[3]{ 1, 2, 3 };\n</code></pre><p style='margin-top:5px'>From clang-format 3.4"
     },
     "DeriveLineEnding": {
       "type": "boolean",
@@ -1111,7 +1179,7 @@
     },
     "IncludeIsMainRegex": {
       "type": "string",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#includeismainregex'>IncludeIsMainRegex Documentation</a>\n<p style='margin-top:5px'>Specify a regular expression of suffixes that are allowed in the\nfile-to-main-include mapping.\n<p style='margin-top:5px'>When guessing whether a #include is the \"main\" include (to assign\ncategory 0, see above), use this regex of allowed suffixes to the header\nstem. A partial match is done, so that:\n- \"\" means \"arbitrary suffix\"\n- \"$\" means \"no suffix\"\n<p style='margin-top:5px'>For example, if configured to \"(_test)?$\", then a header a.h would be seen\nas the \"main\" include in both a.cc and a_test.cc.<p style='margin-top:5px'>From clang-format 3.9"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#includeismainregex'>IncludeIsMainRegex Documentation</a>\n<p style='margin-top:5px'>Specify a regular expression of suffixes that are allowed in the\nfile-to-main-include mapping.\n<p style='margin-top:5px'>When guessing whether a #include is the \"main\" include (to assign\ncategory 0, see above), use this regex of allowed suffixes to the header\nstem. A partial match is done, so that:\n* <code>\"\"</code> means \"arbitrary suffix\"\n* <code>\"$\"</code> means \"no suffix\"\n<p style='margin-top:5px'>For example, if configured to <code>\"(_test)?$\"</code>, then a header a.h would be seen\nas the \"main\" include in both a.cc and a_test.cc.<p style='margin-top:5px'>From clang-format 3.9"
     },
     "IncludeIsMainSourceRegex": {
       "type": "string",
@@ -1128,6 +1196,10 @@
     "IndentCaseLabels": {
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#indentcaselabels'>IndentCaseLabels Documentation</a>\n<p style='margin-top:5px'>Indent case labels one level from the switch statement.\n<p style='margin-top:5px'>When <code>false</code>, use the same indentation level as for the switch\nstatement. Switch statement body is always indented one level more than\ncase labels (except the first block following the case label, which\nitself indents the code - unless IndentCaseBlocks is enabled).\n\n<pre><code class='c++'>   false:                                 true:\n   switch (fool) {                vs.     switch (fool) {\n   case 1:                                  case 1:\n     bar();                                   bar();\n     break;                                   break;\n   default:                                 default:\n     plop();                                  plop();\n   }                                      }\n</code></pre><p style='margin-top:5px'>From clang-format 3.3"
+    },
+    "IndentExportBlock": {
+      "type": "boolean",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#indentexportblock'>IndentExportBlock Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, clang-format will indent the body of an <code>export { ... }</code>\nblock. This doesn't affect the formatting of anything else related to\nexported declarations.\n\n<pre><code class='c++'>   true:                     false:\n   export {          vs.     export {\n     void foo();             void foo();\n     void bar();             void bar();\n   }                         }\n</code></pre><p style='margin-top:5px'>From clang-format 20"
     },
     "IndentExternBlock": {
       "type": "string",
@@ -1175,7 +1247,7 @@
     },
     "IndentRequiresClause": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#indentrequiresclause'>IndentRequiresClause Documentation</a>\n<p style='margin-top:5px'>Indent the requires clause in a template. This only applies when\n<code>RequiresClausePosition</code> is <code>OwnLine</code>, or <code>WithFollowing</code>.\n<p style='margin-top:5px'>In clang-format 12, 13 and 14 it was named <code>IndentRequires</code>.\n\n<pre><code class='c++'>   true:\n   template &lt;typename It&gt;\n     requires Iterator&lt;It&gt;\n   void sort(It begin, It end) {\n     //....\n   }\n\n   false:\n   template &lt;typename It&gt;\n   requires Iterator&lt;It&gt;\n   void sort(It begin, It end) {\n     //....\n   }\n</code></pre><p style='margin-top:5px'>From clang-format 15"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#indentrequiresclause'>IndentRequiresClause Documentation</a>\n<p style='margin-top:5px'>Indent the requires clause in a template. This only applies when\n<code>RequiresClausePosition</code> is <code>OwnLine</code>, <code>OwnLineWithBrace</code>,\nor <code>WithFollowing</code>.\n<p style='margin-top:5px'>In clang-format 12, 13 and 14 it was named <code>IndentRequires</code>.\n\n<pre><code class='c++'>   true:\n   template &lt;typename It&gt;\n     requires Iterator&lt;It&gt;\n   void sort(It begin, It end) {\n     //....\n   }\n\n   false:\n   template &lt;typename It&gt;\n   requires Iterator&lt;It&gt;\n   void sort(It begin, It end) {\n     //....\n   }\n</code></pre><p style='margin-top:5px'>From clang-format 15"
     },
     "IndentWidth": {
       "type": "number",
@@ -1292,11 +1364,19 @@
     },
     "KeepEmptyLinesAtEOF": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#keepemptylinesateof'>KeepEmptyLinesAtEOF Documentation</a>\n<p style='margin-top:5px'>This option is deprecated. See <code>AtEndOfFile</code> of <code>KeepEmptyLines</code>.<p style='margin-top:5px'>From clang-format 17"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#keepemptylinesateof'>KeepEmptyLinesAtEOF Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>AtEndOfFile</code> of <code>KeepEmptyLines</code>.<p style='margin-top:5px'>From clang-format 17",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
     },
     "KeepEmptyLinesAtTheStartOfBlocks": {
       "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#keepemptylinesatthestartofblocks'>KeepEmptyLinesAtTheStartOfBlocks Documentation</a>\n<p style='margin-top:5px'>This option is deprecated. See <code>AtStartOfBlock</code> of <code>KeepEmptyLines</code>.<p style='margin-top:5px'>From clang-format 3.7"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#keepemptylinesatthestartofblocks'>KeepEmptyLinesAtTheStartOfBlocks Documentation</a>\n<p style='margin-top:5px'>This option is **deprecated**. See <code>AtStartOfBlock</code> of\n<code>KeepEmptyLines</code>.<p style='margin-top:5px'>From clang-format 3.7",
+      "deprecated": true,
+      "deprecationMessage": "Check the documentation for more information."
+    },
+    "KeepFormFeed": {
+      "type": "boolean",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#keepformfeed'>KeepFormFeed Documentation</a>\n<p style='margin-top:5px'>Keep the form feed character if it's immediately preceded and followed by\na newline. Multiple form feeds and newlines within a whitespace range are\nreplaced with a single newline and form feed followed by the remaining\nnewlines.<p style='margin-top:5px'>From clang-format 20"
     },
     "LambdaBodyIndentation": {
       "type": "string",
@@ -1318,6 +1398,7 @@
       "type": "string",
       "enum": [
         "None",
+        "C",
         "Cpp",
         "CSharp",
         "Java",
@@ -1333,8 +1414,11 @@
         "None": {
           "description": "Do not use."
         },
+        "C": {
+          "description": "Should be used for C."
+        },
         "Cpp": {
-          "description": "Should be used for C, C++."
+          "description": "Should be used for C++."
         },
         "CSharp": {
           "description": "Should be used for C#."
@@ -1364,7 +1448,7 @@
           "description": "Should be used for Verilog and SystemVerilog."
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#language'>Language Documentation</a>\n<p style='margin-top:5px'>Language, this format style is targeted at.<p style='margin-top:5px'>From clang-format 3.5<p style='margin-top:5px'>Invoke completion to see all options"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#language'>Language Documentation</a>\n<p style='margin-top:5px'>The language that this format style targets.\n<b>Note</b> You can specify the language (<code>C</code>, <code>Cpp</code>, or <code>ObjC</code>) for <code>.h</code>\n files by adding a <code>// clang-format Language:</code> line before the first\n non-comment (and non-empty) line, e.g. <code>// clang-format Language: Cpp</code>.<p style='margin-top:5px'>From clang-format 3.5<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "LineEnding": {
       "type": "string",
@@ -1474,7 +1558,7 @@
           "description": "Never bin-pack parameters."
         }
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#objcbinpackprotocollist'>ObjCBinPackProtocolList Documentation</a>\n<p style='margin-top:5px'>Controls bin-packing Objective-C protocol conformance list\nitems into as few lines as possible when they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Auto</code> (the default), delegates to the value in\n<code>BinPackParameters</code>. If that is <code>true</code>, bin-packs Objective-C\nprotocol conformance list items into as few lines as possible\nwhenever they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Always</code>, always bin-packs Objective-C protocol conformance\nlist items into as few lines as possible whenever they go over\n<code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Never</code>, lays out Objective-C protocol conformance list items\nonto individual lines whenever they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>\n<pre><code class='objc'>   Always (or Auto, if BinPackParameters=true):\n   @interface ccccccccccccc () &lt;\n       ccccccccccccc, ccccccccccccc,\n       ccccccccccccc, ccccccccccccc&gt; {\n   }\n\n   Never (or Auto, if BinPackParameters=false):\n   @interface ddddddddddddd () &lt;\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd&gt; {\n   }\n</code></pre><p style='margin-top:5px'>From clang-format 7<p style='margin-top:5px'>Invoke completion to see all options"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#objcbinpackprotocollist'>ObjCBinPackProtocolList Documentation</a>\n<p style='margin-top:5px'>Controls bin-packing Objective-C protocol conformance list\nitems into as few lines as possible when they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Auto</code> (the default), delegates to the value in\n<code>BinPackParameters</code>. If that is <code>BinPack</code>, bin-packs Objective-C\nprotocol conformance list items into as few lines as possible\nwhenever they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Always</code>, always bin-packs Objective-C protocol conformance\nlist items into as few lines as possible whenever they go over\n<code>ColumnLimit</code>.\n<p style='margin-top:5px'>If <code>Never</code>, lays out Objective-C protocol conformance list items\nonto individual lines whenever they go over <code>ColumnLimit</code>.\n<p style='margin-top:5px'>\n<pre><code class='objc'>   Always (or Auto, if BinPackParameters==BinPack):\n   @interface ccccccccccccc () &lt;\n       ccccccccccccc, ccccccccccccc,\n       ccccccccccccc, ccccccccccccc&gt; {\n   }\n\n   Never (or Auto, if BinPackParameters!=BinPack):\n   @interface ddddddddddddd () &lt;\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd,\n       ddddddddddddd&gt; {\n   }\n</code></pre><p style='margin-top:5px'>From clang-format 7<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "ObjCBlockIndentWidth": {
       "type": "number",
@@ -1538,6 +1622,10 @@
     "PenaltyBreakBeforeFirstCallParameter": {
       "type": "number",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#penaltybreakbeforefirstcallparameter'>PenaltyBreakBeforeFirstCallParameter Documentation</a>\n<p style='margin-top:5px'>The penalty for breaking a function call after <code>call(</code>.<p style='margin-top:5px'>From clang-format 3.7"
+    },
+    "PenaltyBreakBeforeMemberAccess": {
+      "type": "number",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#penaltybreakbeforememberaccess'>PenaltyBreakBeforeMemberAccess Documentation</a>\n<p style='margin-top:5px'>The penalty for breaking before a member access operator (<code>.</code>, <code>-></code>).<p style='margin-top:5px'>From clang-format 20"
     },
     "PenaltyBreakComment": {
       "type": "number",
@@ -1624,7 +1712,7 @@
       "items": {
         "type": "string"
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#qualifierorder'>QualifierOrder Documentation</a>\n<p style='margin-top:5px'>The order in which the qualifiers appear.\nOrder is an array that can contain any of the following:\n<p style='margin-top:5px'>  * const\n  * inline\n  * static\n  * friend\n  * constexpr\n  * volatile\n  * restrict\n  * type\n<p style='margin-top:5px'><b>Note</b> It **must** contain <code>type</code>.\n<p style='margin-top:5px'>Items to the left of <code>type</code> will be placed to the left of the type and\naligned in the order supplied. Items to the right of <code>type</code> will be\nplaced to the right of the type and aligned in the order supplied.\n<p style='margin-top:5px'>\n<pre><code class='yaml'>  QualifierOrder: [inline, static, type, const, volatile]\n</code></pre><p style='margin-top:5px'>From clang-format 14"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#qualifierorder'>QualifierOrder Documentation</a>\n<p style='margin-top:5px'>The order in which the qualifiers appear.\nThe order is an array that can contain any of the following:\n<p style='margin-top:5px'>  * <code>const</code>\n  * <code>inline</code>\n  * <code>static</code>\n  * <code>friend</code>\n  * <code>constexpr</code>\n  * <code>volatile</code>\n  * <code>restrict</code>\n  * <code>type</code>\n<p style='margin-top:5px'><b>Note</b> It must contain <code>type</code>.\n<p style='margin-top:5px'>Items to the left of <code>type</code> will be placed to the left of the type and\naligned in the order supplied. Items to the right of <code>type</code> will be\nplaced to the right of the type and aligned in the order supplied.\n<p style='margin-top:5px'>\n<pre><code class='yaml'>  QualifierOrder: [inline, static, type, const, volatile]\n</code></pre><p style='margin-top:5px'>From clang-format 14"
     },
     "RawStringFormats": {
       "type": "array",
@@ -1686,12 +1774,32 @@
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#referencealignment'>ReferenceAlignment Documentation</a>\n<p style='margin-top:5px'>Reference alignment style (overrides <code>PointerAlignment</code> for\nreferences).<p style='margin-top:5px'>From clang-format 13<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "ReflowComments": {
-      "type": "boolean",
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#reflowcomments'>ReflowComments Documentation</a>\n<p style='margin-top:5px'>If <code>true</code>, clang-format will attempt to re-flow comments. That is it\nwill touch a comment and *reflow* long comments into new lines, trying to\nobey the <code>ColumnLimit</code>.\n\n<pre><code class='c++'>   false:\n   // veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of information\n   /* second veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of information */\n\n   true:\n   // veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of\n   // information\n   /* second veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongComment with plenty of\n    * information */\n</code></pre><p style='margin-top:5px'>From clang-format 3.8"
+      "type": "string",
+      "enum": [
+        "Never",
+        "IndentOnly",
+        "Always"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Leave comments untouched."
+        },
+        "IndentOnly": {
+          "description": "Only apply indentation rules, moving comments left or right, without"
+        },
+        "Always": {
+          "description": "Apply indentation rules and reflow long comments into new lines, trying"
+        }
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#reflowcomments'>ReflowComments Documentation</a>\n<p style='margin-top:5px'>Comment reformatting style.<p style='margin-top:5px'>From clang-format 3.8<p style='margin-top:5px'>Invoke completion to see all options"
     },
     "RemoveBracesLLVM": {
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#removebracesllvm'>RemoveBracesLLVM Documentation</a>\n<p style='margin-top:5px'>Remove optional braces of control statements (<code>if</code>, <code>else</code>, <code>for</code>,\nand <code>while</code>) in C++ according to the LLVM coding style.\n<b>Warning:</b> This option will be renamed and expanded to support other styles.\n<b>Warning:</b> Setting this option to <code>true</code> could lead to incorrect code formatting\n due to clang-format's lack of complete semantic information. As such,\n extra care should be taken to review code changes made by this option.\n\n<pre><code class='c++'>  false:                                     true:\n\n  if (isa&lt;FunctionDecl&gt;(D)) {        vs.     if (isa&lt;FunctionDecl&gt;(D))\n    handleFunctionDecl(D);                     handleFunctionDecl(D);\n  } else if (isa&lt;VarDecl&gt;(D)) {              else if (isa&lt;VarDecl&gt;(D))\n    handleVarDecl(D);                          handleVarDecl(D);\n  }\n\n  if (isa&lt;VarDecl&gt;(D)) {             vs.     if (isa&lt;VarDecl&gt;(D)) {\n    for (auto *A : D.attrs()) {                for (auto *A : D.attrs())\n      if (shouldProcessAttr(A)) {                if (shouldProcessAttr(A))\n        handleAttr(A);                             handleAttr(A);\n      }                                      }\n    }\n  }\n\n  if (isa&lt;FunctionDecl&gt;(D)) {        vs.     if (isa&lt;FunctionDecl&gt;(D))\n    for (auto *A : D.attrs()) {                for (auto *A : D.attrs())\n      handleAttr(A);                             handleAttr(A);\n    }\n  }\n\n  if (auto *D = (T)(D)) {            vs.     if (auto *D = (T)(D)) {\n    if (shouldProcess(D)) {                    if (shouldProcess(D))\n      handleVarDecl(D);                          handleVarDecl(D);\n    } else {                                   else\n      markAsIgnored(D);                          markAsIgnored(D);\n    }                                        }\n  }\n\n  if (a) {                           vs.     if (a)\n    b();                                       b();\n  } else {                                   else if (c)\n    if (c) {                                   d();\n      d();                                   else\n    } else {                                   e();\n      e();\n    }\n  }\n</code></pre><p style='margin-top:5px'>From clang-format 14"
+    },
+    "RemoveEmptyLinesInUnwrappedLines": {
+      "type": "boolean",
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#removeemptylinesinunwrappedlines'>RemoveEmptyLinesInUnwrappedLines Documentation</a>\n<p style='margin-top:5px'>Remove empty lines within unwrapped lines.\n\n<pre><code class='c++'>  false:                            true:\n\n  int c                  vs.        int c = a + b;\n\n      = a + b;\n\n  enum : unsigned        vs.        enum : unsigned {\n                                      AA = 0,\n  {                                   BB\n    AA = 0,                         } myEnum;\n    BB\n  } myEnum;\n\n  while (                vs.        while (true) {\n                                    }\n      true) {\n  }\n</code></pre><p style='margin-top:5px'>From clang-format 20"
     },
     "RemoveParentheses": {
       "type": "string",
@@ -1721,13 +1829,17 @@
       "type": "string",
       "enum": [
         "OwnLine",
+        "OwnLineWithBrace",
         "WithPreceding",
         "WithFollowing",
         "SingleLine"
       ],
       "x-intellij-enum-metadata": {
         "OwnLine": {
-          "description": "Always put the 'requires' clause on its own line."
+          "description": "Always put the 'requires' clause on its own line (possibly followed by"
+        },
+        "OwnLineWithBrace": {
+          "description": "As with 'OwnLine', except, unless otherwise prohibited, place a"
         },
         "WithPreceding": {
           "description": "Try to put the clause together with the preceding part of a declaration."
@@ -2154,7 +2266,7 @@
       "items": {
         "type": "string"
       },
-      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#statementmacros'>StatementMacros Documentation</a>\n<p style='margin-top:5px'>A vector of macros that should be interpreted as complete\nstatements.\n<p style='margin-top:5px'>Typical macros are expressions, and require a semi-colon to be\nadded; sometimes this is not the case, and this allows to make\nclang-format aware of such cases.\n<p style='margin-top:5px'>For example: Q_UNUSED<p style='margin-top:5px'>From clang-format 8"
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#statementmacros'>StatementMacros Documentation</a>\n<p style='margin-top:5px'>A vector of macros that should be interpreted as complete statements.\n<p style='margin-top:5px'>Typical macros are expressions and require a semicolon to be added.\nSometimes this is not the case, and this allows to make clang-format aware\nof such cases.\n<p style='margin-top:5px'>For example: Q_UNUSED<p style='margin-top:5px'>From clang-format 8"
     },
     "TabWidth": {
       "type": "number",
@@ -2186,6 +2298,13 @@
         "type": "string"
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#tablegenbreakingdagargoperators'>TableGenBreakingDAGArgOperators Documentation</a>\n<p style='margin-top:5px'>Works only when TableGenBreakInsideDAGArg is not DontBreak.\nThe string list needs to consist of identifiers in TableGen.\nIf any identifier is specified, this limits the line breaks by\nTableGenBreakInsideDAGArg option only on DAGArg values beginning with\nthe specified identifiers.\n<p style='margin-top:5px'>For example the configuration,\n\n<pre><code class='yaml'>  TableGenBreakInsideDAGArg: BreakAll\n  TableGenBreakingDAGArgOperators: [ins, outs]\n</code></pre>\n<p style='margin-top:5px'>makes the line break only occurs inside DAGArgs beginning with the\nspecified identifiers <code>ins</code> and <code>outs</code>.\n<p style='margin-top:5px'>\n<pre><code class='c++'>  let DAGArgIns = (ins\n      i32:$src1,\n      i32:$src2\n  );\n  let DAGArgOtherID = (other i32:$other1, i32:$other2);\n  let DAGArgBang = (!cast&lt;SomeType&gt;(\"Some\") i32:$src1, i32:$src2)\n</code></pre><p style='margin-top:5px'>From clang-format 19"
+    },
+    "TemplateNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#templatenames'>TemplateNames Documentation</a>\n<p style='margin-top:5px'>A vector of non-keyword identifiers that should be interpreted as template\nnames.\n<p style='margin-top:5px'>A <code><</code> after a template name is annotated as a template opener instead of\na binary operator.\n<p style='margin-top:5px'><p style='margin-top:5px'>From clang-format 20"
     },
     "TypeNames": {
       "type": "array",
@@ -2235,6 +2354,13 @@
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#usetab'>UseTab Documentation</a>\n<p style='margin-top:5px'>The way to use tab characters in the resulting file.<p style='margin-top:5px'>From clang-format 3.7<p style='margin-top:5px'>Invoke completion to see all options"
     },
+    "VariableTemplates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#variabletemplates'>VariableTemplates Documentation</a>\n<p style='margin-top:5px'>A vector of non-keyword identifiers that should be interpreted as variable\ntemplate names.\n<p style='margin-top:5px'>A <code>)</code> after a variable template instantiation is **not** annotated as\nthe closing parenthesis of C-style cast operator.\n<p style='margin-top:5px'><p style='margin-top:5px'>From clang-format 20"
+    },
     "VerilogBreakBetweenInstancePorts": {
       "type": "boolean",
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#verilogbreakbetweeninstanceports'>VerilogBreakBetweenInstancePorts Documentation</a>\n<p style='margin-top:5px'>For Verilog, put each port on its own line in module instantiations.\n\n<pre><code class='c++'>   true:\n   ffnand ff1(.q(),\n              .qbar(out1),\n              .clear(in1),\n              .preset(in2));\n\n   false:\n   ffnand ff1(.q(), .qbar(out1), .clear(in1), .preset(in2));\n</code></pre><p style='margin-top:5px'>From clang-format 17"
@@ -2245,6 +2371,26 @@
         "type": "string"
       },
       "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#whitespacesensitivemacros'>WhitespaceSensitiveMacros Documentation</a>\n<p style='margin-top:5px'>A vector of macros which are whitespace-sensitive and should not\nbe touched.\n<p style='margin-top:5px'>These are expected to be macros of the form:\n\n<pre><code class='c++'>  STRINGIZE(...)\n</code></pre>\n<p style='margin-top:5px'>In the .clang-format configuration file, this can be configured like:\n\n<pre><code class='yaml'>  WhitespaceSensitiveMacros: [STRINGIZE, PP_STRINGIZE]\n</code></pre>\n<p style='margin-top:5px'>For example: BOOST_PP_STRINGIZE<p style='margin-top:5px'>From clang-format 11"
+    },
+    "WrapNamespaceBodyWithEmptyLines": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "Always",
+        "Leave"
+      ],
+      "x-intellij-enum-metadata": {
+        "Never": {
+          "description": "Remove all empty lines at the beginning and the end of namespace body."
+        },
+        "Always": {
+          "description": "Always have at least one empty line at the beginning and the end of"
+        },
+        "Leave": {
+          "description": "Keep existing newlines at the beginning and the end of namespace body."
+        }
+      },
+      "x-intellij-html-description": "<a href='https://clang.llvm.org/docs/ClangFormatStyleOptions.html#wrapnamespacebodywithemptylines'>WrapNamespaceBodyWithEmptyLines Documentation</a>\n<p style='margin-top:5px'>Wrap namespace body with empty lines.<p style='margin-top:5px'>From clang-format 20<p style='margin-top:5px'>Invoke completion to see all options"
     }
   }
 }
