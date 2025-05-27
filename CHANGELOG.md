@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-05-27
+
+### Fixed
+
+- Fix incorrect packaging of built-in clang-format binaries.
+
 ## [1.2.0] - 2025-05-26
 
 ### Added
@@ -41,7 +47,8 @@
 - Settings page to configure `clang-format` binary path
 - On Rider, format code on save (other IDEs already have this feature)
 
-[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/aarcangeli/idea-clang-format/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/aarcangeli/idea-clang-format/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/aarcangeli/idea-clang-format/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/aarcangeli/idea-clang-format/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/aarcangeli/idea-clang-format/compare/v1.0.0...v1.1.0
