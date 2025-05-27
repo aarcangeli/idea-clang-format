@@ -28,6 +28,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.release.tag_name }}
+        with:
+          lfs: true
 
       # Set up Java environment for the next steps
       - name: Setup Java
